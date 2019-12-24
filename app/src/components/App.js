@@ -14,7 +14,7 @@ const drizzle = new Drizzle(drizzleOptions, drizzleStore);
 class App extends Component {
   render() {
     return (
-      <DrizzleContext.Provider drizzle={drizzleStore}>
+      <DrizzleContext.Provider drizzle={drizzle}>
         <Container />
       </DrizzleContext.Provider>
     );
