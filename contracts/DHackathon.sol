@@ -1,0 +1,272 @@
+pragma solidity >=0.5.11;
+
+import '../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol';
+import './roles/JudgeRole.sol';
+import './roles/ParticipantRole.sol';
+import './states/StateTracker.sol';
+
+/**
+    Necessary Features:
+    - Factory design
+    - Judge Selection from Admin
+    - Simple Judge voting mechanism
+    - Circuit breaker (isOperational) + Speed bump (rate limiting)
+    - Deployable to with Hyperledger Besu private network
+    - Auth/registration mechanism with Blockstack or Uport
+    - State Machine
+    - Functionality to kill (self-destruct the contract) - when all funds have been retired by winners (automatic or by admin)
+
+    Nice-to-have:
+    - Complex voting mechanism based on criterias and point summation
+    - Sponsor entities that provide the funding
+    - Participation feee from hackers
+ */
+
+/// @author Alan Arvelo
+contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
+    using SafeMath for uint256;
+    using SafeMath for uint128;
+
+    uint256 public DHID;
+    string public name;
+    address public admin;
+    uint256 public prize;
+    uint256 public createdOn;
+
+    /// Tracks the participant's project location, votes, and prize retrieval
+    struct Project {
+        string url;
+        uint128 votes;
+        bool withdrewPrize;
+    }
+    mapping (address => Project) private projects;
+
+    /// It can occur that not all Judges submit a vote in the InVoting period
+    uint128 private numJudgesWhoVoted;
+    /// Prevent double voting
+    mapping (address => bool) judgeVoted;
+
+    event LogFundingReceived(address _sponsor, uint256 _amount);
+    event LogProjectSubmitted(address _participant, string _url);
+    event LogVoteSubmitted(address _judge, address _elected);
+    event LogPrizeWithdrawn(address _participant, uint256 _amount);
+
+    modifier onlyAdmin() {
+        require(isAdmin(msg.sender), "The `msg.sender` is not the admin");
+        _;
+    }
+
+    constructor (uint256 _DHID, string memory _name, address _admin, uint256 _prize, uint256 _createdOn) public {
+        DHID = _DHID;
+        name = _name;
+        admin = _admin;
+        prize = _prize.mul(1 ether);
+        createdOn = _createdOn;
+
+        state = DHState.InPreparation;
+        emit LogDHInPreparation(DHID, name, prize);
+    }
+
+    /**
+     * @return true if parameter account is the admin
+     */
+    function isAdmin(address _account)
+        public
+        view
+        returns(bool)
+    {
+        return _account == admin;
+    }
+
+    /**
+     * @notice Anyone can contribute funds to the prize
+     * @notice Only during InPreparation state.
+     * @dev TO-DO: create a Sponsor Role and add related functionality
+     */
+    function submitFunds()
+        public
+        payable
+    {
+        emit LogFundingReceived(msg.sender, msg.value);
+    }
+
+    /**
+     * @notice Admin can open the DHackathon
+     * @notice Only if enough funds have been received to meet the promised prize
+     * @notice Admin can submit funds right before Opening the DHackathon
+     * @dev TO-DO: require a min number of participants & judges to be enrolled
+     */
+    function openDHackathon()
+        external
+        payable
+        onlyAdmin()
+    {
+        if (msg.value > 0) emit LogFundingReceived(msg.sender, msg.value);
+        require(address(this).balance >= prize, "Funds for prize must be in contract to start DHackathon");
+        _openDHackathon(DHID, name, prize);
+    }
+
+    /**
+     * @notice Admin can set the DHackathon to the InVoting state
+     * @notice Projects can no longer be submitted
+     */
+    function toVotingDHackathon()
+        external
+        onlyAdmin()
+    {
+        _toVotingDHackathon(DHID, name, prize);
+    }
+
+    /**
+     * @notice Admin can close the voting period and Close the DHackathon
+     * @notice Votes can no longer be submitted, winners can withdraw their piece of the prize
+     */
+    function closeDHackathon()
+        external
+        onlyAdmin()
+    {
+        _closeDHackathon(DHID, name, prize);
+    }
+
+    /*************************************** Judge ******************************************/
+
+    /**
+     * @notice Gives an account the role of Judge
+     * @notice Only Admin and only in the Preparation state an account
+     * @dev TO-DO: allow for admin-defined max or min number of judges
+     * @param _account cannot be a participant or the admin
+     */
+    function addJudge(address _account)
+        public
+        onlyAdmin()
+        isInPreparation()
+    {
+        require(!isParticipant(_account), "Proposed judge can't be a Participant");
+        require(!isAdmin(_account), "Proposed judge can't be the Admin");
+        _addJudge(_account);
+    }
+
+    /**
+     * @notice Removes the role of Judge from an account
+     * @notice Only the Admin, can do it at any state
+     * @param _account needs to be a Judge
+     */
+    function removeJudge(address _account)
+        public
+        onlyAdmin()
+    {
+        require(isJudge(_account), "`account` is not a Judge");
+        _removeJudge(_account);
+    }
+
+    /**
+     * @notice Judges can submit their elected winner, prize is divided by number of voting judges, in equal parts
+     * @notice An address among the participants. A Judge can only vote once
+     * @notice When state is Ended, submissions are no longer accepted
+     * @dev TO-DO: add a more sophisticated voting mechanism, with criterias and tiers
+     */
+    function submitVote(address _electedWinner)
+        public
+        onlyJudge()
+        isInVoting()
+    {
+        /// Make sure the Judge has not voted, and elects a valid winner
+        require(!judgeVoted[msg.sender], "Judge has already voted");
+        require(isParticipant(_electedWinner), "The elected winner is not a Participant");
+        require(keccak256(bytes(projects[_electedWinner].url)) != keccak256(bytes("")), "Participant did not submit Project");
+        judgeVoted[msg.sender] = true;
+        /// Give the vote to the participant and increase vote count
+        numJudgesWhoVoted += 1;
+        projects[_electedWinner].votes += 1;
+        emit LogVoteSubmitted(msg.sender, _electedWinner);
+    }
+
+    /*************************************** Participant ******************************************/
+
+    /**
+     * @notice Anyone can register itself as Participant
+     * @notice Expect Judges and the Admin
+     * @dev TO-DO: allow registration to involve being pre-approved or paying a fee
+     * @dev TO-DO: allow participants to form teams
+     */
+    function registerAsParticipant()
+        public
+        isInPreparation()
+    {
+        require(!isJudge(msg.sender), "A Judge can't register as a Participant");
+        require(!isAdmin(msg.sender), "The Admin can't register as a Participant");
+        _addParticipant(msg.sender);
+    }
+
+    /**
+     * @notice Any Participant can deregister itself
+     */
+    function deregisterAsParticipant()
+        public
+        onlyParticipant()
+    {
+        _removeParticipant(msg.sender);
+    }
+
+    /**
+     * @notice Admin can remove participant
+     * @param _account needs to be a Participant
+     */
+    function removeParticipant(address _account)
+        public
+        onlyAdmin()
+    {
+        require(isParticipant(_account), "`account` is not a Participant");
+        _removeParticipant(_account);
+    }
+
+    /**
+     * @notice Participants can submit their projects (likely github url)
+     * @notice Submission accepted when state is Open, and before it is Ended
+     * @notice Re-submissions also accepted
+     * @dev TO-DO: add a more sophisticated project submission mechanism and allow to submit more data
+     */
+    function submitProject(string memory _url)
+        public
+        onlyParticipant()
+        isOpen()
+    {
+        projects[msg.sender].url = _url;
+        emit LogProjectSubmitted(msg.sender, _url);
+    }
+
+    /**
+     * @notice Participants can view their submission object / project info
+     * @notice Their submitted url, votes received, and if they have withdrawn their funds
+     */
+    function viewProject()
+        public
+        view
+        onlyParticipant()
+        returns (string memory, uint128, bool)
+    {
+        Project memory p = projects[msg.sender];
+        return (p.url, p.votes, p.withdrewPrize);
+    }
+
+    /**
+     * @notice Each participant who received a vote is entitled to a piece of the prize
+     * @notice The prize is divided by the number of proposed winners by the judges
+     */
+    function withdrawPrize()
+        public
+        onlyParticipant()
+        isClosed()
+    {
+        /// Check the "winner" has not already withdrawn funds, and is actually a winner
+        require(!projects[msg.sender].withdrewPrize, "You already withdrew your funds");
+        require(projects[msg.sender].votes > 0, "Your project received 0 votes from the Judges");
+        Project storage winner = projects[msg.sender];
+        /// Calculate and send his part of the prize
+        uint256 amount = winner.votes.mul(address(this).balance.div(numJudgesWhoVoted));
+        winner.withdrewPrize = true;
+        msg.sender.transfer(amount);
+        emit LogPrizeWithdrawn(msg.sender, amount);
+    }
+
+}
