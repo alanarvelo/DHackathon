@@ -1,7 +1,7 @@
 import React from 'react'
-import TextButton from './TextButton';
-import { Flex, Box, Heading } from 'rimble-ui';
-import { EventActions } from 'drizzle'
+import TextButton from './TextButton'
+import { Flex, Box, Heading } from 'rimble-ui'
+import { BN } from 'bn.js'
 
 // Account 16
 // 0xe27d5e15d40963ccf2e33a8ba6992b36d456231b
@@ -42,6 +42,7 @@ export default class FactoryState extends React.Component {
     this.trackActiveAccount(this.props.drizzleState.accounts[0]);
     console.log("initial account form drizzle: ", this.props.drizzleState.accounts[0]);
     this.listenToActiveAccountUpdates();
+    console.log(new BN('2'));
   }
 
   // checks if the active accounts belogs to the contract owner
@@ -62,8 +63,17 @@ export default class FactoryState extends React.Component {
 
   shutdownContract = () => {
     const DHFContract = this.props.drizzle.contracts.DHackathonFactory;
-    // this.props.drizzle.contracts.DHackathonFactory.methods.emitAnEvent().send({from: "0xe27d5e15d40963ccf2e33a8ba6992b36d456231b"})
-    let tx = DHFContract.methods["emitAnEvent"].cacheSend({from: this.activeAccount}) // {from:"0xFE3B557E8Fb62b89F4916B721be55cEb828dBd73"}
+    DHFContract.methods["shutdown"].cacheSend({from: this.activeAccount, gasLimit:22000})
+  }
+
+  // shutdownContract = () => {
+  //   const DHFContract = this.props.drizzle.contracts.DHackathonFactory;
+  //   DHFContract.methods["withdrawFunds"].cacheSend({from: this.activeAccount})
+  // }
+
+  createDHackathon = () => {
+    const DHFContract = this.props.drizzle.contracts.DHackathonFactory;
+    let tx = DHFContract.methods["createDHackathon"].cacheSend("test", "3", {from: this.activeAccount, value: "0.1"})
   }
 
 
@@ -90,10 +100,26 @@ export default class FactoryState extends React.Component {
             { counter && counter.value }
           </strong>
         </Box>
-        <Box p={3} width={1/3} >
-          <TextButton text={"Pause Factory"} onClick={this.shutdownContract} disabled={!this.state.isOwner} /> 
-        </Box>
+        { this.state.isOwner ? (
+          <Box p={1} width={1/3} >
+            <TextButton text={"Pause Factory"} onClick={this.shutdownContract} disabled={!this.state.isOwner} size='small' variant='danger' style={{'fontSize': 10, 'height': '2rem', 'margin':5}} />
+            {/* <TextButton text={"Withdraw Funds"} onClick={this.shutdownContract} disabled={!this.state.isOwner} size='small' variant='danger' style={{'fontSize': 10, 'height': '2rem'}} />  */}
+          </Box> 
+        ) : (
+          <Box p={1} width={1/3} >
+            <TextButton text={"Create DHackathon"} onClick={this.createDHackathon} style={{'margin':10}} /> 
+          </Box>
+        )}
       </Flex>
     )
   }
 }
+
+// buttons: {
+//   fontSize: 16,
+//   borderRadius: 4,
+//   borderWidth: 0.5,
+//   borderColor: color.red,
+//   padding: 5,
+//   margin:20,
+// },
