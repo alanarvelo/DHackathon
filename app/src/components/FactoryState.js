@@ -63,7 +63,7 @@ export default class FactoryState extends React.Component {
 
   shutdownContract = () => {
     const DHFContract = this.props.drizzle.contracts.DHackathonFactory;
-    DHFContract.methods["shutdown"].cacheSend({from: this.activeAccount, gasLimit:22000})
+    let tx = DHFContract.methods["shutdown"].cacheSend({from: this.activeAccount, gasLimit:22000})
   }
 
   // shutdownContract = () => {
@@ -73,7 +73,7 @@ export default class FactoryState extends React.Component {
 
   createDHackathon = () => {
     const DHFContract = this.props.drizzle.contracts.DHackathonFactory;
-    let tx = DHFContract.methods["createDHackathon"].cacheSend("test", "3", {from: this.activeAccount, value: "0.1"})
+    let tx = DHFContract.methods["createDHackathon"].cacheSend("test", "3", {from: this.activeAccount, value: new BN('1'), gasLimit:22000})
   }
 
 
