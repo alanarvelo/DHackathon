@@ -6,7 +6,7 @@ import DHackathonFactory from "./contracts/DHackathonFactory.json";
 const options = {
   web3: {
     block: false,
-    customProvider: new Web3("ws://localhost:8545"),
+    customProvider: new Web3("HTTP://127.0.0.1:7545"),
   },
   contracts: [SimpleStorage, DHackathonFactory],
   events: {

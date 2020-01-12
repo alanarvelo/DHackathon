@@ -19,7 +19,7 @@ import { BN } from 'bn.js'
 export default class FactoryState extends React.Component {
   constructor(props) {
     super(props)
-    this.owner = "0xe27d5e15d40963ccf2e33a8ba6992b36d456231b";
+    this.owner = "" //"0x07A8646fdEc5BFa397Bb1c1879217Fca734F41Fb";
     this.activeAccount = "";
     this.state = {
       operationalKey: null,
@@ -73,7 +73,7 @@ export default class FactoryState extends React.Component {
 
   createDHackathon = () => {
     const DHFContract = this.props.drizzle.contracts.DHackathonFactory;
-    let tx = DHFContract.methods["createDHackathon"].cacheSend("test", "3", {from: this.activeAccount, value: new BN('1'), gasLimit:22000})
+    let tx = DHFContract.methods["createDHackathon"].cacheSend("test", "3")
   }
 
 
@@ -82,6 +82,7 @@ export default class FactoryState extends React.Component {
     console.log("DHFState: ", DHFState)
     const operational = DHFState.operational[this.state.operationalKey]
     const counter = DHFState.counter[this.state.counterKey]
+    console.log(this.activeAccount)
 
     return (
       <Flex>

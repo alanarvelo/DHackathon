@@ -8,6 +8,10 @@ module.exports = {
     develop: {
       port: 8545,
       network: '*'
+    },
+    ganache: {
+      port: 7545,
+      network_id: '*'
     }
   },
   compilers: {
