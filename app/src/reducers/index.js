@@ -1,7 +1,9 @@
 import activeEOA from './activeEOA'
+import DrizzleObj from './drizzleObj'
 
 const appReducers = {
-  activeEOA
+  activeEOA,
+  DrizzleObj: DrizzleObj
 }
 
 export default appReducers;

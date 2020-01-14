@@ -11,24 +11,19 @@ import DHackathon from './DHackathon'
 // TO-DO: create POP-UP for when transaction succeeds and fails
 
 export default class DHackathonList extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-    }
-  }
+  // constructor(props) {
+  //   super(props)
+  //   this.state = {
+  //   }
+  // }
 
   componentDidMount() {
-    const DHContract = this.props.drizzle.contracts.DHackathon;
-    // get and save the keys to retrieve operational and counter from the store (drizzleState)
-    // console.log("DH Contract: ", DHContract)
-    console.log("UNDER INSPECTION: ", Object.keys(this.props.drizzleState.contracts).filter(contractName => contractName !== "DHackathonFactory" && contractName !== "SimpleStorage"))
   }
 
   render() {
-    const DHContract = this.props.drizzle.contracts.DHackathon;
-    const DHState = this.props.drizzleState.contracts.DHackathon;
     let DHList = Object.keys(this.props.drizzleState.contracts)
                     .filter(contractName => contractName !== "DHackathonFactory" && contractName !== "SimpleStorage")
+    console.log("DHLIST: ", DHList, this.props.drizzle, this.props.drizzleState)
 
     return (
       <Flex style={{flex: 1, flexDirection: 'column'}}>

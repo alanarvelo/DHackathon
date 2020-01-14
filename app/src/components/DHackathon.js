@@ -22,16 +22,18 @@ export default class DHackathon extends React.Component {
   }
 
   componentDidMount() {
-    const DHContract = this.props.DHContract;
-    // get and save the keys to retrieve operational and counter from the store (drizzleState)
-    let nameKey = DHContract.methods["name"].cacheCall();
-    let DHIDKey = DHContract.methods["DHID"].cacheCall();
-    let adminKey = DHContract.methods["admin"].cacheCall();
-    let prizeKey = DHContract.methods["prize"].cacheCall();
-    let createdOnKey = DHContract.methods["createdOn"].cacheCall();
-    console.log("DHContract Contract: ", DHContract)
+      if (this.props.DHContract) {
+      const DHContract = this.props.DHContract;
+      // get and save the keys to retrieve operational and counter from the store (drizzleState)
+      let nameKey = DHContract.methods["name"].cacheCall();
+      let DHIDKey = DHContract.methods["DHID"].cacheCall();
+      let adminKey = DHContract.methods["admin"].cacheCall();
+      let prizeKey = DHContract.methods["prize"].cacheCall();
+      let createdOnKey = DHContract.methods["createdOn"].cacheCall();
+      console.log("DHContract Contract: ", DHContract)
 
-    this.setState({ nameKey, DHIDKey, adminKey, prizeKey, createdOnKey });
+      this.setState({ nameKey, DHIDKey, adminKey, prizeKey, createdOnKey });
+    }
   }
 
   mouseEnter = () => {
@@ -50,6 +52,7 @@ export default class DHackathon extends React.Component {
     const createdOn = DHState.createdOn[this.state.createdOnKey]
     // console.log("DHState: ", DHState)
     let color = this.state.isMouseInside ? '#2e7e98' : '#add8e6'
+    console.log("AT DHACKATHONS: ", this.props)
 
 
     return (
