@@ -1,46 +1,35 @@
 
 import React from "react";
-import { DrizzleContext } from "drizzle-react";
-import FactoryState from './FactoryState';
-import { BaseStyles, Box, Heading } from 'rimble-ui';
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { setActiveEOA } from "../actions/activeEOA"
+import FactoryContract from "./FactoryContract"
+import DHackathonList from './DHackathonList.js'
 
-export default () => (
-  <DrizzleContext.Consumer>
-    {drizzleContext => {
-      const { drizzle, drizzleState, initialized } = drizzleContext;
-      // console.log("drizzle: ", drizzle)
-      // console.log("drizzleState: ", drizzleState)
 
-      if (!initialized) {
-        return "Loading...";
-      }
-      
-      return (
-        <BaseStyles style={{textAlign: 'center'}}>
-          <Box m={4}>
-            <Heading mb={2}>Welcome to Decentralized Hackathons!</Heading>
-            <div className="App">
-              <ToastContainer />
-            </div>
-            <div className="section">
-              <FactoryState drizzle={drizzle} drizzleState={drizzleState} />
-            </div>
-          </Box>
-        </BaseStyles>
-      )
-    }}
-  </DrizzleContext.Consumer>
-)
+export default class Container extends React.Component {
+  // set and track the active account in MetaMask
+  componentDidMount() {
+    this.props.drizzle.store.dispatch(setActiveEOA(this.props.drizzleState.accounts[0]))
+    this.listenToActiveAccountUpdates();
+  }
 
-// const mapStateToProps = state => {
-//   return {
-//     accounts: state.accounts,
-//     SimpleStorage: state.contracts.SimpleStorage,
-//     DHackathonFactory: state.contracts.DHackathonFactory,
-//     drizzleStatus: state.drizzleStatus,
-//   };
-// };
-// export default drizzleConnect(MyComponent, mapStateToProps);
+  // listens for updates on the MetaMask active account. Beware: this is a MetaMask beta feature
+  listenToActiveAccountUpdates() {
+    this.props.drizzle.web3.currentProvider.publicConfigStore.on('update', ({ selectedAddress }) => {
+      this.props.drizzle.store.dispatch(setActiveEOA(selectedAddress))
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <div className="section">
+          <FactoryContract drizzle={this.props.drizzle} drizzleState={this.props.drizzleState} />
+        </div>
+        <div className="section">
+          <DHackathonList drizzle={this.props.drizzle} drizzleState={this.props.drizzleState}  />
+        </div>
+      </div>
+    )
+  }
+}
 
