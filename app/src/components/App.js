@@ -5,8 +5,8 @@ import "../App.css";
 import drizzleOptions from "../drizzleOptions";
 import appMiddlewares from "../middleware/index.js";
 import appReducers from "../reducers/index.js";
-import { Drizzle, generateStore } from "drizzle";
-import { DrizzleContext } from "drizzle-react";
+import { Drizzle, generateStore } from "@drizzle/store";
+import { DrizzleContext } from "@drizzle/react-plugin";
 
 import 'react-toastify/dist/ReactToastify.css'
 import { BaseStyles, Box, Heading } from 'rimble-ui';

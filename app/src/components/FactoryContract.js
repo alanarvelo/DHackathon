@@ -4,8 +4,6 @@ import { Flex, Box, Heading } from 'rimble-ui'
 import { BN } from 'bn.js'
 import Web3 from "web3";
 import DHackathon from "../contracts/DHackathon.json";
-import { addDrizzleObj } from "../actions/drizzleObj"
-
 
 // TO-DO: create POP-UP for when transaction succeeds and fails
 
@@ -41,8 +39,6 @@ export default class FactoryContract extends React.Component {
     if (this.props.drizzleState.drizzleStatus.initialized) {
       const DHFContract = this.props.drizzle.contracts.DHackathonFactory;
       let tx = DHFContract.methods["createDHackathon"].cacheSend("test", "3", {from: this.props.drizzleState.activeEOA.account, value: Web3.utils.toWei('.11', 'ether')})
-
-      this.props.drizzle.store.dispatch(addDrizzleObj(this.props.drizzle))
     }
   }
 

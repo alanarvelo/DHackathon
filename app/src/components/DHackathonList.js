@@ -23,7 +23,7 @@ export default class DHackathonList extends React.Component {
   render() {
     let DHList = Object.keys(this.props.drizzleState.contracts)
                     .filter(contractName => contractName !== "DHackathonFactory" && contractName !== "SimpleStorage")
-    console.log("DHLIST: ", DHList, this.props.drizzle, this.props.drizzleState)
+    // console.log("DHLIST: ", DHList, this.props.drizzle, this.props.drizzleState)
 
     return (
       <Flex style={{flex: 1, flexDirection: 'column'}}>

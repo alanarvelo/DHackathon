@@ -6,7 +6,7 @@ import DHackathon from "./contracts/DHackathon.json";
 const options = {
   web3: {
     block: false,
-    customProvider: new Web3("HTTP://127.0.0.1:8545"),
+    // customProvider: new Web3("HTTP://127.0.0.1:9545"),
   },
   contracts: [SimpleStorage, DHackathonFactory, DHackathon],
   events: {

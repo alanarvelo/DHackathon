@@ -1,7 +1,8 @@
-import { EventActions } from 'drizzle'
+import { EventActions } from '@drizzle/store'
 import { toast } from 'react-toastify'
 import logger from './logger'
 import DHackathon from "../contracts/DHackathon.json";
+import Web3 from "web3";
 
 
 const contractEventNotifier = store => next => action => {
@@ -18,15 +19,18 @@ const contractEventNotifier = store => next => action => {
     if (action.event.event === "DHackathonCreated") {
       let { _DHID, _contractAddress } = action.event.returnValues;
       let contractName = `DH${_DHID}`
-      let state = store.getState()
-      let drizzle = state['DrizzleObj']['drizzle']
-
-      let web3Contract = new drizzle.web3.eth.Contract(DHackathon['abi'], _contractAddress)
-      let contractConfig = { contractName, web3Contract}
-      
-      let events = ['LogFundingReceived']
-      
-      store.dispatch({type: 'ADD_CONTRACT', drizzle, contractConfig, events})
+      let currentContracts = store.getState()['contracts']
+      if (!Object.keys(currentContracts).includes(contractName)) {
+        let web3 = new Web3()
+        let web3Contract = new web3.eth.Contract(DHackathon['abi'], _contractAddress)
+        let contractConfig = { contractName, web3Contract}
+        let events = ['LogFundingReceived']
+    //     LogProjectSubmitted(address _participant, string _url);
+    // event LogVoteSubmitted(address _judge, address _elected);
+    // event LogPrizeWithdrawn(address _participant, uint256 _amount);
+        
+        store.dispatch({type: 'ADD_CONTRACT', contractConfig, events })
+      }
     }
 
   }

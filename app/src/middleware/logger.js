@@ -1,4 +1,4 @@
-import { EventActions } from 'drizzle'
+import { EventActions } from '@drizzle/store'
 
 const logger = (store) => (next) => (action) => {
     console.group("ACTION " + action.type)
