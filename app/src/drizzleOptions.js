@@ -6,11 +6,13 @@ import DHackathon from "./contracts/DHackathon.json";
 const options = {
   web3: {
     block: false,
-    // customProvider: new Web3("HTTP://127.0.0.1:9545"),
+    currentProvider: new Web3("HTTP://127.0.0.1:9545"), // new Web3.providers.HttpProvider('http://localhost:9545')
+    // customProvider: new Web3.providers.HttpProvider('http://localhost:9545'),
+    // defaultProvider: new Web3("HTTP://127.0.0.1:9545")
   },
-  contracts: [SimpleStorage, DHackathonFactory, DHackathon],
+  contracts: [DHackathonFactory, DHackathon],
   events: {
-    SimpleStorage: ["StorageSet"],
+    // SimpleStorage: ["StorageSet"],
     DHackathonFactory: ["DHackathonCreated", "FundsWithdrawn", "OwnershipTransferred"],
   },
   // polls: {

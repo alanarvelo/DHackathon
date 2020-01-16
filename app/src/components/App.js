@@ -1,52 +1,43 @@
 import React, { Component } from "react";
-import Container from "./Container";
 import "../App.css";
 
-import drizzleOptions from "../drizzleOptions";
-import appMiddlewares from "../middleware/index.js";
-import appReducers from "../reducers/index.js";
-import { Drizzle, generateStore } from "@drizzle/store";
-import { DrizzleContext } from "@drizzle/react-plugin";
+import { Route } from 'react-router-dom'
+import { setActiveEOA } from "../actions/activeEOA"
 
 import 'react-toastify/dist/ReactToastify.css'
-import { BaseStyles, Box, Heading } from 'rimble-ui';
+import { BaseStyles, Box } from 'rimble-ui';
 import { ToastContainer } from 'react-toastify'
 
-// Drizzle Instance Set-up
-const drizzleStore = generateStore({drizzleOptions, appReducers, appMiddlewares, disableReduxDevTools: false});
-const drizzle = new Drizzle(drizzleOptions, drizzleStore);
+import Container from "./Container";
+import DHackathon from "./DH/DHackathon";
 
 class App extends Component {
+  // set and track the active account in MetaMask
+  componentDidMount() {
+    this.props.drizzle.store.dispatch(setActiveEOA(this.props.drizzleState.accounts[0]))
+    this.listenToActiveAccountUpdates();
+  }
+
+  // listens for updates on the MetaMask active account. Beware: this is a MetaMask beta feature
+  listenToActiveAccountUpdates() {
+    this.props.drizzle.web3.currentProvider.publicConfigStore.on('update', ({ selectedAddress }) => {
+      this.props.drizzle.store.dispatch(setActiveEOA(selectedAddress))
+    });
+  }
+
   render() {
+    const { drizzle, drizzleState } = this.props
     return (
-      <DrizzleContext.Provider drizzle={drizzle}>
-
-        <DrizzleContext.Consumer>
-          {drizzleContext => {
-            const { drizzle, drizzleState, initialized } = drizzleContext;
-            console.log("drizzle: ", drizzle)
-            console.log("drizzleState: ", drizzleState)
-
-            if (!initialized) {
-              return "Loading...";
-            }
-            
-            return (
-              <BaseStyles style={{textAlign: 'center'}}>
-                <Box m={4}>
-                  <Heading mb={2}>Welcome to Decentralized Hackathons!</Heading>
-                  <div className="App">
-                    <ToastContainer />
-                    <Container drizzle={drizzle} drizzleState={drizzleState} />
-                  </div>
-                </Box>
-              </BaseStyles>
-            )
-          }}
-        </DrizzleContext.Consumer>
-
-      </DrizzleContext.Provider>
-    );
+      <BaseStyles style={{textAlign: 'center'}}>
+        <Box m={4}>
+          <div className="App">
+            <ToastContainer />
+            <Route path='/DH/:DHID' render={(props) => <DHackathon {...props} drizzle={drizzle} drizzleState={drizzleState} /> }/>
+            <Route path='/' exact render={() => <Container drizzle={drizzle} drizzleState={drizzleState} />} />
+          </div>
+        </Box>
+      </BaseStyles>
+    )
   }
 }
 

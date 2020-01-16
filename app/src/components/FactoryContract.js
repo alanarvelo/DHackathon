@@ -1,9 +1,10 @@
 import React from 'react'
-import TextButton from './TextButton'
+import TextButton from './misc/TextButton'
 import { Flex, Box, Heading } from 'rimble-ui'
 import { BN } from 'bn.js'
 import Web3 from "web3";
 import DHackathon from "../contracts/DHackathon.json";
+import Popup from './misc/Popup'
 
 // TO-DO: create POP-UP for when transaction succeeds and fails
 
@@ -13,6 +14,7 @@ export default class FactoryContract extends React.Component {
     this.state = {
       operationalKey: null,
       counterKey: null,
+      showPopup: false, 
     }
   }
 
@@ -35,11 +37,29 @@ export default class FactoryContract extends React.Component {
     let tx = DHFContract.methods["withdrawFunds"].cacheSend({from: this.props.drizzleState.activeEOA.account})
   }
 
-  createDHackathon = async () => {
+  createDHackathon = (name, prize) => {
     if (this.props.drizzleState.drizzleStatus.initialized) {
       const DHFContract = this.props.drizzle.contracts.DHackathonFactory;
-      let tx = DHFContract.methods["createDHackathon"].cacheSend("test", "3", {from: this.props.drizzleState.activeEOA.account, value: Web3.utils.toWei('.11', 'ether')})
+      let tx = DHFContract.methods["createDHackathon"].cacheSend(name, prize, {from: this.props.drizzleState.activeEOA.account, value: Web3.utils.toWei('.11', 'ether')})
+      this.togglePopup()
     }
+  }
+
+  togglePopup = () => {  
+    this.setState({showPopup: !this.state.showPopup }) 
+  }
+
+  addNewContract = () => {
+    let contractName = "New DHackathon"
+    // let web3 = new Web3()
+    let web3Contract = new this.props.drizzle.web3.eth.Contract(DHackathon['abi'], "0xcad8189e9ac902647a1833324109d87918174932") //second argument is new contract's address 
+    console.log("THIS IS THE WEB3 Contract: ", web3Contract)
+    let contractConfig = { contractName, web3Contract }
+    let events = ['LogFundingReceived']
+  
+    // Using the Drizzle context object
+    // this.props.drizzle.addContract(contractConfig, events)
+    this.props.drizzle.store.dispatch({type: 'ADD_CONTRACT', contractConfig, events, web3:this.props.drizzle.web3})
   }
 
   render() {
@@ -72,9 +92,20 @@ export default class FactoryContract extends React.Component {
           </Box> 
         ) : (
           <Box p={1} width={1/3} >
-            <TextButton text={"Create DHackathon"} onClick={this.createDHackathon} style={{'margin':10}} /> 
+            <TextButton text={"Create DHackathon"} onClick={this.togglePopup} style={{'margin':10}} /> 
           </Box>
         )}
+        <div className="section">
+          {/* <h1> Simple Popup Example In React Application </h1>  
+          <button onClick={this.togglePopup}> Click To Launch Popup</button>   */}
+          {this.state.showPopup ?
+          <Popup  
+            text='Create New DHackathon'  
+            submitFn={this.createDHackathon}  
+          />
+          : null  
+          }
+        </div>
       </Flex>
     )
   }

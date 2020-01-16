@@ -20,16 +20,16 @@ const contractEventNotifier = store => next => action => {
       let { _DHID, _contractAddress } = action.event.returnValues;
       let contractName = `DH${_DHID}`
       let currentContracts = store.getState()['contracts']
+      console.log("STATE ON MIDDLEWARE: ", currentContracts.web3)
       if (!Object.keys(currentContracts).includes(contractName)) {
-        let web3 = new Web3()
+        let web3 = new Web3("HTTP://127.0.0.1:9545")
         let web3Contract = new web3.eth.Contract(DHackathon['abi'], _contractAddress)
         let contractConfig = { contractName, web3Contract}
-        let events = ['LogFundingReceived']
-    //     LogProjectSubmitted(address _participant, string _url);
-    // event LogVoteSubmitted(address _judge, address _elected);
-    // event LogPrizeWithdrawn(address _participant, uint256 _amount);
+        let events = ['LogFundingReceived', 'LogProjectSubmitted', 'LogVoteSubmitted', 'LogPrizeWithdrawn',
+                      'LogDHInPreparation', 'LogDHOpen', 'LogDHInVoting', 'LogDHClosed']
         
-        store.dispatch({type: 'ADD_CONTRACT', contractConfig, events })
+        store.dispatch({type: 'ADD_CONTRACT', contractConfig, events})
+        // store.dispatch({type: 'DELETE_CONTRACT', contractName: "SimpleStorage"})
       }
     }
 

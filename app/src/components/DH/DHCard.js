@@ -1,5 +1,5 @@
 import React from 'react'
-import TextButton from './TextButton'
+import TextButton from '../misc/TextButton'
 import { Flex, Box, Heading, justifyContent } from 'rimble-ui'
 import { BN } from 'bn.js'
 import Web3 from "web3";
@@ -16,31 +16,20 @@ export default class DHackathon extends React.Component {
       DHIDKey: null,
       adminKey: null,
       prizeKey: null,
-      createdOnKey: null,
-      isMouseInside: false,
+      createdOnKey: null
     }
   }
 
   componentDidMount() {
-    if (this.props.DHContract) {
-      const DHContract = this.props.DHContract;
-      // get and save the keys to retrieve operational and counter from the store (drizzleState)
-      let nameKey = DHContract.methods["name"].cacheCall();
-      let DHIDKey = DHContract.methods["DHID"].cacheCall();
-      let adminKey = DHContract.methods["admin"].cacheCall();
-      let prizeKey = DHContract.methods["prize"].cacheCall();
-      let createdOnKey = DHContract.methods["createdOn"].cacheCall();
-      // console.log("DHContract Contract: ", DHContract)
+    const DHContract = this.props.DHContract
+    // get and save the keys to retrieve operational and counter from the store (drizzleState)
+    let nameKey = DHContract.methods["name"].cacheCall();
+    let DHIDKey = DHContract.methods["DHID"].cacheCall();
+    let adminKey = DHContract.methods["admin"].cacheCall();
+    let prizeKey = DHContract.methods["prize"].cacheCall();
+    let createdOnKey = DHContract.methods["createdOn"].cacheCall();
 
-      this.setState({ nameKey, DHIDKey, adminKey, prizeKey, createdOnKey });
-    }
-  }
-
-  mouseEnter = () => {
-    this.setState({ isMouseInside: true });
-  }
-  mouseLeave = () => {
-    this.setState({ isMouseInside: false });
+    this.setState({ nameKey, DHIDKey, adminKey, prizeKey, createdOnKey });
   }
 
   render() {
@@ -49,14 +38,12 @@ export default class DHackathon extends React.Component {
     const DHID = DHState.DHID[this.state.DHIDKey]
     const admin = DHState.admin[this.state.adminKey]
     const prize = DHState.prize[this.state.prizeKey]
-    const createdOn = DHState.createdOn[this.state.createdOnKey]
+    let createdOn = DHState.createdOn[this.state.createdOnKey]
     // console.log("DHState: ", DHState)
-    let color = this.state.isMouseInside ? '#2e7e98' : '#add8e6'
-    // console.log("AT DHACKATHONS: ", this.props)
 
 
     return (
-      <Flex style={styles.container} onMouseEnter={this.mouseEnter} onMouseLeave={this.mouseLeave}>
+      <Flex style={styles.container} >
           {/* <Heading as={"h4"} width={1/8}>DHackathon Contract</Heading> */}
           <Box p={1} width={1/8} >
             <span style={{fontSize: 12}} >Name:  </span>
@@ -90,7 +77,7 @@ export default class DHackathon extends React.Component {
             <span style={{fontSize: 12}} >Created On:  </span>
             <strong>
               <br></br>
-              { createdOn && createdOn.value }
+              { createdOn && new Date(parseInt(createdOn.value)*1000).toLocaleDateString("en-US") }
             </strong>
           </Box>
       </Flex>
@@ -102,12 +89,14 @@ const styles = {
   container: {
     backgroundColor: '#add8e6',
     padding: 20,
+    margin:5,
     height: 120,
     borderWidth: 20,
     borderColor: '#982e4b',
     borderRadius: 10,
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    color: 'black'
   },
   row: {
     flex: .8,

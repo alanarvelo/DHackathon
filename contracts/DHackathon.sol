@@ -87,6 +87,7 @@ contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
         public
         payable
     {
+        require(msg.value > 0, "Must send some funds");
         emit LogFundingReceived(msg.sender, msg.value);
     }
 
