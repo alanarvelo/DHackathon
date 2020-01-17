@@ -6,6 +6,7 @@ import Web3 from "web3";
 import { Link } from 'rimble-ui';
 import { Button } from 'rimble-ui';
 import DHCard from './DHCard'
+import Popup from '../misc/Popup'
 
 // TO-DO: create POP-UP for when transaction succeeds and fails
 
@@ -14,25 +15,74 @@ export default class DHackathon extends React.Component {
     super(props)
     this.state = {
       stateKey: null,
-      isAdminKey: null
+      EOARole: null,
+      balance: null,
+      submitFundsPopup: false
     }
     this.DHName = this.props.match.params.DHID
     this.DHstates = ["In Preparation", "Open", "In Voting", "Closed"]
+    this.DHRoles = ["Admin", "Judge", "Participant", "N/A"]
   }
 
   componentDidMount() {
     const DHContract = this.props.drizzle.contracts[this.DHName];
     let stateKey = DHContract.methods["state"].cacheCall();
     console.log("address: ", this.props.drizzleState.activeEOA.account)
-    
     this.setState({ stateKey });
+
+    this.getActiveEOARole(this.props.drizzleState.accounts[0])
+    this.getContractBalance()
+
+    console.log("address in RENDER: ", this.props.drizzleState, this.props.drizzle)
+    this.listenToActiveAccountUpdates()
+  }
+
+  // this.props.drizzle.store.dispatch(setActiveEOA(this.props.drizzleState.accounts[0]))
+  // this.listenToActiveAccountUpdates();
+
+  // listens for updates on the MetaMask active account. Beware: this is a MetaMask beta feature
+  listenToActiveAccountUpdates() {
+    this.props.drizzle.web3.currentProvider.publicConfigStore.on('update', ({ selectedAddress }) => {
+      this.getActiveEOARole(selectedAddress)
+    });
+  }
+
+  async getActiveEOARole(activeEOA) {
+    const DHContract = this.props.drizzle.contracts[this.DHName];
+    console.log("address: ", activeEOA)
+    let isAdmin = await DHContract.methods.isAdmin(activeEOA).call();
+    let isJudge = await DHContract.methods.isJudge(activeEOA).call();
+    let isParticipant = await DHContract.methods.isParticipant(activeEOA).call();
+    if (isAdmin) this.setState({EOARole: 0})
+    else if (isJudge) this.setState({EOARole: 1})
+    else if (isParticipant) this.setState({EOARole: 2})
+    else this.setState({EOARole: 3})
+  }
+
+  async getContractBalance() {
+    const DHContract = this.props.drizzle.contracts[this.DHName];
+    let balance = Web3.utils.fromWei(await this.props.drizzle.web3.eth.getBalance(DHContract.address))
+    // let prize = Web3.utils.fromWei(await DHContract.methods.prize().call())
+    this.setState({balance})
+    console.log("Balance: ", balance)
+  }
+
+  togglePopup = (popupName) => {  
+    this.setState(prevState => ({
+      ...prevState,
+      [popupName]: !prevState[popupName] 
+    }))
   }
 
   // submitFunds, openDHackathon, toVotingDHackathon, closeDHackathon, addJudge, removeJudge, removeParticipant
-  submitFunds = () => {
+  submitFunds = async (argsFromPopup) => {
     const DHContract = this.props.drizzle.contracts[this.DHName];
-    let tx = DHContract.methods["submitFunds"].cacheSend({from: this.props.drizzleState.activeEOA.account, 
-                                                          value: Web3.utils.toWei('3', 'ether')})
+    let { funding } = argsFromPopup
+    console.log("funding: ", funding)
+    DHContract.methods["submitFunds"].cacheSend({from: this.props.drizzleState.activeEOA.account, 
+                                                          value: Web3.utils.toWei(funding, 'ether')})
+    this.togglePopup("submitFundsPopup")
+    // this.getContractBalance()
   }
 
   openDHackathon = () => {
@@ -50,39 +100,38 @@ export default class DHackathon extends React.Component {
     let tx = DHContract.methods["closeDHackathon"].cacheSend({from: this.props.drizzleState.activeEOA.account})
   }
 
-  async getRole() {
-    const DHContract = this.props.drizzle.contracts[this.DHName];
-    if (this.props.drizzleState.activeEOA.account) {
-      console.log("address: ", this.props.drizzleState.activeEOA.account)
-      let isAdminKey = await DHContract.methods.isAdmin(this.props.drizzleState.activeEOA.account).call();
-      console.log("adminKey - returned: ", isAdminKey)
-    }
-  }
-
   render() {
     // const { drizzle, drizzleState } = this.props
     const DHContract = this.props.drizzle.contracts[this.DHName]
     const DHState = this.props.drizzleState.contracts[this.DHName]
 
-    const state = DHState.state[this.state.stateKey]
-    // const isAdmin = DHState.isAdmin[this.state.isAdminKey]
-    // console.log(DHContract, DHState)//, isAdmin)
-    console.log("address in RENDER: ", this.props.drizzleState)
-    this.getRole()
+    let state = DHState.state[this.state.stateKey]
+    state = state ? parseInt(state.value) : null
+    const { EOARole, balance } = this.state
+    // this.getContractBalance()
+    console.log(EOARole, state)
 
     return (
       <div>
         <Heading mb={2}>{`DHackathon ${this.DHName}`}</Heading>
-        <Heading  mb={2} as={"h3"}>{`State: ${state ? this.DHstates[state.value] : "-"}`}</Heading>
+        <Heading  mb={2} as={"h4"}>{`State: ${state != null ? this.DHstates[state] : "-"}`}</Heading>
+        <Heading  mb={2} as={"h4"}>{`Balance: ${balance ? balance : "-"} ETH`}</Heading>
+        <Heading  mb={2} as={"h4"}>{`Active account's role: ${EOARole != null ? this.DHRoles[EOARole] : "-"}`}</Heading>
+
         <Flex style={styles.container}>
           <DHCard DHContract={DHContract} DHState={DHState} />
 
-          <Heading as={"h2"}>Admin Panel</Heading>
           <Box p={1} width={1} style={styles.box} >
-            <TextButton text={"Submit Funds for Prize"} onClick={this.submitFunds} size="small" style={{'margin':10, fontSize: 10}} />
-            <TextButton text={"Open DHackathon"} onClick={this.openDHackathon} size="small" variant="danger" style={{'margin':10, fontSize: 10}} />
-            <TextButton text={"To Voting State"} onClick={this.toVotingDHackathon} size="small" variant="danger" style={{'margin':10, fontSize: 10}} />
-            <TextButton text={"Close DHackathon"} onClick={this.closeDHackathon} size="small" variant="danger" style={{'margin':10, fontSize: 10}} />
+            <TextButton text={"Submit Funds for Prize"} onClick={() => this.togglePopup("submitFundsPopup")} size="small" style={{'margin':10, fontSize: 10}} />
+          </Box>
+
+          <Heading as={"h2"}>Admin Panel</Heading>
+          <span>Contract balance must be equal or greater than Prize for DHackathon to open</span>
+          <span>DHackathon state changes are irrevercible</span>
+          <Box p={1} width={1} style={styles.box} >
+            <TextButton text={"Open DHackathon"} onClick={this.openDHackathon} size="small" variant="danger" disabled={EOARole === 0 && state === 0 ? false : true} style={{'margin':10, fontSize: 10}} />
+            <TextButton text={"To Voting State"} onClick={this.toVotingDHackathon} size="small" variant="danger" disabled={EOARole === 0 && state === 1 ? false : true} style={{'margin':10, fontSize: 10}} />
+            <TextButton text={"Close DHackathon"} onClick={this.closeDHackathon} size="small" variant="danger" disabled={EOARole === 0 && state === 2 ? false : true} style={{'margin':10, fontSize: 10}} />
 
           </Box>
 
@@ -95,6 +144,16 @@ export default class DHackathon extends React.Component {
 
 
         </Flex>
+        <div className="section">
+          {this.state.submitFundsPopup ?
+            <Popup
+              text='Fund DHackathon Prize'
+              submitFn={this.submitFunds}
+              inputsConfig={[ {displayName: 'Funds in ETH: ', name: "funding", type: "number", placeholder: "e.g. 3.00"} ]}
+            />
+            : null  
+          }
+        </div>
       </div>
     )
   }

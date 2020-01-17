@@ -60,7 +60,7 @@ contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
         DHID = _DHID;
         name = _name;
         admin = _admin;
-        prize = _prize.mul(1 ether);
+        prize = _prize;
         createdOn = _createdOn;
 
         state = DHState.InPreparation;

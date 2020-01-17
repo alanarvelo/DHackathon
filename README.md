@@ -45,6 +45,15 @@ To Remember:
   - Sponsors
   - Separate to new test file the state set-up functions
 
+To Publish:
+  - UML of process, stages, actors and functions
+  - Instruction page with UML and caveats, exceptions, requires
+  - Host project
+  - Medium Post
+  - Youtube video usage
+  - Post on reddit, product hunt, etc
+  - email companies about engagement / job opps
+
 
 Hours:
 3 on Thursday 12th

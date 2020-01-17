@@ -1,6 +1,5 @@
 import React from 'react';
-import TextButton from './TextButton'
-import { Flex, Box, Heading, justifyContent } from 'rimble-ui'
+import { Flex, Box } from 'rimble-ui'
 import { BN } from 'bn.js'
 import Web3 from "web3";
 import { Link } from 'rimble-ui';
@@ -8,49 +7,51 @@ import { Button } from 'rimble-ui';
 import { Input } from 'rimble-ui';
 
 
-class Popup extends React.Component {
+export default class Popup extends React.Component {
   state = {
-    name: "",
-    prize: ""
+  }
+
+  componentDidMount() {
+    this.props.inputsConfig.map( config => {
+      this.setState(prevState => ({
+        ...prevState,
+        [config.name]: null,
+      }))
+    })
   }
 
   handleChange = (e) => {
     const name = e.target.name
     const value = e.target.value
+    console.log("change handled: ", name, value)
     this.setState((prevState) => (
       Object.assign(prevState, {[name]: value})
     ))
   }
 
-  render() {  
-    const { name, prize } = this.state
+  render() {
     return (  
       <Flex style={styles.popup}>  
         <div style={styles.popup_inner}>  
           <h2 style={styles.items} >{this.props.text}</h2>
-          <Box>
-            <span>Name: </span>
-            <Input
-              name="name"
-              type="text"
-              required={true}
-              placeholder="e.g. Security Contest"
-              value={name}
-              onChange={this.handleChange}
-            />
-          </Box>
-          <Box>
-            <span>Prize in ETH: </span>
-            <Input 
-              name="prize"
-              type="number" 
-              required={true} 
-              placeholder="3 ETH" 
-              value={prize}
-              onChange={this.handleChange}
-            />
-          </Box>
-          <Button onClick={() => this.props.submitFn(name, prize)} icon="Send" iconpos="right">Submit Tx </Button>  
+            {this.props.inputsConfig.map( config => {
+              return (
+              <Box key={config.name}>
+                <span>{config.displayName} </span>
+                <Input
+                  name={config.name}
+                  type={config.type}
+                  required={true}
+                  placeholder={config.placeholder}
+                  value={this.state[config.name] ? this.state[config.name] : ""}
+                  onChange={this.handleChange}
+                  min="0"
+                  step="0.01"
+                />
+              </Box>)
+              })
+            }
+          <Button onClick={() => this.props.submitFn(this.state) } icon="Send" iconpos="right">Submit Tx </Button>
         </div> 
       </Flex>
     );  
@@ -88,5 +89,3 @@ const styles = {
   },
   items: {}
 }
-
-export default Popup;

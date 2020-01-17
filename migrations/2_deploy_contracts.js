@@ -1,6 +1,8 @@
 const SimpleStorage = artifacts.require("SimpleStorage");
 const DHackathonFactory = artifacts.require("DHackathonFactory");
 const DHackathon = artifacts.require("DHackathon");
+const toWei = web3.utils.toWei;
+
 
 module.exports = async function(deployer) {
   let DHName = 'First DHackathon';
@@ -8,5 +10,5 @@ module.exports = async function(deployer) {
 
   await deployer.deploy(SimpleStorage);
   await deployer.deploy(DHackathonFactory);
-  await deployer.deploy(DHackathon, 0, DHName, ownerAcc, 3, 1579190683);
+  await deployer.deploy(DHackathon, 0, DHName, ownerAcc, toWei("3", "ether"), 1579190683);
 };

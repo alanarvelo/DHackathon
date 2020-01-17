@@ -2,10 +2,6 @@ import React from 'react';
 
 import { Button } from 'rimble-ui';
 
-function logWarning() {
-  console.log("No onClick handler passed")
-}
-
 export default function TextButton ({ text="Submit", onClick=null, disabled=false, size='medium', variant=null, 
                                       icon=null, iconpos=null, style={} }) {
   return (

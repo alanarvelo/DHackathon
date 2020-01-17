@@ -5,7 +5,7 @@ export default function activeEOA (state={}, action) {
     case SET_ACTIVE_EOA :
       return {
         "account": action.account,
-        "isFactoryOwner": action.isFactoryOwner
+        "isFactoryOwner": action.isFactoryOwner,
       }
     default :
       return state
