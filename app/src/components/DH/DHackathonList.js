@@ -27,15 +27,15 @@ export default class DHackathonList extends React.Component {
         <DrizzleContext.Consumer>
           {drizzleContext => {
             const { drizzle, drizzleState, initialized } = drizzleContext;
-            console.log("drizzle: ", drizzle)
+            // console.log("drizzle: ", drizzle)
             // console.log("drizzleState: ", drizzleState)
 
             if (!initialized) {
               return "Loading...";
             }
             let DHList = Object.keys(drizzle.contracts)
-                          .filter(contractName => contractName !== "DHackathonFactory" && contractName !== "SimpleStorage")
-            console.log("DHLIST: ", DHList, drizzle, drizzleState)
+                          .filter(contractName => contractName !== "DHackathonFactory")
+            // console.log("DHLIST: ", DHList, drizzle, drizzleState)
             
             return (
               <Flex style={{flex: 1, flexDirection: 'column'}}>

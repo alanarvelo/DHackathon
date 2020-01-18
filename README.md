@@ -15,7 +15,9 @@ Dillinger is a cloud-enabled, mobile-ready, offline-storage, AngularJS powered H
 # design_pattern_decisions.md!
 
   - using SafeMath for uint256 from OpenZeppelin
-  - 
+  - circuit breaker
+  - role pattern library open zepelin
+  - state patterns isClosed
 
 
 # called avoiding_common_attacks.md!
@@ -45,6 +47,16 @@ To Remember:
   - Sponsors
   - Separate to new test file the state set-up functions
 
+
+  - Update Balance display after submitFunds runs
+  - Contract Balance display also for Factory Contract
+  - Not found DH page, reroute or error
+  - Block OpenDHFn if balance not great to Prize
+  - Dont remove Popup until MM has been interacted with
+  - way to click out of pop up, to go back
+  - form validation for EOA for judges, participants, etc
+  - display judges and participants via store-reducer-loop
+
 To Publish:
   - UML of process, stages, actors and functions
   - Instruction page with UML and caveats, exceptions, requires
@@ -53,6 +65,13 @@ To Publish:
   - Youtube video usage
   - Post on reddit, product hunt, etc
   - email companies about engagement / job opps
+
+To Share with Amal:
+  - proper config of web3 when adding new contract
+  - ability to get returned values both via events in middleware or via transaction receipt in State
+  - instant handling of metamask EOA update
+  - Pop-up components for gathering user input
+
 
 
 Hours:

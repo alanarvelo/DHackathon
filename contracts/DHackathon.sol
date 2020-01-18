@@ -270,4 +270,15 @@ contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
         emit LogPrizeWithdrawn(msg.sender, amount);
     }
 
+    /**
+     * @notice Utility fn thats returns contract balance
+     */
+    function balance()
+        public
+        view
+        returns (uint256)
+    {
+        return address(this).balance;
+    }
+
 }

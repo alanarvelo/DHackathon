@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "../App.css";
 
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import { setActiveEOA } from "../actions/activeEOA"
 
 import 'react-toastify/dist/ReactToastify.css'
@@ -32,8 +32,11 @@ class App extends Component {
         <Box m={4}>
           <div className="App">
             <ToastContainer />
-            <Route path='/DH/:DHID' render={(props) => <DHackathon {...props} drizzle={drizzle} drizzleState={drizzleState} /> }/>
-            <Route path='/' exact render={() => <Container drizzle={drizzle} drizzleState={drizzleState} />} />
+            <Switch>
+              <Route path='/DH/:DHID' render={(props) => <DHackathon {...props} drizzle={drizzle} drizzleState={drizzleState} /> }/>
+              <Route path='/' exact render={() => <Container drizzle={drizzle} drizzleState={drizzleState} />} />
+              <Route render={() => <Container drizzle={drizzle} drizzleState={drizzleState} />} />
+            </Switch>
           </div>
         </Box>
       </BaseStyles>

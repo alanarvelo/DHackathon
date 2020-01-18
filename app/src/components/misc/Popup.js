@@ -3,8 +3,7 @@ import { Flex, Box } from 'rimble-ui'
 import { BN } from 'bn.js'
 import Web3 from "web3";
 import { Link } from 'rimble-ui';
-import { Button } from 'rimble-ui';
-import { Input } from 'rimble-ui';
+import { Button, Input, Form } from 'rimble-ui'
 
 
 export default class Popup extends React.Component {
@@ -15,7 +14,7 @@ export default class Popup extends React.Component {
     this.props.inputsConfig.map( config => {
       this.setState(prevState => ({
         ...prevState,
-        [config.name]: null,
+        [config.name]: config.initialValue ? config.initialValue : null,
       }))
     })
   }
@@ -38,6 +37,7 @@ export default class Popup extends React.Component {
               return (
               <Box key={config.name}>
                 <span>{config.displayName} </span>
+                <Form validated={config.validationFn ? config.validationFn : true} >
                 <Input
                   name={config.name}
                   type={config.type}
@@ -46,8 +46,10 @@ export default class Popup extends React.Component {
                   value={this.state[config.name] ? this.state[config.name] : ""}
                   onChange={this.handleChange}
                   min="0"
-                  step="0.01"
+                  step="0.1"
+                  
                 />
+                </Form>
               </Box>)
               })
             }
