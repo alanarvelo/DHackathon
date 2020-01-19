@@ -1,22 +1,37 @@
 import React from 'react';
-import { Flex, Box } from 'rimble-ui'
-import { BN } from 'bn.js'
-import Web3 from "web3";
-import { Link } from 'rimble-ui';
-import { Button, Input, Form } from 'rimble-ui'
+import { Flex, Box, Button, Input, Form, Flash  } from 'rimble-ui'
 
 
 export default class Popup extends React.Component {
-  state = {
+  constructor(props) {
+    super(props);
+    this.state = {}
+    this.setWrapperRef = this.setWrapperRef.bind(this);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
   }
 
   componentDidMount() {
+    document.addEventListener("mousedown", this.handleClickOutside);
     this.props.inputsConfig.map( config => {
       this.setState(prevState => ({
         ...prevState,
         [config.name]: config.initialValue ? config.initialValue : null,
       }))
     })
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
+  }
+
+  setWrapperRef(node) {
+    this.wrapperRef = node;
+  }
+
+  handleClickOutside(event) {
+    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+      this.props.removePopup()
+    }
   }
 
   handleChange = (e) => {
@@ -29,30 +44,31 @@ export default class Popup extends React.Component {
   }
 
   render() {
-    return (  
+    return (
       <Flex style={styles.popup}>  
-        <div style={styles.popup_inner}>  
+      
+        <div style={styles.popup_inner} ref={this.setWrapperRef} >  
           <h2 style={styles.items} >{this.props.text}</h2>
             {this.props.inputsConfig.map( config => {
               return (
-              <Box key={config.name}>
-                <span>{config.displayName} </span>
-                <Form validated={config.validationFn ? config.validationFn : true} >
-                <Input
-                  name={config.name}
-                  type={config.type}
-                  required={true}
-                  placeholder={config.placeholder}
-                  value={this.state[config.name] ? this.state[config.name] : ""}
-                  onChange={this.handleChange}
-                  min="0"
-                  step="0.1"
-                  
-                />
-                </Form>
-              </Box>)
-              })
-            }
+                <Box key={config.name}>
+                  <span>{config.displayName} </span>
+                  <Form validated={config.validationFn ? config.validationFn : true} >
+                    <Input
+                      name={config.name}
+                      type={config.type}
+                      required={true}
+                      placeholder={config.placeholder}
+                      value={this.state[config.name] ? this.state[config.name] : ""}
+                      onChange={this.handleChange}
+                      min="0"
+                      step="0.1"
+                      size="50"
+                    />
+                  </Form>
+                </Box>
+              )
+            })}
           <Button onClick={() => this.props.submitFn(this.state) } icon="Send" iconpos="right">Submit Tx </Button>
         </div> 
       </Flex>

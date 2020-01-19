@@ -2,7 +2,7 @@
 import React from "react";
 import FactoryContract from "./FactoryContract"
 import DHackathonList from './DH/DHackathonList'
-import { Heading } from 'rimble-ui';
+import { Heading, Flash } from 'rimble-ui';
 
 
 export default class Container extends React.Component {
@@ -14,7 +14,7 @@ export default class Container extends React.Component {
           <FactoryContract drizzle={this.props.drizzle} drizzleState={this.props.drizzleState} />
         </div>
         <div className="section">
-          <DHackathonList />  {/*drizzle={this.props.drizzle} drizzleState={this.props.drizzleState}  /> */}
+          <DHackathonList />
         </div>
 
       </div>

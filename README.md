@@ -48,14 +48,25 @@ To Remember:
   - Separate to new test file the state set-up functions
 
 
-  - Update Balance display after submitFunds runs
-  - Contract Balance display also for Factory Contract
-  - Not found DH page, reroute or error
-  - Block OpenDHFn if balance not great to Prize
-  - Dont remove Popup until MM has been interacted with
-  - way to click out of pop up, to go back
-  - form validation for EOA for judges, participants, etc
+  - Update Balance display after submitFunds runs    ----- DONE
+  - Not found DH page, reroute or error    ------- DONE
+  - NavBAr  ------- DONE
+  - Contract Balance display also for Factory Contract, and State, on DHCard  ----- DONE
+  - way to click out of pop up, to go back  ------ DONE
+  - Get events working right and neatly
+  - display more recent DH first  ------- DONE
+
   - display judges and participants via store-reducer-loop
+  
+  - Dont remove pop-up until interaction with MM is achieved, and show loading button
+  - Block OpenDHFn if balance not great to Prize    
+  - form validation for EOA for judges, participants, etc
+  - Allow proper login, MM-enable, with the MM button
+  - After DH creation redirect to new DH page 
+  - make input size variable
+  - Add Loading Container
+  
+  - show projects submitted by whom
 
 To Publish:
   - UML of process, stages, actors and functions

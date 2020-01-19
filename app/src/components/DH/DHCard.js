@@ -1,10 +1,7 @@
 import React from 'react'
 import TextButton from '../misc/TextButton'
-import { Flex, Box, Heading, justifyContent } from 'rimble-ui'
-import { BN } from 'bn.js'
-import Web3 from "web3";
-import { Link } from 'rimble-ui';
-import { Button } from 'rimble-ui';
+import { Flex, Box } from 'rimble-ui'
+import Web3 from "web3"
 
 // TO-DO: create POP-UP for when transaction succeeds and fails
 
@@ -16,8 +13,11 @@ export default class DHackathon extends React.Component {
       DHIDKey: null,
       adminKey: null,
       prizeKey: null,
-      createdOnKey: null
+      createdOnKey: null,
+      stateKey: null,
+      balanceKey: null,
     }
+    this.DHstates = ["In Preparation", "Open", "In Voting", "Closed"]
   }
 
   componentDidMount() {
@@ -28,8 +28,10 @@ export default class DHackathon extends React.Component {
     let adminKey = DHContract.methods["admin"].cacheCall();
     let prizeKey = DHContract.methods["prize"].cacheCall();
     let createdOnKey = DHContract.methods["createdOn"].cacheCall();
+    let stateKey = DHContract.methods["state"].cacheCall();
+    let balanceKey = DHContract.methods["balance"].cacheCall();
 
-    this.setState({ nameKey, DHIDKey, adminKey, prizeKey, createdOnKey });
+    this.setState({ nameKey, DHIDKey, adminKey, prizeKey, createdOnKey, stateKey, balanceKey });
   }
 
   render() {
@@ -38,45 +40,55 @@ export default class DHackathon extends React.Component {
     const DHID = DHState.DHID[this.state.DHIDKey]
     const admin = DHState.admin[this.state.adminKey]
     const prize = DHState.prize[this.state.prizeKey]
-    let createdOn = DHState.createdOn[this.state.createdOnKey]
+    const createdOn = DHState.createdOn[this.state.createdOnKey]
+    const state = DHState.state[this.state.stateKey]
+    let balance = DHState.balance[this.state.balanceKey]
+    balance = balance ? Web3.utils.fromWei(balance.value)  + " eth" : "-"
     // console.log("DHState: ", DHState)
 
 
     return (
       <Flex style={styles.container} >
           {/* <Heading as={"h4"} width={1/8}>DHackathon Contract</Heading> */}
-          <Box p={1} width={1/8} >
+          <Box style={styles.box}  p={1} width={1/10} >
             <span style={{fontSize: 12}} >Name:  </span>
             <strong >
-              <br></br>
               { name && name.value }
             </strong>
           </Box>
-          <Box p={1} width={1/8} >
+          <Box style={styles.box}  p={1} width={1/10} >
             <span style={{fontSize: 12}} >ID:  </span>
             <strong>
-              <br></br>
               { DHID && DHID.value }
             </strong>
           </Box>
-          <Box p={1} width={1/8} >
+          <Box style={styles.box}  p={1} width={2/10} >
             <span style={{fontSize: 12}} >Admin:  </span>
             <strong >
-              <br></br>
               { admin && admin.value.slice(0,4) +'...'+ admin.value.slice(-4) }
             </strong>
           </Box>
-          <Box p={1} width={1/8} >
-            <span style={{fontSize: 12}} >Prize:  </span>
-            <strong>
-              <br></br>
-              { prize && Web3.utils.fromWei(prize.value) + " ETH"}
+          <Box style={styles.box}  p={1} width={2/10} >
+            <span style={{fontSize: 12}} >Stage:  </span>
+            <strong >
+              { state && this.DHstates[state.value] }
             </strong>
           </Box>
-          <Box p={1} width={1/8} >
+          <Box style={styles.box}  p={1} width={1/10} >
+            <span style={{fontSize: 12}} >Balance:  </span>
+            <strong>
+              { balance }
+            </strong>
+          </Box>
+          <Box style={styles.box}  p={1} width={1/10} >
+            <span style={{fontSize: 12}} >Prize:  </span>
+            <strong>
+              { prize && Web3.utils.fromWei(prize.value) + " eth"}
+            </strong>
+          </Box>
+          <Box style={styles.box}  p={1} width={2/10} >
             <span style={{fontSize: 12}} >Created On:  </span>
             <strong>
-              <br></br>
               { createdOn && new Date(parseInt(createdOn.value)*1000).toLocaleDateString("en-US") }
             </strong>
           </Box>
@@ -98,8 +110,10 @@ const styles = {
     justifyContent: 'space-between',
     color: 'black'
   },
-  row: {
-    flex: .8,
+  box: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
     alignItems: 'center'
   }
 

@@ -12,25 +12,16 @@ export default class DHackathon extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      nameKey: null,
       stateKey: null,
       balanceKey: null,
       EOARole: null,
-      popups : {
-        submitFunds: false,
-        addJudge: false,
-        removeJudge: false,
-        removeParticipant: false,
-        registerAsParticipant: false,
-        deregisterAsParticipant: false,
-        submitProject: false,
-        submitVote: false,
-      }
+      activePopup: ""
 
     }
 
     // this.DHContract = this.props.drizzle.contracts[this.DHName];
     this.DHName = this.props.match.params.DHID
-    this.DHstates = ["In Preparation", "Open", "In Voting", "Closed"]
     this.DHRoles = ["Admin", "Judge", "Participant", "N/A"]
     this.DHContract = this.props.drizzle.contracts[this.DHName];
   }
@@ -42,14 +33,14 @@ export default class DHackathon extends React.Component {
       return null
     }
     const DHContract = this.props.drizzle.contracts[this.DHName];
+    let nameKey = DHContract.methods["name"].cacheCall();
     let stateKey = DHContract.methods["state"].cacheCall();
     let balanceKey = DHContract.methods["balance"].cacheCall();
 
-    this.setState({ stateKey, balanceKey });
+    this.setState({ nameKey, stateKey, balanceKey });
 
     this.getActiveEOARole(this.props.drizzleState.accounts[0])
 
-    console.log("address in RENDER: ", this.props.drizzleState, this.props.drizzle)
     this.listenToActiveAccountUpdates()
     
   }
@@ -74,10 +65,7 @@ export default class DHackathon extends React.Component {
   togglePopup = (popupName) => {  
     this.setState(prevState => ({
       ...prevState,
-      "popups": {
-        ...prevState["popups"],
-        [popupName]: !prevState["popups"][popupName] 
-      }
+      "activePopup": popupName
     }))
   }
 
@@ -87,7 +75,7 @@ export default class DHackathon extends React.Component {
   // P: registerAsParticipant, deregisterAsParticipant, submitProject, viewProject, withdrawPrize
   submitFunds = async ({ funding }) => {
     this.DHContract.methods["submitFunds"].cacheSend({from: this.props.drizzleState.activeEOA.account, value: Web3.utils.toWei(funding, 'ether')})
-    this.togglePopup("submitFunds")
+    this.togglePopup("")
   }
 
   /** ******************************************************************* ADMIN Functions *************************************************************** */
@@ -97,42 +85,42 @@ export default class DHackathon extends React.Component {
 
   addJudge = ({ account }) => {
     this.DHContract.methods["addJudge"].cacheSend(account, {from: this.props.drizzleState.activeEOA.account})
-    this.togglePopup("addJudge")
+    this.togglePopup("")
   }
 
   removeJudge = ({ account }) => {
     this.DHContract.methods["removeJudge"].cacheSend(account, {from: this.props.drizzleState.activeEOA.account})
-    this.togglePopup("removeJudge")
+    this.togglePopup("")
   }
 
   removeParticipant = ({ account }) => {
     this.DHContract.methods["removeParticipant"].cacheSend(account, {from: this.props.drizzleState.activeEOA.account})
-    this.togglePopup("removeParticipant")
+    this.togglePopup("")
   }
 
   /** ******************************************************************* JUDGE Functions *************************************************************** */
   
   submitVote = ({ winner }) => {
     this.DHContract.methods["submitVote"].cacheSend(winner, {from: this.props.drizzleState.activeEOA.account})
-    this.togglePopup("submitVote")
+    this.togglePopup("")
   }
 
 
   /** **************************************************************** PARTICIPANT Functions ************************************************************ */
   registerAsParticipant = ({ account }) => {
     this.DHContract.methods["registerAsParticipant"].cacheSend({from: this.props.drizzleState.activeEOA.account})
-    this.togglePopup("registerAsParticipant")
+    this.togglePopup("")
   }
 
   deregisterAsParticipant = ({ account }) => {
     this.DHContract.methods["deregisterAsParticipant"].cacheSend({from: this.props.drizzleState.activeEOA.account})
-    this.togglePopup("deregisterAsParticipant")
+    this.togglePopup("")
   }
 
   // submitProject, viewProject, withdrawPrize
   submitProject = ({ url }) => {
     this.DHContract.methods["submitProject"].cacheSend(url, {from: this.props.drizzleState.activeEOA.account})
-    this.togglePopup("submitProject")
+    this.togglePopup("")
   }
 
   // viewProject = ({ url }) => {
@@ -146,14 +134,14 @@ export default class DHackathon extends React.Component {
 
   render() {
     if (!Object.keys(this.props.drizzleState.contracts).includes(this.DHName)) {
-      return <Redirect to='/' />
+      return <Redirect to='/404' />
     }
 
     const DHState = this.props.drizzleState.contracts[this.DHName]
-    console.log("drizzle: ", this.props.drizzle)
-    console.log("STATE: ", this.props.drizzleState)
+    // console.log("drizzle: ", this.props.drizzle)
+    // console.log("STATE: ", this.props.drizzleState)
 
-
+    let name = DHState.name[this.state.nameKey]
     let state = DHState.state[this.state.stateKey]
     state = state ? parseInt(state.value) : null
     let balance = DHState.balance[this.state.balanceKey]
@@ -162,10 +150,8 @@ export default class DHackathon extends React.Component {
 
     return (
       <div>
-        <Heading mb={2}>{`DHackathon ${this.DHName}`}</Heading>
-        <Heading  mb={2} as={"h4"}>{`Stage: ${state != null ? this.DHstates[state] : "-"}`}</Heading>
-        <Heading  mb={2} as={"h4"}>{`Balance: ${balance ? balance : "-"} ETH`}</Heading>
-        <Heading  mb={2} as={"h4"}>{`Active account's role: ${EOARole != null ? this.DHRoles[EOARole] : "-"}`}</Heading>
+        <Heading mb={2}>{`${name ? name.value : "-" }`}</Heading>
+        <Heading  mb={2} as={"h5"}>{`Active account's role: ${EOARole != null ? this.DHRoles[EOARole] : "-"}`}</Heading>
 
         <Flex style={styles.container}>
           <DHCard DHContract={this.DHContract} DHState={DHState} />
@@ -223,67 +209,75 @@ export default class DHackathon extends React.Component {
         </Flex>
         {/* Popup Land */}
         <div className="section">
-          {this.state.popups.submitFunds ?
+          {this.state.activePopup === "submitFunds" ?
             <Popup
               text='Fund DHackathon Prize'
               submitFn={this.submitFunds}
               inputsConfig={[ {displayName: 'Funds in ETH: ', name: "funding", type: "number", placeholder: "e.g. 3.00"} ]}
+              removePopup={() => this.togglePopup("")}
             />
             : null  
           }
-          {this.state.popups.addJudge ?
+          {this.state.activePopup === "addJudge" ?
             <Popup
               text='Add a new Judge'
               submitFn={this.addJudge}
               inputsConfig={[ {displayName: 'Account: ', name: "account", type: "text", placeholder: "e.g. 0xAc03BB73b6a9e108530AFf4Df5077c2B3D481e5A"} ]}
+              removePopup={() => this.togglePopup("")}
             />
             : null  
           }
-          {this.state.popups.removeJudge ?
+          {this.state.activePopup === "removeJudge" ?
             <Popup
               text='Remove a current Judge'
               submitFn={this.removeJudge}
               inputsConfig={[ {displayName: 'Account: ', name: "account", type: "text", placeholder: "e.g. 0xAc03BB73b6a9e108530AFf4Df5077c2B3D481e5A"} ]}
+              removePopup={() => this.togglePopup("")}
             />
-            : null  
+            : null
           }
-          {this.state.popups.removeParticipant ?
+          {this.state.activePopup === "removeParticipant" ?
             <Popup
               text='Remove a current Participant'
               submitFn={this.removeParticipant}
               inputsConfig={[ {displayName: 'Account: ', name: "account", type: "text", placeholder: "e.g. 0xAc03BB73b6a9e108530AFf4Df5077c2B3D481e5A"} ]}
+              removePopup={() => this.togglePopup("")}
             />
             : null  
           }
-          {this.state.popups.registerAsParticipant ?
+          {this.state.activePopup === "registerAsParticipant" ?
             <Popup
               text='Register active account as a Participant'
               submitFn={this.registerAsParticipant}
               inputsConfig={[ {displayName: 'Account: ', name: "account", type: "text", placeholder: "e.g. 0xAc03BB73b6a9e108530AFf4Df5077c2B3D481e5A", initialValue: this.props.drizzleState.activeEOA.account} ]}
+              removePopup={() => this.togglePopup("")}
             />
             : null  
           }
-          {this.state.popups.deregisterAsParticipant ?
+          {this.state.activePopup === "deregisterAsParticipant" ?
             <Popup
               text='Deregister active account from Participant role'
               submitFn={this.deregisterAsParticipant}
               inputsConfig={[ {displayName: 'Account: ', name: "account", type: "text", placeholder: "e.g. 0xAc03BB73b6a9e108530AFf4Df5077c2B3D481e5A", initialValue: this.props.drizzleState.activeEOA.account} ]}
+              removePopup={() => this.togglePopup("")}
             />
             : null  
           }
-          {this.state.popups.submitProject ?
+          {this.state.activePopup === "submitProject" ?
             <Popup
               text="Submit project's github url"
               submitFn={this.submitProject}
               inputsConfig={[ {displayName: "Project's github url: ", name: "url", type: "url", placeholder: "e.g. https://github.com/alanarvelo/DHackathon/blob/master/app/src/middleware/index.js"} ]}
+              removePopup={() => this.togglePopup("")}
             />
             : null  
           } 
-          {this.state.popups.submitVote ?
+          {this.state.activePopup === "submitVote" ?
             <Popup
               text="Submit address of proposed winner"
               submitFn={this.submitVote}
               inputsConfig={[ {displayName: "Account: ", name: "winner", type: "text", placeholder: "e.g. 0xAc03BB73b6a9e108530AFf4Df5077c2B3D481e5A"} ]}
+              removePopup={() => this.togglePopup("")}
             />
             : null  
           }

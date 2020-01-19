@@ -3,6 +3,7 @@ import { toast } from 'react-toastify'
 import logger from './logger'
 import DHackathon from "../contracts/DHackathon.json";
 import Web3 from "web3";
+import { ToastMessage } from 'rimble-ui'
 
 const getCorrectWeb3 = () => {
   if (window.ethereum) {
@@ -23,17 +24,23 @@ const contractEventNotifier = store => next => action => {
   if (action.type === EventActions.EVENT_FIRED) {
     console.log("THIS IS THE ACTION: ", action)
     const contract = action.name
-    const contractEvent = action.event.event
-    const message = action.event.returnValues
-    const display = `${contract}(${contractEvent}): ${JSON.stringify(message)}`
-    // console.log("EVENT REDUCER: " + display)
+    let currentContracts = store.getState()['contracts']
+    console.log(currentContracts[contract].events.map(evt => evt.id))
+    window.toastProvider.addMessage(`🚀 Event: ${action.event.event}`, {
+      secondaryMessage: JSON.stringify(action.event.returnValues),
+      variant: "success",
+      colorTheme: "light",
+      my: 1,
+      closeElem: true,
 
-    toast.success(display, { position: toast.POSITION.TOP_RIGHT })
+      // actionHref: "https://etherscan.io/tx/0xcbc921418c360b03b96585ae16f906cbd48c8d6c2cc7b82c6db430390a9fcfed",
+      // actionText: "Check",
+    })
 
     if (action.event.event === "DHackathonCreated") {
       let { _DHID, _contractAddress } = action.event.returnValues;
       let contractName = `DH${_DHID}`
-      let currentContracts = store.getState()['contracts']
+      
       console.log("STATE ON MIDDLEWARE: ", currentContracts.web3)
       if (!Object.keys(currentContracts).includes(contractName)) {
         let web3 = getCorrectWeb3()
@@ -57,7 +64,7 @@ const contractEventNotifier = store => next => action => {
     if (!Object.keys(currentContracts).includes(contractName)) {
       const { ethereum } = window
       let web3 = getCorrectWeb3()
-      let web3Contract = new web3.eth.Contract(DHackathon['abi'], "0xe5810EE875acad0cBAaA001144eB9ddd11aBf8E9")
+      let web3Contract = new web3.eth.Contract(DHackathon['abi'], "0xBa3C31f834FC7f4b282B250331C76F0Ab1e42866")
       let contractConfig = { contractName, web3Contract}
       let events = ['LogFundingReceived', 'LogProjectSubmitted', 'LogVoteSubmitted', 'LogPrizeWithdrawn',
                     'LogDHInPreparation', 'LogDHOpen', 'LogDHInVoting', 'LogDHClosed',

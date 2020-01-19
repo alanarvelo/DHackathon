@@ -41,7 +41,7 @@ export default class FactoryContract extends React.Component {
     // if (this.props.drizzleState.drizzleStatus.initialized) {
       const DHFContract = this.props.drizzle.contracts.DHackathonFactory;
       // let { DHName, prize } = argsFromPopup
-      let createDHackathonTx = DHFContract.methods["createDHackathon"].cacheSend(DHName, Web3.utils.toWei(prize, 'ether'), 
+      DHFContract.methods["createDHackathon"].cacheSend(DHName, Web3.utils.toWei(prize, 'ether'), 
                                           {from: this.props.drizzleState.activeEOA.account, value: Web3.utils.toWei('.1', 'ether')})
       // this.addNewContract()
       // this.setState({ createDHackathonTx })
@@ -94,31 +94,31 @@ export default class FactoryContract extends React.Component {
     // }
 
     return (
-      <Flex style={styleCard}>
-        <Heading>DHackathon Factory</Heading>
-        <Box p={3} width={1/3} >
-          <span>Is Operational:  </span>
+      <Flex style={styles.container}>
+        <Box style={styles.box}   p={3} width={3/10} >
+          <Heading as={"h2"}> DHackathon Factory </Heading>
+        </Box>
+        <Box style={styles.box}   p={3} width={2/10} >
+          <span style={{fontSize: 12}} >Is Operational:  </span>
           <strong>
-            <br></br>
             { operational && JSON.stringify(operational.value) }
           </strong>
         </Box>
-        <Box p={3} width={1/3} >
-          <span>DHackathons Created:  </span>
-          <strong>
-            <br></br>
+        <Box style={styles.box}   p={3} width={2/10} >
+          <span style={{fontSize: 12}} >DHackathons Created:  </span>
+          <strong style={{marginRight: 40}}>
             { counter && counter.value }
           </strong>
         </Box>
         { isOwner ? (
-          <Box p={1} width={1/3} >
+          <Box style={styles.box}   p={1} width={3/10} >
             <TextButton text={ operational && operational.value ? "Pause Factory" : "Resume Factory"} onClick={this.shutdownContract} disabled={!isOwner} size='small' variant='danger' style={{'fontSize': 10, 'height': '2rem', 'margin':5}} />
             <TextButton text={"Withdraw Funds"} onClick={this.withdrawFunds} disabled={!isOwner} size='small' variant='danger' style={{'fontSize': 10, 'height': '2rem', 'margin':5}} /> 
           </Box> 
         ) : (
-          <Box p={1} width={1/3} >
-            <TextButton text={"Create DHackathon"} onClick={this.togglePopup} style={{'margin':10}} /> 
-            <span style={{'margin':60, fontSize: 14}}>Costs 0.1 ETH</span>
+          <Box style={styles.box}   p={1} width={3/10} >
+            <TextButton text={"Create DHackathon"} onClick={this.togglePopup} /> 
+            <span style={{fontSize: 12}} >Costs 0.1 ETH</span>
           </Box>
         )}
         <div className="section">
@@ -127,8 +127,8 @@ export default class FactoryContract extends React.Component {
             text='Create New DHackathon'
             submitFn={this.createDHackathon}
             inputsConfig={[ {displayName: 'Name: ', name: "DHName", type: "text", placeholder: "e.g. Security Contest"},
-                            {displayName: 'Prize in ETH: ', name: "prize", type: "number", placeholder: "e.g. 3.00"}
-            ]}
+                            {displayName: 'Prize in ETH: ', name: "prize", type: "number", placeholder: "e.g. 3.00"} ]}
+            removePopup={() => this.togglePopup()}
           />
           : null  
           }
@@ -138,11 +138,24 @@ export default class FactoryContract extends React.Component {
   }
 }
 
-const styleCard = {
-  backgroundColor: '#e6adbc',
-  padding: 20,
-  height: 120,
-  borderWidth: 2,
-  borderColor: 'red',
-  borderRadius: 5,
+const styles = {
+  container: {
+    backgroundColor: '#e6adbc',
+    padding: 20,
+    height: 120,
+    borderWidth: 2,
+    borderColor: 'red',
+    borderRadius: 5,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    color: 'black'
+  },
+  box: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: 'center'
+  }
 }
