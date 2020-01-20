@@ -1,7 +1,8 @@
 import React from 'react'
 import TextButton from '../misc/TextButton'
 import { Flex, Box, Heading } from 'rimble-ui'
-import Web3 from "web3";
+import Web3 from "web3"
+import { BN } from 'bn.js'
 import DHCard from './DHCard'
 import Popup from '../misc/Popup'
 import { Redirect } from 'react-router-dom'
@@ -16,8 +17,8 @@ export default class DHackathon extends React.Component {
       stateKey: null,
       balanceKey: null,
       EOARole: null,
-      activePopup: ""
-
+      activePopup: "",
+      projectsTracked: false
     }
 
     // this.DHContract = this.props.drizzle.contracts[this.DHName];
@@ -36,8 +37,10 @@ export default class DHackathon extends React.Component {
     let nameKey = DHContract.methods["name"].cacheCall();
     let stateKey = DHContract.methods["state"].cacheCall();
     let balanceKey = DHContract.methods["balance"].cacheCall();
+    let judgesListKey = DHContract.methods["getJudgesList"].cacheCall();
+    let participantsListKey = DHContract.methods["getParticipantsList"].cacheCall();    
 
-    this.setState({ nameKey, stateKey, balanceKey });
+    this.setState({ nameKey, stateKey, balanceKey, judgesListKey, participantsListKey });
 
     this.getActiveEOARole(this.props.drizzleState.accounts[0])
 
@@ -70,7 +73,7 @@ export default class DHackathon extends React.Component {
   }
 
 
-  // submitFunds, openDHackathon, toVotingDHackathon, closeDHackathon, addJudge, removeJudge, removeParticipant
+  // submitFunds, openDHackathon, toVotingDHackathon, closeDHackathon, addJudge, removeJudge
   // J: submitVote
   // P: registerAsParticipant, deregisterAsParticipant, submitProject, viewProject, withdrawPrize
   submitFunds = async ({ funding }) => {
@@ -90,11 +93,6 @@ export default class DHackathon extends React.Component {
 
   removeJudge = ({ account }) => {
     this.DHContract.methods["removeJudge"].cacheSend(account, {from: this.props.drizzleState.activeEOA.account})
-    this.togglePopup("")
-  }
-
-  removeParticipant = ({ account }) => {
-    this.DHContract.methods["removeParticipant"].cacheSend(account, {from: this.props.drizzleState.activeEOA.account})
     this.togglePopup("")
   }
 
@@ -130,7 +128,44 @@ export default class DHackathon extends React.Component {
 
   withdrawPrize = () => this.DHContract.methods["withdrawPrize"].cacheSend({from: this.props.drizzleState.activeEOA.account})
 
+  getCleanedJudgesList = () => {
+    const DHState = this.props.drizzleState.contracts[this.DHName]
+    let judgesList = DHState.getJudgesList[this.state.judgesListKey]
+    if (judgesList && judgesList.value) return judgesList.value.filter(acc => acc !== "0x0000000000000000000000000000000000000000")
+    else return []
+  }
 
+  getCleanedParticipantsList = (state) => {
+    const DHState = this.props.drizzleState.contracts[this.DHName]
+    let participantsList = DHState.getParticipantsList[this.state.participantsListKey]
+    if (!participantsList || !participantsList.value) return []
+    participantsList = participantsList.value.filter(acc => acc !== "0x0000000000000000000000000000000000000000")
+    return participantsList
+    // if (state === 0) return participantsList
+    // else this.getParticipantsCompleteInfo(participantsList)
+  }
+
+  // let participantsList = this.getCleanedParticipantsList()
+  //   let participantToTx = {}
+  //   participantsList.map(participant => {
+  //     let tx = this.DHContract.methods["projects"].cacheCall(participant);
+  //     participantToTx[participant] = tx
+  //   })
+  //   this.setState({participantToTx})
+  // }
+
+  getParticipantsCompleteInfo = (participantsList) => {
+    const DHState = this.props.drizzleState.contracts[this.DHName]
+    participantsList.map(async (participant) => {
+      console.log("here with: ", participant)
+      let tx = this.state.participantToTx[participant]
+      if (DHState.projects[tx] && DHState.projects[tx].value) {
+        let { url, votes, withdrewPrize } = DHState.projects[tx].value
+        console.log(" PROJECTS: ", url, votes, withdrewPrize)
+      }
+    })
+  }
+   
 
   render() {
     if (!Object.keys(this.props.drizzleState.contracts).includes(this.DHName)) {
@@ -144,8 +179,23 @@ export default class DHackathon extends React.Component {
     let name = DHState.name[this.state.nameKey]
     let state = DHState.state[this.state.stateKey]
     state = state ? parseInt(state.value) : null
-    let balance = DHState.balance[this.state.balanceKey]
-    balance = balance ? Web3.utils.fromWei(balance.value) : "-"
+
+    // let balance = DHState.balance[this.state.balanceKey]
+    // balance = balance ? Web3.utils.fromWei(balance.value) : "-"
+
+    let judgesList = this.getCleanedJudgesList()
+    let participantsList = this.getCleanedParticipantsList()
+    if (state > 0 && !this.state.projectsTracked) {
+      participantsList.map(async (participant) => {
+        this.DHContract.methods["projects"].cacheCall(participant);
+        this.setState({projectsTracked: true})
+      })
+    }
+    // this.getCleanedParticipantsList()
+
+    // this.getParticipantsCompleteInfo(this.getCleanedParticipantsList())
+    // console.log(judgesList, participantsList)
+
     let { EOARole } = this.state
 
     return (
@@ -179,7 +229,6 @@ export default class DHackathon extends React.Component {
           <Box p={1} width={1} style={styles.boxH} >
             <TextButton text={"Add Judge"} onClick={() => this.togglePopup("addJudge")} size="small" variant="danger" disabled={EOARole === 0 && state === 0 ? false : true} style={{'margin':10, fontSize: 10}} />
             <TextButton text={"Remove Judge"} onClick={() => this.togglePopup("removeJudge")} size="small" variant="danger" disabled={EOARole === 0 ? false : true} style={{'margin':10, fontSize: 10}} />
-            <TextButton text={"Remove Participant"} onClick={() => this.togglePopup("removeParticipant")} size="small" variant="danger" disabled={EOARole === 0 ? false : true} style={{'margin':10, fontSize: 10}} />
           </Box>
 
           <Heading as={"h2"}>Judge Panel</Heading>
@@ -202,7 +251,29 @@ export default class DHackathon extends React.Component {
             <TextButton text={"Register as Participant"} onClick={() => this.togglePopup("registerAsParticipant")} size="small" disabled={EOARole === 3 && state === 0 ? false : true} style={{'margin':10, fontSize: 10}} />
             <TextButton text={"Deregister as Participant"} onClick={() => this.togglePopup("deregisterAsParticipant")} size="small" disabled={EOARole === 2 ? false : true} style={{'margin':10, fontSize: 10}} />
             <TextButton text={"Submit Project's Github URL"} onClick={() => this.togglePopup("submitProject")} size="small" disabled={EOARole === 2 && state === 1 ? false : true} style={{'margin':10, fontSize: 10}} />
-            <TextButton text={"Withdraw Prize"} onClick={this.withdrawPrize} size="small" variant="danger" disabled={EOARole === 2 && state === 3 ? false : true} style={{'margin':10, fontSize: 10}} />
+            <TextButton text={"Withdraw Prize"} onClick={this.withdrawPrize} size="small" disabled={EOARole === 2 && state === 3 ? false : true} style={{'margin':10, fontSize: 10}} />
+          </Box>
+
+          <Heading as={"h2"}>Information</Heading>
+          <Box p={1} width={1} style={styles.boxH} >
+            <Box p={1} width={1/2} style={styles.boxV} >
+              <Heading as={"h5"}>Judges</Heading>
+              {judgesList.map(judge => {
+                return (
+                  <li key={judge} style={{fontSize: 12}}>
+                    <span>{`account: ${judge}`}</span>
+                  </li>
+                )
+              })}
+            </Box>
+            <Box p={1} width={1/2} style={styles.boxV} >
+              <Heading as={"h5"}>Participants</Heading>
+                {participantsList.map(participant => (
+                  <li key={participant} style={{fontSize: 12}}>
+                    <span>{`account: ${participant}`}</span>
+                  </li>
+                ))}
+            </Box>
           </Box>
 
 
@@ -235,15 +306,6 @@ export default class DHackathon extends React.Component {
               removePopup={() => this.togglePopup("")}
             />
             : null
-          }
-          {this.state.activePopup === "removeParticipant" ?
-            <Popup
-              text='Remove a current Participant'
-              submitFn={this.removeParticipant}
-              inputsConfig={[ {displayName: 'Account: ', name: "account", type: "text", placeholder: "e.g. 0xAc03BB73b6a9e108530AFf4Df5077c2B3D481e5A"} ]}
-              removePopup={() => this.togglePopup("")}
-            />
-            : null  
           }
           {this.state.activePopup === "registerAsParticipant" ?
             <Popup

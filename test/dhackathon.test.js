@@ -6,7 +6,7 @@ const BN = web3.utils.BN;
 const toWei = web3.utils.toWei;
 
 const _name = "Test DHackathon"
-const _prize = 3
+const _prize = "3"
 
 contract("DHackathon", accounts => {
   const _admin = accounts[0]
@@ -31,9 +31,10 @@ contract("DHackathon", accounts => {
 
     it("is properly assigned to admin", async () => {
       let factory = await DHackathonFactory.new({from: accounts[9]})
-      let tx = await factory.createDHackathon(_name, _prize, {from: _admin, value: toWei("0.1", "ether")})
+      let tx = await factory.createDHackathon(_name, toWei(_prize, "ether"), {from: _admin, value: toWei("0.1", "ether")})
 
-      instance = await DHackathon.at(tx.logs[0].args._contractAddress)
+      instance = await DHackathon.at(tx.logs[0].args.contractAddress)
+      
       let DHAdmin = await instance.admin()
 
       assert.equal(DHAdmin, _admin, "Caller of factory.createDHackathon is not the DHackathon admin");
@@ -43,7 +44,7 @@ contract("DHackathon", accounts => {
       let factory = await DHackathonFactory.new({from: accounts[9]})
       let tx = await factory.createDHackathon(_name, _prize, {from: _admin, value: toWei("0.1", "ether")})
 
-      instance = await DHackathon.at(tx.logs[0].args._contractAddress)//.admin.call();
+      instance = await DHackathon.at(tx.logs[0].args.contractAddress)//.admin.call();
 
       await EH.catchRevert(instance.openDHackathon({from: accounts[9], value: toWei("3", "ether")}));
     });
@@ -52,7 +53,7 @@ contract("DHackathon", accounts => {
       let factory = await DHackathonFactory.new({from: accounts[9]})
       let tx = await factory.createDHackathon(_name, _prize, {from: _admin, value: toWei("0.1", "ether")})
 
-      instance = await DHackathon.at(tx.logs[0].args._contractAddress)//.admin.call();
+      instance = await DHackathon.at(tx.logs[0].args.contractAddress)//.admin.call();
 
       let preState = await instance.state()
       await instance.openDHackathon({from: _admin, value: toWei("3", "ether")})
@@ -68,7 +69,7 @@ contract("DHackathon", accounts => {
   describe("DHackathon Functionality —— InPreparation", async() => {
     // DHackathon constructor receives DHID, name, admin, prize, createdOn
     beforeEach(async () => {
-      instance = await DHackathon.new(1, _name, _admin, _prize, Date.now())
+      instance = await DHackathon.new(1, _name, _admin, toWei(_prize, "ether"), Date.now())
     })
     
     it("is properly assigned to admin", async () => {
@@ -103,6 +104,15 @@ contract("DHackathon", accounts => {
       assert.equal(isJudge, true, "Judge not added correctly")
     });
 
+    it("added judges are recorded in array", async () => {
+      await instance.addJudge(judge1, {from: _admin})
+      await instance.addJudge(judge2, {from: _admin})
+
+      let judgesList = await instance.getJudgesList()
+      let allIncluded = (judgesList.includes(judge1) && judgesList.includes(judge2))
+      assert.equal(allIncluded, true, "Judge not recorded correctly in array")
+    });
+
     it("can remove judges", async () => {
       await instance.addJudge(judge1, {from: _admin})
       await instance.removeJudge(judge1, {from: _admin})
@@ -110,10 +120,30 @@ contract("DHackathon", accounts => {
       assert.equal(isJudge, false, "Judge not removed correctly")
     });
 
+    it("removed judges are deleted from array", async () => {
+      await instance.addJudge(judge1, {from: _admin})
+      await instance.addJudge(judge2, {from: _admin})
+      await instance.removeJudge(judge1, {from: _admin})
+
+      let judgesList = await instance.getJudgesList()
+      console.log(judgesList.includes(judge1), judgesList.includes(judge2))
+      let included = (!judgesList.includes(judge1) && judgesList.includes(judge2))
+      assert.equal(included, true, "Judge not deleted correctly from array")
+    });
+
     it("participants can register", async () => {
       await instance.registerAsParticipant({from: participant1})
       let isParticipant = await instance.isParticipant(participant1);
       assert.equal(isParticipant, true, "Participant not registered correctly")
+    });
+
+    it("added participants are recorded in array", async () => {
+      await instance.registerAsParticipant({from: participant1})
+      await instance.registerAsParticipant({from: participant2})
+
+      let participantsList = await instance.getParticipantsList()
+      let allIncluded = (participantsList.includes(participant1) && participantsList.includes(participant2))
+      assert.equal(allIncluded, true, "participants not recorded correctly in array")
     });
 
     it("participants can deregister", async () => {
@@ -123,11 +153,14 @@ contract("DHackathon", accounts => {
       assert.equal(isParticipant, false, "Participant not deregistered correctly")
     });
 
-    it("participants can be removed", async () => {
+    it("deregistered participants are deleted from array", async () => {
       await instance.registerAsParticipant({from: participant1})
-      await instance.removeParticipant(participant1, {from: _admin})
-      let isParticipant = await instance.isParticipant(participant1);
-      assert.equal(isParticipant, false, "Participant not removed correctly")
+      await instance.registerAsParticipant({from: participant2})
+      await instance.deregisterAsParticipant({from: participant1})
+
+      let participantsList = await instance.getParticipantsList()
+      let allIncluded = (!participantsList.includes(participant1) && participantsList.includes(participant2))
+      assert.equal(allIncluded, true, "deregistered participants not deleted correctly from array")
     });
 
     it("properly changes to Open state", async () => {
@@ -155,7 +188,7 @@ contract("DHackathon", accounts => {
     // DHackathon is taken to Open state by adding prize, judges, and participants
     beforeEach(async () => {
       // create new instance
-      instance = await DHackathon.new(1, _name, _admin, _prize, Date.now())
+      instance = await DHackathon.new(1, _name, _admin, toWei(_prize, "ether"), Date.now())
       await setToOpenHelper(instance, users)
     })
 
@@ -191,7 +224,7 @@ contract("DHackathon", accounts => {
     // DHackathon is taken to InVoting state by participants submitting their projects
     beforeEach(async () => {
       // create new instance
-      instance = await DHackathon.new(1, _name, _admin, _prize, Date.now())
+      instance = await DHackathon.new(1, _name, _admin, toWei(_prize, "ether"), Date.now())
       await setToInVotingHelper(instance, users)
     })
 
@@ -230,7 +263,7 @@ contract("DHackathon", accounts => {
     // DHackathon is taken to Closed state by judges submitting their votes
     beforeEach(async () => {
       // create new instance
-      instance = await DHackathon.new(1, _name, _admin, _prize, Date.now())
+      instance = await DHackathon.new(1, _name, _admin, toWei(_prize, "ether"), Date.now())
       await setToClosedHelper(instance, users)
     })
 
@@ -249,7 +282,7 @@ contract("DHackathon", accounts => {
 
       let expectedPostAmount = (new BN(preWithdrawAmount)
                               // plus the prize divided by 2, as participant 1 got 1/2 of all votes
-                              .add(new BN(toWei(JSON.stringify(_prize), "ether")).div(new BN(2)))
+                              .add(new BN(toWei(_prize, "ether")).div(new BN(2)))
                               .sub(new BN(TXCost))).toString()
 
       assert.equal(postWithdrawAmount, expectedPostAmount)
@@ -279,7 +312,7 @@ async function setToOpenHelper(instance, users) {
   await instance.registerAsParticipant({from: users.participant2})
   await instance.registerAsParticipant({from: users.participant3})
   // admin submits funds for prize and opens the DHackathon
-  await instance.openDHackathon({from: users._admin, value: toWei(JSON.stringify(_prize), "ether")})
+  await instance.openDHackathon({from: users._admin, value: toWei(_prize, "ether")})
 }
 
 async function setToInVotingHelper(instance, users) {

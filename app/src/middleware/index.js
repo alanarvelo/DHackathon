@@ -20,34 +20,34 @@ const getCorrectWeb3 = () => {
 
 
 const contractEventNotifier = store => next => action => {
-  // console.log("THIS IS THE ACTION: ", action)
+  //  to UI all succesfully emitted events
   if (action.type === EventActions.EVENT_FIRED) {
     console.log("THIS IS THE ACTION: ", action)
     const contract = action.name
-    let currentContracts = store.getState()['contracts']
-    console.log(currentContracts[contract].events.map(evt => evt.id))
-    window.toastProvider.addMessage(`🚀 Event: ${action.event.event}`, {
-      secondaryMessage: JSON.stringify(action.event.returnValues),
-      variant: "success",
-      colorTheme: "light",
-      my: 1,
-      closeElem: true,
+    const currentContracts = store.getState()['contracts']
+    console.log(currentContracts[contract].events.map(evt => evt.id), action.event.id)
+    if (!currentContracts[contract].events.map(evt => evt.id).includes(action.event.id)) {
+      window.toastProvider.addMessage(`🚀 Event: ${action.event.event}`, {
+        // secondaryMessage: JSON.stringify(action.event.returnValues),
+        variant: "success",
+        colorTheme: "light",
+        my: 1,
+        closeElem: true,
+        // actionHref: "https://etherscan.io/tx/0xcbc921418c360b03b96585ae16f906cbd48c8d6c2cc7b82c6db430390a9fcfed",
+        // actionText: "Check",
+      })
+    }
 
-      // actionHref: "https://etherscan.io/tx/0xcbc921418c360b03b96585ae16f906cbd48c8d6c2cc7b82c6db430390a9fcfed",
-      // actionText: "Check",
-    })
-
+    // specific DH Creation Event ic
     if (action.event.event === "DHackathonCreated") {
-      let { _DHID, _contractAddress } = action.event.returnValues;
-      let contractName = `DH${_DHID}`
-      
-      console.log("STATE ON MIDDLEWARE: ", currentContracts.web3)
+      const { _DHID, _contractAddress } = action.event.returnValues;
+      const contractName = `DH${_DHID}`
       if (!Object.keys(currentContracts).includes(contractName)) {
         let web3 = getCorrectWeb3()
         let web3Contract = new web3.eth.Contract(DHackathon['abi'], _contractAddress)
         let contractConfig = { contractName, web3Contract}
-        let events = ['LogFundingReceived', 'LogProjectSubmitted', 'LogVoteSubmitted', 'LogPrizeWithdrawn',
-                      'LogDHInPreparation', 'LogDHOpen', 'LogDHInVoting', 'LogDHClosed',
+        let events = ['FundingReceived', 'ProjectSubmitted', 'VoteSubmitted', 'PrizeWithdrawn',
+                      'DHInPreparation', 'DHOpen', 'DHInVoting', 'DHClosed',
                       'JudgeAdded', 'JudgeRemoved', 'ParticipantAdded', 'ParticipantRemoved']
         
         store.dispatch({type: 'ADD_CONTRACT', contractConfig, events})
@@ -62,12 +62,11 @@ const contractEventNotifier = store => next => action => {
     let contractName = "TESTDH"
     let currentContracts = store.getState()['contracts']
     if (!Object.keys(currentContracts).includes(contractName)) {
-      const { ethereum } = window
       let web3 = getCorrectWeb3()
-      let web3Contract = new web3.eth.Contract(DHackathon['abi'], "0xBa3C31f834FC7f4b282B250331C76F0Ab1e42866")
+      let web3Contract = new web3.eth.Contract(DHackathon['abi'], "0xfB3b8725B6A55Be200929F96AaEDFCc779739dc7")
       let contractConfig = { contractName, web3Contract}
-      let events = ['LogFundingReceived', 'LogProjectSubmitted', 'LogVoteSubmitted', 'LogPrizeWithdrawn',
-                    'LogDHInPreparation', 'LogDHOpen', 'LogDHInVoting', 'LogDHClosed',
+      let events = ['FundingReceived', 'ProjectSubmitted', 'VoteSubmitted', 'PrizeWithdrawn',
+                    'DHInPreparation', 'DHOpen', 'DHInVoting', 'DHClosed',
                     'JudgeAdded', 'JudgeRemoved', 'ParticipantAdded', 'ParticipantRemoved']
       console.log("CREATING TEST CONTRACT: ", contractConfig)
       store.dispatch({type: 'ADD_CONTRACT', contractConfig, events})

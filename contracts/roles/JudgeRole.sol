@@ -13,6 +13,8 @@ contract JudgeRole {
 
     /// Define a struct `judges` by inheriting from `Roles` library the struct Role
     Roles.Role private judges;
+    address[] public judgesList;
+    mapping(address => uint256) private judgeIndex;
 
     /// Define a modifier that checks if `msg.sender` has the role
     modifier onlyJudge() {
@@ -41,6 +43,8 @@ contract JudgeRole {
         internal
     {
         judges.add(account);
+        judgeIndex[account] = judgesList.length;
+        judgesList.push(account);
         emit JudgeAdded(account);
     }
 
@@ -49,6 +53,12 @@ contract JudgeRole {
         internal
     {
         judges.remove(account);
+        delete judgesList[judgeIndex[account]];
         emit JudgeRemoved(account);
+    }
+
+    /// Define an public function to get complete array judgesList
+    function getJudgesList()public view returns(address[] memory){
+        return judgesList;
     }
 }

@@ -44,7 +44,7 @@ export default class DHackathon extends React.Component {
     const state = DHState.state[this.state.stateKey]
     let balance = DHState.balance[this.state.balanceKey]
     balance = balance ? Web3.utils.fromWei(balance.value)  + " eth" : "-"
-    // console.log("DHState: ", DHState)
+    // console.log("DHState: ", DHState, this.props.DHContract)
 
 
     return (

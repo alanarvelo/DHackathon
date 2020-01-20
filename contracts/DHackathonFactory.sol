@@ -36,8 +36,8 @@ contract DHackathonFactory is Ownable {
     }
     mapping (uint256 => DHackathonBirthCertificate) public DHackathonRegistry;
 
-    event DHackathonCreated(uint256 _DHID, string _name, address _admin, uint256 _prize, DHackathon _contractAddress);
-    event FundsWithdrawn(uint256 _funds);
+    event DHackathonCreated(uint256 DHID, string name, address admin, uint256 prize, DHackathon contractAddress);
+    event FundsWithdrawn(uint256 funds);
 
     modifier isOperational() {
         require(operational == true, "This contract has been stopped by the owner.");

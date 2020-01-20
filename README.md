@@ -53,20 +53,24 @@ To Remember:
   - NavBAr  ------- DONE
   - Contract Balance display also for Factory Contract, and State, on DHCard  ----- DONE
   - way to click out of pop up, to go back  ------ DONE
-  - Get events working right and neatly
+  - Get events working right and neatly   -------- DONE
   - display more recent DH first  ------- DONE
 
   - display judges and participants via store-reducer-loop
+  - show projects submitted by whom
+  - show if project/participant has a vote & can therefore call withdrawPrize
+    by 12:00am
   
-  - Dont remove pop-up until interaction with MM is achieved, and show loading button
-  - Block OpenDHFn if balance not great to Prize    
-  - form validation for EOA for judges, participants, etc
   - Allow proper login, MM-enable, with the MM button
+  - Dont remove pop-up until interaction with MM is achieved, and show loading button
+  - form validation for EOA for judges, participants, etc
+  - Block OpenDHFn if balance not great to Prize   
+  - change size and beautify of DHackathon components instructions
+  
   - After DH creation redirect to new DH page 
   - make input size variable
   - Add Loading Container
-  
-  - show projects submitted by whom
+  - specific event configuration for each type of event to display its returned values
 
 To Publish:
   - UML of process, stages, actors and functions

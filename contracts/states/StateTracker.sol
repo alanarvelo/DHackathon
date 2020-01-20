@@ -7,10 +7,10 @@ contract StateTracker {
     enum DHState {InPreparation, Open, InVoting, Closed}
     DHState public state;
 
-    event LogDHInPreparation(uint256 DHID, string name, uint256 estimatedPrize);
-    event LogDHOpen(uint256 DHID, string name, uint256 estimatedPrize);
-    event LogDHInVoting(uint256 DHID, string name, uint256 estimatedPrize);
-    event LogDHClosed(uint256 DHID, string name, uint256 estimatedPrize);
+    event DHInPreparation(uint256 DHID, string name, uint256 estimatedPrize);
+    event DHOpen(uint256 DHID, string name, uint256 estimatedPrize);
+    event DHInVoting(uint256 DHID, string name, uint256 estimatedPrize);
+    event DHClosed(uint256 DHID, string name, uint256 estimatedPrize);
 
     /// Define a modifier that checks if DHackathon is in the `InPreparation` state
     modifier isInPreparation() {
@@ -42,7 +42,7 @@ contract StateTracker {
         isInPreparation()
     {
         state = DHState.Open;
-        emit LogDHOpen(_DHID, _name, _prize);
+        emit DHOpen(_DHID, _name, _prize);
     }
 
     /// Define function to set the competition to the voting state
@@ -51,7 +51,7 @@ contract StateTracker {
         isOpen()
     {
         state = DHState.InVoting;
-        emit LogDHInVoting(_DHID, _name, _prize);
+        emit DHInVoting(_DHID, _name, _prize);
     }
 
     /// Define function to close the competition
@@ -60,7 +60,7 @@ contract StateTracker {
         isInVoting()
     {
         state = DHState.Closed;
-        emit LogDHClosed(_DHID, _name, _prize);
+        emit DHClosed(_DHID, _name, _prize);
     }
 
 }

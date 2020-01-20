@@ -39,17 +39,17 @@ contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
         uint128 votes;
         bool withdrewPrize;
     }
-    mapping (address => Project) private projects;
+    mapping (address => Project) public projects;
 
     /// It can occur that not all Judges submit a vote in the InVoting period
     uint128 private numJudgesWhoVoted;
     /// Prevent double voting
     mapping (address => bool) judgeVoted;
 
-    event LogFundingReceived(address _sponsor, uint256 _amount);
-    event LogProjectSubmitted(address _participant, string _url);
-    event LogVoteSubmitted(address _judge, address _elected);
-    event LogPrizeWithdrawn(address _participant, uint256 _amount);
+    event FundingReceived(address sponsor, uint256 amount);
+    event ProjectSubmitted(address participant, string url);
+    event VoteSubmitted(address judge, address elected);
+    event PrizeWithdrawn(address participant, uint256 amount);
 
     modifier onlyAdmin() {
         require(isAdmin(msg.sender), "The `msg.sender` is not the admin");
@@ -64,7 +64,7 @@ contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
         createdOn = _createdOn;
 
         state = DHState.InPreparation;
-        emit LogDHInPreparation(DHID, name, prize);
+        emit DHInPreparation(DHID, name, prize);
     }
 
     /**
@@ -88,7 +88,7 @@ contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
         payable
     {
         require(msg.value > 0, "Must send some funds");
-        emit LogFundingReceived(msg.sender, msg.value);
+        emit FundingReceived(msg.sender, msg.value);
     }
 
     /**
@@ -102,7 +102,7 @@ contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
         payable
         onlyAdmin()
     {
-        if (msg.value > 0) emit LogFundingReceived(msg.sender, msg.value);
+        if (msg.value > 0) emit FundingReceived(msg.sender, msg.value);
         require(address(this).balance >= prize, "Funds for prize must be in contract to start DHackathon");
         _openDHackathon(DHID, name, prize);
     }
@@ -179,7 +179,7 @@ contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
         /// Give the vote to the participant and increase vote count
         numJudgesWhoVoted += 1;
         projects[_electedWinner].votes += 1;
-        emit LogVoteSubmitted(msg.sender, _electedWinner);
+        emit VoteSubmitted(msg.sender, _electedWinner);
     }
 
     /*************************************** Participant ******************************************/
@@ -210,18 +210,6 @@ contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
     }
 
     /**
-     * @notice Admin can remove participant
-     * @param _account needs to be a Participant
-     */
-    function removeParticipant(address _account)
-        public
-        onlyAdmin()
-    {
-        require(isParticipant(_account), "`account` is not a Participant");
-        _removeParticipant(_account);
-    }
-
-    /**
      * @notice Participants can submit their projects (likely github url)
      * @notice Submission accepted when state is Open, and before it is Ended
      * @notice Re-submissions also accepted
@@ -233,7 +221,7 @@ contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
         isOpen()
     {
         projects[msg.sender].url = _url;
-        emit LogProjectSubmitted(msg.sender, _url);
+        emit ProjectSubmitted(msg.sender, _url);
     }
 
     /**
@@ -267,7 +255,7 @@ contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
         uint256 amount = winner.votes.mul(address(this).balance.div(numJudgesWhoVoted));
         winner.withdrewPrize = true;
         msg.sender.transfer(amount);
-        emit LogPrizeWithdrawn(msg.sender, amount);
+        emit PrizeWithdrawn(msg.sender, amount);
     }
 
     /**

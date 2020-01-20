@@ -13,6 +13,8 @@ contract ParticipantRole {
 
     /// Define a struct `participants` by inheriting from `Roles` library the struct Role
     Roles.Role private participants;
+    address[] public participantList;
+    mapping(address => uint256) private participantIndex;
 
     /// Define a modifier that checks if `msg.sender` has the role
     modifier onlyParticipant() {
@@ -34,6 +36,8 @@ contract ParticipantRole {
         internal
     {
         participants.add(account);
+        participantIndex[account] = participantList.length;
+        participantList.push(account);
         emit ParticipantAdded(account);
     }
 
@@ -42,6 +46,12 @@ contract ParticipantRole {
         internal
     {
         participants.remove(account);
+        delete participantList[participantIndex[account]];
         emit ParticipantRemoved(account);
+    }
+
+    /// Define an public function to get complete array participantList
+    function getParticipantsList() public view returns(address[] memory){
+        return participantList;
     }
 }
