@@ -40,11 +40,11 @@ const contractEventNotifier = store => next => action => {
 
     // specific DH Creation Event ic
     if (action.event.event === "DHackathonCreated") {
-      const { _DHID, _contractAddress } = action.event.returnValues;
-      const contractName = `DH${_DHID}`
+      const { DHID, contractAddress } = action.event.returnValues;
+      const contractName = `DH${DHID}`
       if (!Object.keys(currentContracts).includes(contractName)) {
         let web3 = getCorrectWeb3()
-        let web3Contract = new web3.eth.Contract(DHackathon['abi'], _contractAddress)
+        let web3Contract = new web3.eth.Contract(DHackathon['abi'], contractAddress)
         let contractConfig = { contractName, web3Contract}
         let events = ['FundingReceived', 'ProjectSubmitted', 'VoteSubmitted', 'PrizeWithdrawn',
                       'DHInPreparation', 'DHOpen', 'DHInVoting', 'DHClosed',
@@ -63,7 +63,7 @@ const contractEventNotifier = store => next => action => {
     let currentContracts = store.getState()['contracts']
     if (!Object.keys(currentContracts).includes(contractName)) {
       let web3 = getCorrectWeb3()
-      let web3Contract = new web3.eth.Contract(DHackathon['abi'], "0x6EF4254DED31B41EA5a2d7AbA40a176544e077A8")
+      let web3Contract = new web3.eth.Contract(DHackathon['abi'], "0x06b016851a67f45B7Ac2aCb4c266986f95A40f20")
       let contractConfig = { contractName, web3Contract}
       let events = ['FundingReceived', 'ProjectSubmitted', 'VoteSubmitted', 'PrizeWithdrawn',
                     'DHInPreparation', 'DHOpen', 'DHInVoting', 'DHClosed',

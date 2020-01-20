@@ -254,6 +254,7 @@ contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
         /// Calculate and send his part of the prize
         uint256 amount = winner.votes.mul(address(this).balance.div(numJudgesWhoVoted));
         winner.withdrewPrize = true;
+        --numJudgesWhoVoted;
         msg.sender.transfer(amount);
         emit PrizeWithdrawn(msg.sender, amount);
     }
