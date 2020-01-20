@@ -18,7 +18,8 @@ export default class DHackathon extends React.Component {
       balanceKey: null,
       EOARole: null,
       activePopup: "",
-      projectsTracked: false
+      participantToTx: {},
+      judgeToTx: {}
     }
 
     // this.DHContract = this.props.drizzle.contracts[this.DHName];
@@ -27,24 +28,24 @@ export default class DHackathon extends React.Component {
     this.DHContract = this.props.drizzle.contracts[this.DHName];
   }
 
-  componentDidMount() {
-    // Do not execute if the url points to a non-existing DHackathon
-    if (!Object.keys(this.props.drizzleState.contracts).includes(this.DHName)) {
-      console.log("The DHackathon in this path does not exist")
-      return null
-    }
+  async componentDidMount() {
     const DHContract = this.props.drizzle.contracts[this.DHName];
     let nameKey = DHContract.methods["name"].cacheCall();
     let stateKey = DHContract.methods["state"].cacheCall();
     let balanceKey = DHContract.methods["balance"].cacheCall();
-    let judgesListKey = DHContract.methods["getJudgesList"].cacheCall();
-    let participantsListKey = DHContract.methods["getParticipantsList"].cacheCall();    
+    let judgesListKey = await DHContract.methods["getJudgesList"].cacheCall();
+    let participantsListKey = await DHContract.methods["getParticipantsList"].cacheCall();
 
     this.setState({ nameKey, stateKey, balanceKey, judgesListKey, participantsListKey });
 
     this.getActiveEOARole(this.props.drizzleState.accounts[0])
 
     this.listenToActiveAccountUpdates()
+
+    let stateNow = await DHContract.methods.state().call()
+    if (stateNow > 0) {
+      this.trackRolesInfo()
+    }
     
   }
 
@@ -72,6 +73,23 @@ export default class DHackathon extends React.Component {
     }))
   }
 
+  trackRolesInfo() {
+    let participantsList = this.getCleanedParticipantsList()
+    let participantToTx = {}
+    participantsList.map(participant => {
+      let tx = this.DHContract.methods["projects"].cacheCall(participant.account)
+      participantToTx[participant.account] = tx
+    })
+    let judgesList = this.getCleanedJudgesList()
+    let judgeToTx = {}
+    judgesList.map(judge => {
+      let tx = this.DHContract.methods["judgeVoted"].cacheCall(judge.account)
+      judgeToTx[judge.account] = tx
+    })
+    console.log(judgeToTx)
+    this.setState({ participantToTx, judgeToTx})
+  }
+
 
   // submitFunds, openDHackathon, toVotingDHackathon, closeDHackathon, addJudge, removeJudge
   // J: submitVote
@@ -82,7 +100,10 @@ export default class DHackathon extends React.Component {
   }
 
   /** ******************************************************************* ADMIN Functions *************************************************************** */
-  openDHackathon = () => this.DHContract.methods["openDHackathon"].cacheSend({from: this.props.drizzleState.activeEOA.account})
+  openDHackathon = () => {
+    this.DHContract.methods["openDHackathon"].cacheSend({from: this.props.drizzleState.activeEOA.account})
+    this.trackRolesInfo()
+  }
   toVotingDHackathon = () => this.DHContract.methods["toVotingDHackathon"].cacheSend({from: this.props.drizzleState.activeEOA.account})
   closeDHackathon = () => this.DHContract.methods["closeDHackathon"].cacheSend({from: this.props.drizzleState.activeEOA.account})
 
@@ -131,39 +152,45 @@ export default class DHackathon extends React.Component {
   getCleanedJudgesList = () => {
     const DHState = this.props.drizzleState.contracts[this.DHName]
     let judgesList = DHState.getJudgesList[this.state.judgesListKey]
-    if (judgesList && judgesList.value) return judgesList.value.filter(acc => acc !== "0x0000000000000000000000000000000000000000")
-    else return []
+    if (!judgesList || !judgesList.value) return []
+    return judgesList.value.filter(acc => acc !== "0x0000000000000000000000000000000000000000").map(acc => ({"account": acc}))
   }
 
-  getCleanedParticipantsList = (state) => {
+  getCleanedParticipantsList = () => {
     const DHState = this.props.drizzleState.contracts[this.DHName]
     let participantsList = DHState.getParticipantsList[this.state.participantsListKey]
     if (!participantsList || !participantsList.value) return []
-    participantsList = participantsList.value.filter(acc => acc !== "0x0000000000000000000000000000000000000000")
-    return participantsList
-    // if (state === 0) return participantsList
-    // else this.getParticipantsCompleteInfo(participantsList)
+    return participantsList.value.filter(acc => acc !== "0x0000000000000000000000000000000000000000").map(acc => ({"account": acc}))
   }
 
-  // let participantsList = this.getCleanedParticipantsList()
-  //   let participantToTx = {}
-  //   participantsList.map(participant => {
-  //     let tx = this.DHContract.methods["projects"].cacheCall(participant);
-  //     participantToTx[participant] = tx
-  //   })
-  //   this.setState({participantToTx})
-  // }
+  getJudgesCompleteInfo = (judgesList) => {
+    const DHState = this.props.drizzleState.contracts[this.DHName]
+    let completeInfoArray = []
+    judgesList.map((judge) => {
+      console.log("here with judge: ", judge.account)
+      console.log("JUDGES TXs: ", this.state.judgeToTx)
+      let tx = this.state.judgeToTx[judge.account]
+      console.log("JUDGEVOTED: ", tx, DHState.judgeVoted[tx])
+      if (DHState.judgeVoted[tx]) {
+        const voted = DHState.judgeVoted[tx].value
+        console.log("PROJECTS: ", voted)
+        completeInfoArray.push( {"account": judge.account, voted} )
+      } else completeInfoArray.push( {"account": judge.account} )
+    })
+    return completeInfoArray
+  }
 
   getParticipantsCompleteInfo = (participantsList) => {
     const DHState = this.props.drizzleState.contracts[this.DHName]
-    participantsList.map(async (participant) => {
-      console.log("here with: ", participant)
-      let tx = this.state.participantToTx[participant]
+    let completeInfoArray = []
+    participantsList.map((participant) => {
+      let tx = this.state.participantToTx[participant.account]
       if (DHState.projects[tx] && DHState.projects[tx].value) {
         let { url, votes, withdrewPrize } = DHState.projects[tx].value
-        console.log(" PROJECTS: ", url, votes, withdrewPrize)
-      }
+        completeInfoArray.push( {"account": participant.account, url, votes, withdrewPrize} )
+      } else completeInfoArray.push( {"account": participant.account} )
     })
+    return completeInfoArray
   }
    
 
@@ -185,16 +212,12 @@ export default class DHackathon extends React.Component {
 
     let judgesList = this.getCleanedJudgesList()
     let participantsList = this.getCleanedParticipantsList()
-    if (state > 0 && !this.state.projectsTracked) {
-      participantsList.map(async (participant) => {
-        this.DHContract.methods["projects"].cacheCall(participant);
-        this.setState({projectsTracked: true})
-      })
+    if (state > 0) {
+      participantsList = this.getParticipantsCompleteInfo(participantsList)
+      judgesList = this.getJudgesCompleteInfo(judgesList)
+      console.log(judgesList)
     }
-    // this.getCleanedParticipantsList()
-
-    // this.getParticipantsCompleteInfo(this.getCleanedParticipantsList())
-    // console.log(judgesList, participantsList)
+    
 
     let { EOARole } = this.state
 
@@ -258,20 +281,21 @@ export default class DHackathon extends React.Component {
           <Box p={1} width={1} style={styles.boxH} >
             <Box p={1} width={1/2} style={styles.boxV} >
               <Heading as={"h5"}>Judges</Heading>
-              {judgesList.map(judge => {
-                return (
-                  <li key={judge} style={{fontSize: 12}}>
-                    <span>{`account: ${judge}`}</span>
-                  </li>
-                )
-              })}
+              {judgesList.map(judge => (
+                  <Box p={1} key={judge.account} width={1/judgesList.length} style={{fontSize: 12, margin:8, display: "flex", flexDirection:"column", alignItems:"flex-start", justifyContent:"space-around", width: "100%"}}>
+                    <span> <strong>Account: </strong> {`${judge.account ? judge.account : ""}`} </span>
+                    <span> <strong>Has voted: </strong> {`${judge.voted ? "yes": "no"}`} </span>
+                  </Box>
+                ))}
             </Box>
             <Box p={1} width={1/2} style={styles.boxV} >
               <Heading as={"h5"}>Participants</Heading>
                 {participantsList.map(participant => (
-                  <li key={participant} style={{fontSize: 12}}>
-                    <span>{`account: ${participant}`}</span>
-                  </li>
+                  <Box p={1} key={participant.account} width={1/participantsList.length} style={styles.boxVL}>
+                    <span> <strong>Account: </strong> {`${participant.account ? participant.account : ""}`} </span>
+                    <span style={{"display": "flex", flexDirection:"column", alignItems:"flex-start"}}> <strong>Project's url: </strong> {`${participant.url ? participant.url : ""}`} </span>
+                    <span> <strong>Votes received: </strong> {`${participant.votes ? participant.votes : ""}`}</span>
+                  </Box>
                 ))}
             </Box>
           </Box>
@@ -377,5 +401,14 @@ const styles = {
     display: "flex",
     flexDirection: 'column',
     alignItems: 'flex-start',
+  },
+  boxVL: {
+    fontSize: 12,
+    display: "flex",
+    flexDirection:"column",
+    alignItems:"flex-start",
+    justifyContent:"center",
+    width: "100%",
+    marginTop: "18",
   }
 }

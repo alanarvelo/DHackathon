@@ -66,6 +66,7 @@ To Remember:
   - form validation for EOA for judges, participants, etc
   - Block OpenDHFn if balance not great to Prize   
   - change size and beautify of DHackathon components instructions
+  - Allow to submit funds along with OpenDH call
   
   - After DH creation redirect to new DH page 
   - make input size variable

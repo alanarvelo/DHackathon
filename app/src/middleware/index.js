@@ -63,7 +63,7 @@ const contractEventNotifier = store => next => action => {
     let currentContracts = store.getState()['contracts']
     if (!Object.keys(currentContracts).includes(contractName)) {
       let web3 = getCorrectWeb3()
-      let web3Contract = new web3.eth.Contract(DHackathon['abi'], "0xfB3b8725B6A55Be200929F96AaEDFCc779739dc7")
+      let web3Contract = new web3.eth.Contract(DHackathon['abi'], "0x6EF4254DED31B41EA5a2d7AbA40a176544e077A8")
       let contractConfig = { contractName, web3Contract}
       let events = ['FundingReceived', 'ProjectSubmitted', 'VoteSubmitted', 'PrizeWithdrawn',
                     'DHInPreparation', 'DHOpen', 'DHInVoting', 'DHClosed',

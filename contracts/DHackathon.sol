@@ -44,7 +44,7 @@ contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
     /// It can occur that not all Judges submit a vote in the InVoting period
     uint128 private numJudgesWhoVoted;
     /// Prevent double voting
-    mapping (address => bool) judgeVoted;
+    mapping (address => bool) public judgeVoted;
 
     event FundingReceived(address sponsor, uint256 amount);
     event ProjectSubmitted(address participant, string url);
