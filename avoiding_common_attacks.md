@@ -22,7 +22,7 @@ The `createdOn` property is rather unimportant. If miners were to manipulate it 
 
 ## Overflow and Underflow
 
-OpenZeppelin's ```SafeMath.sol``` library was utilized. It can be found [here](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/math/SafeMath.sol).
+OpenZeppelin's ```SafeMath.sol``` _library_ was utilized. It can be found [here](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/math/SafeMath.sol).
 
 ## Denial of Service
 
@@ -39,7 +39,7 @@ To prevent this attack, no core logic is based upon the contract's balance. More
 
 ## Roles and State
 
-Roles (Admin, Judge, Participant) were implement in the `DHackathon` contracts to control who calls them. OpenZeppelin's Roles library was leveraged for this, it can be found [here](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Roles.sol). Modifiers checking the appropriate roles were added to all relevant functions, see the inherited `Judge.sol` and `Participant.sol`.
+Roles (Admin, Judge, Participant) were implement in the `DHackathon` contracts to control who calls them. OpenZeppelin's Roles _library_ was leveraged for this, it can be found [here](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Roles.sol). Modifiers checking the appropriate roles were added to all relevant functions, see the inherited `Judge.sol` and `Participant.sol`.
 
 Similarly, state management was implemented on the `DHackathon` contracts, via relevant modifiers inherited from `StateTracker.sol`.
 

@@ -21,14 +21,15 @@ Dillinger is a cloud-enabled, mobile-ready, offline-storage, AngularJS powered H
   - Factory
   - State
   - Roles
+  - Circuit Breaker
 
 
 # called avoiding_common_attacks.md!
 
 
   - Mortal and/or Autodeprecation
-  - Pull over Push / Withdrawal pattern
-  - State Machine
+  - Pull over Push / Withdrawal pattern  ----- DONE
+  - State Machine    ------- DONE
   - Rate Limniting
 
 
@@ -75,6 +76,7 @@ To Remember:
   - Add Loading Container
   - specific event configuration for each type of event to display its returned values
   - make the contracts upgradeable
+  - Make factory contract (and DHackathon ones) Mortal and/or Autodeprecation
 
 To Publish:
   - UML of process, stages, actors and functions
