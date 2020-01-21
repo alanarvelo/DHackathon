@@ -126,7 +126,6 @@ contract("DHackathon", accounts => {
       await instance.removeJudge(judge1, {from: _admin})
 
       let judgesList = await instance.getJudgesList()
-      console.log(judgesList.includes(judge1), judgesList.includes(judge2))
       let included = (!judgesList.includes(judge1) && judgesList.includes(judge2))
       assert.equal(included, true, "Judge not deleted correctly from array")
     });
@@ -200,8 +199,8 @@ contract("DHackathon", accounts => {
     it("participants can submit projects", async () => {
       let _url = "https://github.com/alanarvelo/starRegistryDApp"
       await instance.submitProject(_url, {from: participant1});
-      let project = await instance.viewProject({from: participant1})
-      assert.equal(project[0], _url, "Project was not properly submitted");
+      let project = await instance.projects(participant1)
+      assert.equal(project["url"], _url, "Project was not properly submitted");
     });
 
     it("properly changes to InVoting state", async () => {
@@ -235,8 +234,8 @@ contract("DHackathon", accounts => {
 
     it("judge can vote", async () => {
       await instance.submitVote(participant1, {from: judge1});
-      let project = await instance.viewProject({from: participant1})
-      assert.equal(project[1], 1, "Project did not receive vote");
+      let project = await instance.projects(participant1)
+      assert.equal(project["votes"], 1, "Project did not receive vote");
     });
 
     it("judge can't vote twice", async () => {

@@ -45,6 +45,8 @@ contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
     uint128 private numJudgesWhoVoted;
     /// Prevent double voting
     mapping (address => bool) public judgeVoted;
+    // Store the right portion of the prize
+    uint256 private prizePortion;
 
     event FundingReceived(address sponsor, uint256 amount);
     event ProjectSubmitted(address participant, string url);
@@ -127,6 +129,7 @@ contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
         onlyAdmin()
     {
         _closeDHackathon(DHID, name, prize);
+        prizePortion = address(this).balance.div(numJudgesWhoVoted);
     }
 
     /*************************************** Judge ******************************************/
@@ -144,6 +147,7 @@ contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
     {
         require(!isParticipant(_account), "Proposed judge can't be a Participant");
         require(!isAdmin(_account), "Proposed judge can't be the Admin");
+        require(!isJudge(_account), "Proposed judge is already a Judge");
         _addJudge(_account);
     }
 
@@ -225,20 +229,6 @@ contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
     }
 
     /**
-     * @notice Participants can view their submission object / project info
-     * @notice Their submitted url, votes received, and if they have withdrawn their funds
-     */
-    function viewProject()
-        public
-        view
-        onlyParticipant()
-        returns (string memory, uint128, bool)
-    {
-        Project memory p = projects[msg.sender];
-        return (p.url, p.votes, p.withdrewPrize);
-    }
-
-    /**
      * @notice Each participant who received a vote is entitled to a piece of the prize
      * @notice The prize is divided by the number of proposed winners by the judges
      */
@@ -252,9 +242,8 @@ contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
         require(projects[msg.sender].votes > 0, "Your project received 0 votes from the Judges");
         Project storage winner = projects[msg.sender];
         /// Calculate and send his part of the prize
-        uint256 amount = winner.votes.mul(address(this).balance.div(numJudgesWhoVoted));
+        uint256 amount = winner.votes.mul(prizePortion);
         winner.withdrewPrize = true;
-        --numJudgesWhoVoted;
         msg.sender.transfer(amount);
         emit PrizeWithdrawn(msg.sender, amount);
     }

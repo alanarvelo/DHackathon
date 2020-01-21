@@ -18,11 +18,14 @@ Dillinger is a cloud-enabled, mobile-ready, offline-storage, AngularJS powered H
   - circuit breaker
   - role pattern library open zepelin
   - state patterns isClosed
+  - Factory
+  - State
+  - Roles
 
 
 # called avoiding_common_attacks.md!
 
-  - Factory
+
   - Mortal and/or Autodeprecation
   - Pull over Push / Withdrawal pattern
   - State Machine
@@ -56,10 +59,9 @@ To Remember:
   - Get events working right and neatly   -------- DONE
   - display more recent DH first  ------- DONE
 
-  - display judges and participants via store-reducer-loop
-  - show projects submitted by whom
-  - show if project/participant has a vote & can therefore call withdrawPrize
-    by 12:00am
+  - display judges and participants via store-reducer-loop ------- DONE
+  - show projects submitted by whom  ------- DONE
+  - show if project/participant has a vote & can therefore call withdrawPrize ------ DONE
   
   - Allow proper login, MM-enable, with the MM button
   - Dont remove pop-up until interaction with MM is achieved, and show loading button
@@ -72,15 +74,21 @@ To Remember:
   - make input size variable
   - Add Loading Container
   - specific event configuration for each type of event to display its returned values
+  - make the contracts upgradeable
 
 To Publish:
   - UML of process, stages, actors and functions
   - Instruction page with UML and caveats, exceptions, requires
+  - Properly document own github repo according to requirements
+  - in DHackathon instructions and graph
+
   - Host project
+  - Youtube videos about usage
   - Medium Post
-  - Youtube video usage
-  - Post on reddit, product hunt, etc
+  - Post on reddit, product hunt, etc, devpost
   - email companies about engagement / job opps
+  - Ubuntu compatibility to replicate
+  
 
 To Share with Amal:
   - proper config of web3 when adding new contract

@@ -44,10 +44,6 @@ contract DHackathonFactory is Ownable {
         _;
     }
 
-    function emitAnEvent() public {
-        emit FundsWithdrawn(100);
-    }
-
     function createDHackathon(string memory _name, uint256 _prize)
         public
         payable
