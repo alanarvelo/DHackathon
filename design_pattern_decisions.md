@@ -46,6 +46,7 @@ The `operational` state variable was kept public as it is rendered in the UI to 
 #### `withdrawFunds` function
 
 This function is restricted to the _owner_ and it sends the contract's balance, accumulated from DHackathon creations, to the _owner_. Note this function is an example of the withdrawal pattern being preferred over the push send pattern.
+
 ---
 
 ## DHackathon
