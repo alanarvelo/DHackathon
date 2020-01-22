@@ -251,7 +251,7 @@ export default class DHackathon extends React.Component {
           </Box>
           <Box p={1} width={1} style={styles.boxH} >
             <TextButton text={"Add Judge"} onClick={() => this.togglePopup("addJudge")} size="small" variant="danger" disabled={EOARole === 0 && state === 0 ? false : true} style={{'margin':10, fontSize: 10}} />
-            <TextButton text={"Remove Judge"} onClick={() => this.togglePopup("removeJudge")} size="small" variant="danger" disabled={EOARole === 0 ? false : true} style={{'margin':10, fontSize: 10}} />
+            <TextButton text={"Remove Judge"} onClick={() => this.togglePopup("removeJudge")} size="small" variant="danger" disabled={EOARole === 0 && state != 3 ? false : true} style={{'margin':10, fontSize: 10}} />
           </Box>
 
           <Heading as={"h2"}>Judge Panel</Heading>
@@ -272,7 +272,7 @@ export default class DHackathon extends React.Component {
           </Box>
           <Box p={1} width={1} style={styles.boxH} >
             <TextButton text={"Register as Participant"} onClick={() => this.togglePopup("registerAsParticipant")} size="small" disabled={EOARole === 3 && state === 0 ? false : true} style={{'margin':10, fontSize: 10}} />
-            <TextButton text={"Deregister as Participant"} onClick={() => this.togglePopup("deregisterAsParticipant")} size="small" disabled={EOARole === 2 ? false : true} style={{'margin':10, fontSize: 10}} />
+            <TextButton text={"Deregister as Participant"} onClick={() => this.togglePopup("deregisterAsParticipant")} size="small" disabled={EOARole === 2 && state != 3 ? false : true} style={{'margin':10, fontSize: 10}} />
             <TextButton text={"Submit Project's Github URL"} onClick={() => this.togglePopup("submitProject")} size="small" disabled={EOARole === 2 && state === 1 ? false : true} style={{'margin':10, fontSize: 10}} />
             <TextButton text={"Withdraw Prize"} onClick={this.withdrawPrize} size="small" disabled={EOARole === 2 && state === 3 ? false : true} style={{'margin':10, fontSize: 10}} />
           </Box>

@@ -4,25 +4,7 @@ import './DHackathon.sol';
 import '../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol';
 import '../node_modules/openzeppelin-solidity/contracts/ownership/Ownable.sol';
 
-/**
-    Necessary Features:
-    - Factory design
-    - Circuit breaker (isOperational) + Speed bump (rate limiting)
-    - Deployable to with Hyperledger Besu private network
-    - Pay Factory at Hackathon Completion
-
-
-    Nice-to-have:
-    - Complex voting mechanism based on criterias and point summation
-    - Sponsor entities that provide the funding
-    - Participation fee from hackers
-    - Extend to any kind of competition
-
-    - Make participants open or approved
-    - Require at least 1 judge at start
-    - add price here verbally, make it surpass after funding
- */
-
+/// @author Alan Arvelo
 contract DHackathonFactory is Ownable {
     using SafeMath for uint256;
 

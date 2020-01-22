@@ -5,23 +5,6 @@ import './roles/JudgeRole.sol';
 import './roles/ParticipantRole.sol';
 import './states/StateTracker.sol';
 
-/**
-    Necessary Features:
-    - Factory design
-    - Judge Selection from Admin
-    - Simple Judge voting mechanism
-    - Circuit breaker (isOperational) + Speed bump (rate limiting)
-    - Deployable to with Hyperledger Besu private network
-    - Auth/registration mechanism with Blockstack or Uport
-    - State Machine
-    - Functionality to kill (self-destruct the contract) - when all funds have been retired by winners (automatic or by admin)
-
-    Nice-to-have:
-    - Complex voting mechanism based on criterias and point summation
-    - Sponsor entities that provide the funding
-    - Participation feee from hackers
- */
-
 /// @author Alan Arvelo
 contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
     using SafeMath for uint256;
@@ -106,6 +89,8 @@ contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
     {
         if (msg.value > 0) emit FundingReceived(msg.sender, msg.value);
         require(address(this).balance >= prize, "Funds for prize must be in contract to start DHackathon");
+        require(judgesList.length >= 1, "At least 1 judge is required to Open the DHackathon");
+        require(participantList.length >= 2, "At least 2 participants are required to Open the DHackathon");
         _openDHackathon(DHID, name, prize);
     }
 
@@ -128,6 +113,7 @@ contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
         external
         onlyAdmin()
     {
+        require(numJudgesWhoVoted >= 1, "At least 1 vote must have been submitted")
         _closeDHackathon(DHID, name, prize);
         prizePortion = address(this).balance.div(numJudgesWhoVoted);
     }

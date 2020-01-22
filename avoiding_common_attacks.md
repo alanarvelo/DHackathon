@@ -1,4 +1,4 @@
-![diagram](./images/horizontal_logo.png)
+![horizontal logo](./images/horizontal_logo.png)
 
 # Avoiding Common Attacks
 ---
@@ -42,4 +42,12 @@ To prevent this attack, no core logic is based upon the contract's balance. More
 Roles (Admin, Judge, Participant) were implement in the `DHackathon` contracts to control who calls them. OpenZeppelin's Roles _library_ was leveraged for this, it can be found [here](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Roles.sol). Modifiers checking the appropriate roles were added to all relevant functions, see the inherited `Judge.sol` and `Participant.sol`.
 
 Similarly, state management was implemented on the `DHackathon` contracts, via relevant modifiers inherited from `StateTracker.sol`.
+
+#### To do:
+Due to time constraints, these planned safety design features where not implemented:
++ Speed bump (rate limiting)
++ Functionality to kill (self-destruct the contract), and send funds to Factory owner or DHackathon winners.
+
+
+
 

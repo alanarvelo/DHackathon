@@ -1,4 +1,4 @@
-![diagram](./UML/UML_data_modeling.png)
+![data and dependencies diagram](./UML/UML_data_modeling.png)
 
 # Design Pattern Decisions
 ---
@@ -52,41 +52,41 @@ This contract inherits the `JudgeRole`, `ParticipantRole`, and `StateTracker`, t
 
 ### Roles
 
-The `DHackathon` contract has 3 roles and therefore 4 types of users: _Admin_, _Judge_, _Participant_, everyone else (no role). Roles are utilized to accurately represents how hackathons are conducted, but also to restrict function access. For example, the only state-changing functions that have open access, i.e. can be called by anyone, are the   `submitFunds` function and the `registerAsParticipant` function. Modifiers from `JudgeRole` and `ParticipantRole` contract were utilized to enforce this behavior. Below a list of the functions available to each role.
+The `DHackathon` contract has 3 roles and therefore 4 types of users: _Admin_, _Participant_, _Judge_, , everyone else (no role). Roles are utilized to accurately represents how hackathons are conducted, but also to restrict function access. For example, the only state-changing functions that have open access, i.e. can be called by anyone, are the   `submitFunds` function and the `registerAsParticipant` function. Modifiers from `JudgeRole` and `ParticipantRole` contract were utilized to enforce this behavior. Below a list of the functions available to each role.
 
 
 + **Admin:**  `addJuge(address _account)` and `removeJudge(address _account)` to handle who the judge role, and functions to move the `DHackathon` through its stages like: `openDHackathon()`, `toVotingDHackathon()`, and `closeDHackathon()`.
-+ **Judge:** can `submitVote(address _proposedWinner)` to choose its elected winnner.
 + **Participant:** can only `submitProject(string _url)` to deliver the location of their Hackathon project, and `withdrawPrize` to retrieve part of the prize if it received any votes by the Judges.
++ **Judge:** can `submitVote(address _proposedWinner)` to choose its elected winnner.
 + **Anyone:** Any externally owned account (EOA) can `registerAsAParticipant()` therefore gaining access to the Participant Role priviledges. Any EOA, including ones with assigned roles, can `submitFunds()` that will be accumulated in the `DHackathon` contract as the prize to be withdrawn by the winners.
 
 Notice the _Admin_ has no say on the selection of the winner or the delivery of the prize. To further decentralize this contract, the stage changes can be time based. Furthermore, the election of judges can be done by a voting mechanism.
 
 
-### States
+### Stages — State Machine
 
-The `StateTracker` contract keeps track of what stage the `DHackathon` is on. Using modifiers, functions are restricted to the particular stage in the `DHackathon` when they are expected. This design pattern, like the Roles, accurately represents how hackathons are conducted while helping to restrict function access therefore limiting the possibilities for malicious action or bugs. The stages that each `Hackathon` contract is expected to go through are: _In Preparation_, _Open_, _In Voting_, _Closed_. Modifiers from `State Tracker` are utilized to enforce this behavior. Below a list of the allowed functionality on each stage.
+The `StateTracker` contract keeps track of what stage the `DHackathon` is on. Using modifiers, functions are restricted to the particular stage in the `DHackathon` when they are expected. This design pattern, like the Roles, accurately represents how hackathons are conducted while helping to restrict function access therefore limiting the possibilities for malicious action or bugs. The stages that each `Hackathon` contract is expected to go through are: _In Preparation_, _Open_, _In Voting_, _Closed_. Modifiers from `StateTracker` are utilized to enforce this behavior. Below a list of the allowed functionality on each stage.
 
-+ **In Preparation:** 
++ **In Preparation:** contract starts on this stage.
   + *Admin:* `addJudge`, `removeJudge`, `openDHackathon`
-  + *Judge:* -
   + *Participant:* `deregisterAsParticipant`
-  + *No role:* `registerAsParticipant`
-+ **Open:**
-  + *Admin:* `toVotingDHackathon`, `removeJudge`
   + *Judge:* -
+  + *No role:* `registerAsParticipant`
++ **Open:** contract balance must be >= than the declared _prize_. At least 1 judge and 2 participants must have registered.
+  + *Admin:* `toVotingDHackathon`, `removeJudge`
   + *Participant:* `submitProject`, `deregisterAsParticipant`
+  + *Judge:* -
   + *No role:* -
 + **In Voting:**
   + *Admin:* `closeDHackathon`, `removeJudge`
-  + *Judge:* `submitVote`
   + *Participant:* `deregisterAsParticipant`
+  + *Judge:* `submitVote`
   + *No role:* -
-+ **Closed:**
++ **Closed:** at least 1 vote must have been submitted. 
   + *Admin:* -
-  + *Judge:* -
   + *Participant:* `withdrawPrize`
-  + *No role:* 
+  + *Judge:* -
+  + *No role:* -
 
 With the caveat, that anyone, with role or without role, can call `submitFunds`, `balance`, `isAdmin` at any stage.
 
@@ -94,4 +94,5 @@ To change the `DHackathon` state from _In Preparation_ to _Open_ the contract's 
 
 Below an UML sequence diagram depicting the factory-child design pattern, along with the state machine design pattern and roles of the `DHackathon` contract.
 
-![diagram](./UML/UML_sequence_diagram.png)
+![sequence diagram](./UML/UML_sequence_diagram.png)
+
