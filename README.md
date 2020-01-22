@@ -34,7 +34,7 @@ The platform is based on two main contracts that have a factory-child relationsh
 
 ### Stages
 
-Each hackathon has 4 types of users: _Admin_, _Participant_, _Judge_ everyone else (_No role_). Function access is restricted via modifiers to EOAs with the appropriate roles. Roles are exclusive, the same EOA can hold two roles, e.g. the _Admin_ can't be a _judge_, nor can a _judge_ be a _participant_.
+Each hackathon has 4 types of users: _Admin_, _Participant_, _Judge_ everyone else (_No role_). Function access is restricted via modifiers to EOA's with the appropriate roles. Roles are exclusive, the same EOA can hold two roles, e.g. the _Admin_ can't be a _judge_, nor can a _judge_ be a _participant_.
 
 + **Admin:**  in charge of adding and removing judges and moving the contract through its stages (_In Preparation_, _Open_, _In Voting_, _Closed_, more on stages below).
 + **Participant:** submit a link to their project and withdraw a piece of the prize if they got any votes from judges.
@@ -95,7 +95,9 @@ Notice the _Admin_ has no power on the selection of the winner or the delivery o
 ## Live Demo
 
 hosted here
+
 videos here
+
 medium here
 
 ---
@@ -106,6 +108,7 @@ medium here
 
 Currently, the _Admin_ is reponsible for moving the `DHackathon` contract, which  represents a hackathon in the Ethereum blockchain, through its stages by calling the functions:  `openDHackathon()`, `toVotingDHackathon()`, and `closeDHackathon()`.
 Given that at creation, each `DHackathon` contract gets a _createdOn_ property, these stage changes can be time based. The contract can last a fixed number of days on each stage, or the user can define the length of each stage at creation.
+
 **To do:** time-based state management.
 
 #### Project submission
@@ -121,6 +124,7 @@ struct Project {
     }
 mapping (address => Project) public projects;
 ```
+
 **To do:** timestamp projects at submission and require a hash of its content.
 
 #### Voting mechanism
@@ -145,7 +149,7 @@ uint256 amount = winner.votes.mul(prizePortion);
 
 #### Participants and teams
 
-Currently participants are represented by EOAs only. Would be great to add functionality for having _teams_ that consist of several EOAs, submit a projects together and share the prize. Other options are to have participants get approved or charge a fee for participating (similar to a betting format).
+Currently participants are represented by EOA's only. Would be great to add functionality for having _teams_ that consist of several EOA's, submit a projects together and share the prize. Other options are to have participants get approved or charge a fee for participating (similar to a betting format).
 
 **To do:** add _teams_ functionality.
 
@@ -159,7 +163,7 @@ Another of the big responsibilities of the _Admin_ is to select the judges. Howe
 
 A Sponsor role can be assigned to anyone who submits funds or who submits more then X funds. The sponsor role could have tiers depending on the donation. Companies, will be interested in the publicity and functionality of the Sponsor role if it is designed to be appealing enough for them.
 
-**To do:** add a Sponsor role for EOAs that submit funds and add relevant functionality.
+**To do:** add a Sponsor role for EOA's that submit funds and add relevant functionality.
 
 #### Extend to any type of competition
 
@@ -170,10 +174,10 @@ Any sort of tournament: poker, esports, ping pong, or art competitions can lever
 **To do:** generalize functionality to provide registration, prize funding, judge selection, voting, and prize disbursal to any type of competition.
 
 
-#### Other To-Do's:
-+ Host the front-end on IPFS
-+ Add capability for the Ethereum Name Service (ENS)
-+ Auth \& signing with Uport and Blockstack
+#### Other To-do's:
+- Host the front-end on IPFS
+- Add capability for the Ethereum Name Service (ENS)
+- Auth \& signing with Uport and Blockstack
 
 - Allow proper login, MM-enable, with the MM button
 - Dont remove pop-up until interaction with MM is achieved, and show loading button
