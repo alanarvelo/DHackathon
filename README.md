@@ -8,6 +8,11 @@ The purpose of this project is to transitin online Hackathons to the blockchain 
 
 ---
 
+An image is worth a thousands words
+A demo is worth a thousand images
+Explanation
+Setup/Install
+
 To Remember:
   - On video demo, mention all the TO-DO/Nice-to-haves and explain how this can be generalized for any type of competition
       enforce expected prize
