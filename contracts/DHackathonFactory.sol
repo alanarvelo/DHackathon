@@ -16,6 +16,7 @@ import '../node_modules/openzeppelin-solidity/contracts/ownership/Ownable.sol';
     - Complex voting mechanism based on criterias and point summation
     - Sponsor entities that provide the funding
     - Participation fee from hackers
+    - Extend to any kind of competition
 
     - Make participants open or approved
     - Require at least 1 judge at start

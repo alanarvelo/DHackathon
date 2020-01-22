@@ -1,13 +1,3 @@
-  - Factory - child
-    - Operational circuit breaker
-    - withdrawal pattern
-
-  - using SafeMath for uint256 from OpenZeppelin
-  - using Roles from OpenZepplin
-  - state patterns isClosed modifiers
-
-
-
 ![diagram](./UML/UML_data_modeling.png)
 
 # Design Pattern Decisions
@@ -15,24 +5,26 @@
 
 ## DHackathon Factory
 
-A modular, factory-child design pattern was utilized where anyone can call the `createDHackathon` function of the `DHackathonFactory` contract to instantiate and become the _admin_ of a newly minted `DHackathon` contract. This design decision limits the responsibilities of the `DHackathonFactory` contract to only 3 functions (`createDHackathon`, `shutdown`, `withdrawFunds`) and two types of users, the _owner_ and everyone else. This contract inherist the `Ownable.sol` contract from OpenZeppelin for 2 reasons: to leverage the `onlyOwner` modifier and make the `shutdown` \& `withdrawFunds` functions only accessible to the _owner_ and to allow the owner to `transferOwnership` and `renounceOwnership`.
+A modular, factory-child design pattern was utilized where anyone can call the `createDHackathon` function of the `DHackathonFactory` contract to instantiate and become the _admin_ of a newly minted `DHackathon` contract. This design decision limits the responsibilities of the `DHackathonFactory` contract to only 3 functions (`createDHackathon`, `shutdown`, `withdrawFunds`) and two types of users, the _owner_ and everyone else. 
 
-#### `createDHackathon` function
+### Modularity and inheritance
+This contract inherits the `Ownable.sol` contract from OpenZeppelin to first leverage the `onlyOwner` modifier and make the `shutdown` \& `withdrawFunds` functions only accessible to the _owner_ and to allow the owner to `transferOwnership` and `renounceOwnership`. It also inherits and applies the `SafeMath` _library_ to all uint types to prevent under- and overflow.
 
-This function was designed to be called by anyone (including the _owner_). Given that we believe the functionality of the `DHackathon` contract — to seamleslly conduct a Hackathon in a decentralized manner is valuable — it has a cost of 0.1 ETH. This function instantiates a new `DHackathon` contract assigning _Admin_ priviledges to the caller, and keeps a record of the newly minted contract via mapping-struct combination for accountability purposes.
+### `createDHackathon` function
 
-#### Circuit Breaker — `shutdown` function
+This function was designed to be called by anyone (including the _owner_). Given that we believe the functionality of the `DHackathon` contract — to seamleslly conduct a Hackathon in a decentralized manner is valuable — it has a cost of 0.1 ETH. This function instantiates a new `DHackathon` contract assigning _Admin_ priviledges to the caller, and keeps a record of the newly minted contract via mapping-struct combination for accountability purposes. The caller must specify what `name` and `prize` the `DHackathon` will have. The contract's balance will have to be greater or equal to the promised `prize` for the `DHackathon` contract to change to the `Open` state.
+
+### Circuit Breaker — `shutdown` function
 
 The `shutdown` function is a circuit breaker that blocks the `createDHackathon` function. It was created in case any bugs are found within the `DHackathon` contract which is the one that hosts most of the functionality of this platform. The `withdrawFunds` funds was not blocked as it is restricted to the _owner_ via a modifier.
 ```
-/// state variable
 bool public operational = true;
-/// modifier
+
 modifier isOperational() {
     require(operational == true, "This contract has been stopped by the owner.");
     _;
 }
-/// function
+
 function shutdown()
         public
         onlyOwner()
@@ -43,101 +35,62 @@ function shutdown()
 
 The `operational` state variable was kept public as it is rendered in the UI to discourage everyone from calling `createDHackathon` when it is blocked.
 
-#### `withdrawFunds` function
+### `withdrawFunds` function
 
-This function is restricted to the _owner_ and it sends the contract's balance, accumulated from DHackathon creations, to the _owner_. Note this function is an example of the withdrawal pattern being preferred over the push send pattern.
+This function is restricted to the _owner_ and it sends the contract's balance, accumulated from DHackathon creations, to the _owner_. Note this function is an example of the **withdrawal pattern** being preferred over the push send pattern.
 
 ---
+
 
 ## DHackathon
 
 The DHackathon contracts are minted by the `DHackathonFactory` contract. This design pattern makes each `DHackathon` contract modular and independent. Once instantiated, it has no concern or need for the `DHackathonFactory` that created it.
 
-1. To stop selling tickets while the setting Lucky7Numbers phase is happening:
+### Modularity and inheritance
 
-This modifier is in the Lucky7Store contract and is related to the sellRandomTicket, generateRandomTicket, and sellGeneratedTicket functions.
+This contract inherits the `JudgeRole`, `ParticipantRole`, and `StateTracker`, the first two inheriting the `Roles` library from OpenZeppelin. The `DHackathon` contract also inherits and applies the `SafeMath` _library_ to all uint types to prevent under- and overflow.
 
-2. To stop the possible generation of Lucky7Numbers while a game is in curse:
-```
-modifier gameNotInCourse(){
-        require(settingLucky7Numbers==true);
-        _;
-    }
-```
+### Roles
 
-3. To stop users to set new games until both time and pot setted are reached:
-```
-modifier prizesDeliveryEnabled() {
-    bool potReached;
-    bool timeReached;
-    (, potReached, timeReached) = validateDelivery();
-    if(isLocalBlockchain == true){
-      require((potReached == true && timeReached == true) || isOwner());
-    }
-    else{
-      require(potReached == true && timeReached == true);
-    }
-    _;
-  }
-```
-
-4. To stop users on generating new Lucky7Numbers if we are waiting for one:
-```
-  bool waitingForLucky7Number = false;
-```
+The `DHackathon` contract has 3 roles and therefore 4 types of users: _Admin_, _Judge_, _Participant_, everyone else (no role). Roles are utilized to accurately represents how hackathons are conducted, but also to restrict function access. For example, the only state-changing functions that have open access, i.e. can be called by anyone, are the   `submitFunds` function and the `registerAsParticipant` function. Modifiers from `JudgeRole` and `ParticipantRole` contract were utilized to enforce this behavior. Below a list of the functions available to each role.
 
 
-This modifier is in the Lucky7Raflle contract and is related to the generateLuckyNumber which generates the Lucky7Numbers. The settingLucky7Numbers value is changed once the setNewGame of the Lucky7Raflle contract is called, i.e. when a new game is setted and is necessary to set the new Lucky7Numbers.
++ **Admin:**  `addJuge(address _account)` and `removeJudge(address _account)` to handle who the judge role, and functions to move the `DHackathon` through its stages like: `openDHackathon()`, `toVotingDHackathon()`, and `closeDHackathon()`.
++ **Judge:** can `submitVote(address _proposedWinner)` to choose its elected winnner.
++ **Participant:** can only `submitProject(string _url)` to deliver the location of their Hackathon project, and `withdrawPrize` to retrieve part of the prize if it received any votes by the Judges.
++ **Anyone:** Any externally owned account (EOA) can `registerAsAParticipant()` therefore gaining access to the Participant Role priviledges. Any EOA, including ones with assigned roles, can `submitFunds()` that will be accumulated in the `DHackathon` contract as the prize to be withdrawn by the winners.
 
-## Contract modularity and inheritances
-The inheritances are as follow:
-Lucky7Admin -> Lucky7TicketFactory -> Lucky7Raflle -> Lucky7Store
-
-In the earlier stages of this project the contracts were pretty simple, but as the requirements were appearing, the code was getting more and more complex.
-That's why i decided to divide the business logic in 4 modules:
-
-1. Service Administration: Lucky7Admin
-
-This contract contains the functions to change the selling and generating tickets prices, the oraclize gas limit and gas price and the wallet where the 30%
-of the balance of the contract os going when a new game is setted.
-
-2. Random numbers generation: Lucky7TicketFactory
-
-This contract contains all the functions that generate random numbers, i.e. generates parameters, Tickets and Lucky7Numbers. This is the very essence of the game, the random numbers generated
-
-3. Taking decisions to make the game work: Lucky7Raflle
-
-This contract containts the function to know how and when to generate the Lucky7Numbers, when to Store the Lucky7Tickets in the lucky7TicketsArray of the Lucky7TicketFactory contract, how to order the Lucky7Numbers and Lucky7Tickets in ascending order, how to deliver the prizes, what parameters increment and what arrays to clean when a the setNewGame function is called.
-
-4. The market: Lucky7Store
-
-This contract contains the functions necessary to determine when to sell and generate tickets and when to stop to do it.
+Notice the _Admin_ has no say on the selection of the winner or the delivery of the prize. To further decentralize this contract, the stage changes can be time based. Furthermore, the election of judges can be done by a voting mechanism.
 
 
-## [Withdrawal from contracts](https://solidity.readthedocs.io/en/v0.4.24/common-patterns.html#withdrawal-from-contracts) and not sending ETH to 0
-When the setNewGame function of the Lucky7Raflle is called, it then calls the deliverPrizes function, which deliver the prizes for the best Lucky7Tickets. It proceed to check that the owner of those Lucky7Tickets is not an address 0, and then store the prizes on the pendingWithdrawals mapping. This way we avoid a DoS with (Unexpected) revert attack; the winners have to claim for them prizes instead of being automatically delivered.
+### States
 
-## Feature Contracts
-Ownable: OpenZeppelin contract. There's a lot of functions which are necesarily stricted to the admins. It's used for the onlyOwner modifier.
+The `StateTracker` contract keeps track of what stage the `DHackathon` is on. Using modifiers, functions are restricted to the particular stage in the `DHackathon` when they are expected. This design pattern, like the Roles, accurately represents how hackathons are conducted while helping to restrict function access therefore limiting the possibilities for malicious action or bugs. The stages that each `Hackathon` contract is expected to go through are: _In Preparation_, _Open_, _In Voting_, _Closed_. Modifiers from `State Tracker` are utilized to enforce this behavior. Below a list of the allowed functionality on each stage.
 
++ **In Preparation:** 
+  + *Admin:* `addJudge`, `removeJudge`, `openDHackathon`
+  + *Judge:* -
+  + *Participant:* `deregisterAsParticipant`
+  + *No role:* `registerAsParticipant`
++ **Open:**
+  + *Admin:* `toVotingDHackathon`, `removeJudge`
+  + *Judge:* -
+  + *Participant:* `submitProject`, `deregisterAsParticipant`
+  + *No role:* -
++ **In Voting:**
+  + *Admin:* `closeDHackathon`, `removeJudge`
+  + *Judge:* `submitVote`
+  + *Participant:* `deregisterAsParticipant`
+  + *No role:* -
++ **Closed:**
+  + *Admin:* -
+  + *Judge:* -
+  + *Participant:* `withdrawPrize`
+  + *No role:* 
 
-## Pseudo-Random Number Generator
-Not presented yet, but is kind of a "numeric hash". While is true that Provable have a perfectly functional entropy source that could do the work, users needs a way to certificate that the game is not biased. That's why using this PRNG is important; since it acts as a "numeric hash", is unlikely to know the inputs that are going to produce certain output. It also works as a "watermark"; users can verify themselves that the tickets obtained corresponds to the paramaters purchased. Today, the parameters are 4 digits number, which means a space of (10000-1000)^2=81.000.000 distinct combinations, therefore that amount of numbers. The calculus comes from the idea that when asked for a 4 digit number, Wolfram responds with a number with the most significant digit distinct than 0, or strictly greater than 999 to be exact. 
+With the caveat, that anyone, with role or without role, can call `submitFunds`, `balance`, `isAdmin` at any stage.
 
-Changing the query to 5 digits numbers, would result in a (100000-10000)^2 = 8.100.000.000 distinct numbers. This, asking for 2 parameters. Ask for 3 parameters would result in astronomics numbers. Future possibilities to ensure entropu of the game.
+To change the `DHackathon` state from _In Preparation_ to _Open_ the contract's balance must be equal or greater than the _prize_ the _Admin_ declared when calling the `createDHackathon` function from the `DHackathonFactory` contract.
 
-That said, the PRNG takes the mu and i parameter to generate Tickets and Lucky7Numbers.
-
-
-## Lucky7Ticket and Tickets storage
-Lucky7Tickets and Tickets are stored permanently on the Blockchain to verify, in future games and if a user wants to, that all the prices where delivered correctly. There have to be a work of "transparency", where users can claim they are the winner of certain past prize, and can demonstrate it through the values of the stored LuckyTickets and Tickets.
-
-## Oraclize gas limit and gas price
-
-OraclizeCustomGasPrice and OraclizeGasLimit where calculated in such way that the tickets weren't so expensive and the oraclize querys were to slow. This process was done on Rinkeby testnet through remix.
-
-## Pot reached not using contract balance
-
-For crowd-wise logic, is necessary to reach certain pot to deliver prizes. As is known that there's no way to make an EOA or an address to reject ether transfers, then there was necessary to design another method. To do so, in Lucky7Admin there's a function called validateDeliver() which calculates the pot according to ticket prices and provable prices, getting the subtraction of both
-and multiplying them as a way to get the current pot. This way, 'forced ether sending' is discouraged because it does not have any effect on game cycle.
-
+Below an UML sequence diagram depicting the factory-child design pattern, along with the state machine design pattern and roles of the `DHackathon` contract.
+![diagram](UML_sequence_diagram)

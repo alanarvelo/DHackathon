@@ -36,6 +36,12 @@ contract StateTracker {
         _;
     }
 
+    /// Define a modifier that checks if DHackathon is not in the `Closed` state
+    modifier isNotClosed() {
+        require(state != DHState.Closed, "DHackathon is not in the Closed state");
+        _;
+    }
+
     /// Define function to open the competition
     function _openDHackathon(uint256 _DHID, string memory _name, uint256 _prize)
         internal

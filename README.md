@@ -1,44 +1,12 @@
-# Hackathon Smart Contract
+# Welcome to Decentralized Hackathons!
 
-[![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
+![diagram](./UML/UML_state_diagram_simplified.png)
 
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
+## Description
 
-Dillinger is a cloud-enabled, mobile-ready, offline-storage, AngularJS powered HTML5 Markdown editor.
+The purpose of this project is to transitin online Hackathons to the blockchain as smoothly as possible, therefore the idea main design considerations was to replicate the online hackathon process as accurately and seamlessly as possible within the ethereum blockchain context.
 
-  - Type some Markdown on the left
-  - See HTML in the right
-  - Magic
-
-
-
-# design_pattern_decisions.md!
-
-  - using SafeMath for uint256 from OpenZeppelin
-  - circuit breaker
-  - role pattern library open zepelin
-  - state patterns isClosed
-  - Factory
-  - State
-  - Roles
-  - Circuit Breaker
-
-
-# called avoiding_common_attacks.md!
-
-
-  - Mortal and/or Autodeprecation
-  - Pull over Push / Withdrawal pattern  ----- DONE
-  - State Machine    ------- DONE
-  - Rate Limniting
-
-
-
-
-You can also:
-  - Import and save files from GitHub, Dropbox, Google Drive and One Drive
-  - Drag and drop markdown and HTML files into Dillinger
-  - Export documents as Markdown, HTML and PDF
+---
 
 To Remember:
   - On video demo, mention all the TO-DO/Nice-to-haves and explain how this can be generalized for any type of competition

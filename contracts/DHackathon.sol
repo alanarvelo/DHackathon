@@ -159,6 +159,7 @@ contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
     function removeJudge(address _account)
         public
         onlyAdmin()
+        isNotClosed()
     {
         require(isJudge(_account), "`account` is not a Judge");
         _removeJudge(_account);
@@ -209,6 +210,7 @@ contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
     function deregisterAsParticipant()
         public
         onlyParticipant()
+        isNotClosed()
     {
         _removeParticipant(msg.sender);
     }
