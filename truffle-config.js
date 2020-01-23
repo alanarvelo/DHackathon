@@ -2,10 +2,9 @@ const path = require("path");
 
 try {
   const env = require("./ENV_VARS.env.json")
-  console.log(env, env.MNEMONIC) //, JSON.parse(env), JSON.parse(env).MNEMONIC)
  }
  catch (e) {
-  console.log('the file "./ENV_VARS.env.json" it is only required to deploy to testnets or mainnet')
+  console.log('the file "./ENV_VARS.env.json" has not been created, but it is only required to deploy to testnets or mainnet')
  }
 
 module.exports = {
@@ -18,7 +17,7 @@ module.exports = {
       port: 8545, // Using ganache-cli as development network
       network_id: "*",
   },
-    ganacheGui: {
+    ganacheGUI: {
       host: "127.0.0.1",
       port: 9545, // Using ganache-gui as development network
       network_id: "*", // match any network

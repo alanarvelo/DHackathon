@@ -274,11 +274,11 @@ $ npm install
 
 **Ganache-cli private blockchain**
 
-To start a private blockchain, open yet another new terminal, let's call it the ganche-cli terminal, and type:
+To start a private blockchain, open yet another terminal, let's call it the ganche-cli terminal, and type:
 ```sh
 $ ganache-cli
 ```
-Note you must import the generated accounts, via their private keys, to the MetaMask browser extension, to intereact with the platform when it is running in the local blockchains of ganache-gli or Ganache-GUI.
+This command will create a new local blockchain and start listening on port 8545. Note you must import the generated accounts, via their private keys, to the MetaMask browser extension, to intereact with the platform when it is running in the local blockchains of ganache-gli or Ganache-GUI.
 
 **Making them work together**
 
@@ -290,27 +290,28 @@ To compile the smart contracts.
 ```sh
 truffle migrate
 ```
-To send the compiled smart contracts to the private, ganache-cli blockchain.
+To send the compiled smart contracts to any blockchain that is listening on port 8545, i.e. our ganache-cli private blockchain.
 
-Now go back to the front-end terminal
+Now go back to the front-end terminal and do:
 ```sh
 npm run start
 ```
 
-This should start a development server, and open a browser on 
+This should start a development server, and open a web browser to [http://localhost:3000/]().
 
-
+Here is where MetaMask comes in. Make sure you have MetaMask installed as an extension on that web browser. Open Metamask click on the top center where it says Networks, then click on Custom RPC, and paste `HTTP://127.0.0.1:8545` on the New RPC URL field. MetaMask is now connected to your ganache-cli private blockchain. You should now be able to locally with the platform.
 
 
 #### Tests
 
-Tests can be run by typing in the terminal
+Tests can be run by typing in the terminal. This should work anywhere, but go to the first terminal, the one where you ran `truffle compile` and `truffle migrate`
 ```sh
 truffle test
 ```
-That's it!, test takes time but all of them can be completed with some patience. Here an example of how much time they take to complete:
+That's it! Here an example of what should display in your terminal.
+![tests passing](./images/tests.png)
 
-#### Deployment
+#### Deployment to external networks
 
 The platform can be deployed to Rinkeby, Ropsten, other testnets, as well as to ethereum's Mainnet. In fact, it already has, see the deployed addresses [here](./deployed_addresses.txt").
 
@@ -333,6 +334,11 @@ truffle deploy --network <yourPreferedNetwork>
 ```
 
 ---
+
+## Authors
++ Alan Arvelo
+
+If you have any question or feedback, contact me at alanarvelo@gmail.com.
 
 
 To Remember:
