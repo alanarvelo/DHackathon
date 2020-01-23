@@ -32,7 +32,7 @@ Because an image is worth more than a thousand words:
 
 The platform is based on two main contracts that have a factory-child relationship, the `DHackathonFactory` contract and the `DHackathon`, DHackathon standing for Decentralized Hackathon. Any externally owned account (EOA) can call the `createDHackathon(string memory _name, uint256 _prize)` function of the `DHackathonFactory` contract to instantiate and become the _Admin_ of a newly minted `DHackathon` contract (more on _Admin_ and roles below). The caller must specify what `name` and `prize` the `DHackathon` will have. The contract's balance will have to be greater or equal to the promised `prize` for the `DHackathon` contract to change to the `Open` stage (more on _Open_ and stages below).
 
-### Stages
+### Roles
 
 Each hackathon has 4 types of users: _Admin_, _Participant_, _Judge_ everyone else (_No role_). Function access is restricted via modifiers to EOA's with the appropriate roles. Roles are exclusive, the same EOA can hold two roles, e.g. the _Admin_ can't be a _judge_, nor can a _judge_ be a _participant_.
 
@@ -104,14 +104,14 @@ medium here
 
 ## Design Considerations & Next Features
 
-#### Moving hackathon through stages
+### Moving hackathon through stages
 
 Currently, the _Admin_ is reponsible for moving the `DHackathon` contract, which  represents a hackathon in the Ethereum blockchain, through its stages by calling the functions:  `openDHackathon()`, `toVotingDHackathon()`, and `closeDHackathon()`.
 Given that at creation, each `DHackathon` contract gets a _createdOn_ property, these stage changes can be time based. The contract can last a fixed number of days on each stage, or the user can define the length of each stage at creation.
 
 **To do:** time-based state management.
 
-#### Project submission
+### Project submission
 
 Project submissions are currently simple, a _url_ string is all the is required from the participants in the `submitProject(string memory _url)` function. This _url_ is expected to be a **github** link to the project's repository, and there is nothing currently stopping participants from making updates to their projects past the _Open_ stage. Though, github does timestamp each commit. More sophisticated ways of submitting and storing a project can be devised. A simple addition would be to timestamp when the project's url at submission, though how will this prevent particpants from updating the url's content is still unclear. Hashing may be the way, though help is required here.
 
@@ -127,13 +127,13 @@ mapping (address => Project) public projects;
 
 **To do:** timestamp projects at submission and require a hash of its content.
 
-#### Voting mechanism
+### Voting mechanism
 
 Currently each judge has one vote to grant to one participant, the vote is `+= 1` for the elected participant votes count. The judges can only call the `submitVote(address _electedWinner)` function once. More complex voting mechnism where the `DHackathon` can have judging criterias or themes to be evaluated on and judges can vote different amounts to different participants on different criterias. These would allow for calculating a podium, i.e. select the winners as a 1st, 2nd, and 3rd place, which more closely resembles centralized hackathons.
 
 **To do:** add judging criterias and calculate winners podium-style (1st, 2nd, 3rd place).
 
-#### Prize division
+### Prize division
 
 Withdrawal design pattern is used here, winners must call the `withdrawPrize` function to receive their portion of the prize. The prize is divided equally by the number of votes given out by judges and awarded to participants based on the number of votes received. On code:
 ```
@@ -147,25 +147,25 @@ uint256 amount = winner.votes.mul(prizePortion);
 **To do:** code a more complex and customizable prize distribution mechanism according to improved voting logic.
 
 
-#### Participants and teams
+### Participants and teams
 
 Currently participants are represented by EOA's only. Would be great to add functionality for having _teams_ that consist of several EOA's, submit a projects together and share the prize. Other options are to have participants get approved or charge a fee for participating (similar to a betting format).
 
 **To do:** add _teams_ functionality.
 
-#### Adding and removing Judges
+### Adding and removing Judges
 
 Another of the big responsibilities of the _Admin_ is to select the judges. However, on the _In Preparation_ period, there can be a voting process for the community, particpants and No roles, to vote for who they want their judge to be, based on the theme of the `DHackathon` aligning with that individual's expertise. The EOA of that individual must be known. 
 
 **To do:** allow judge selection via voting process of the community.
 
-#### Sponsor role
+### Sponsor role
 
 A Sponsor role can be assigned to anyone who submits funds or who submits more then X funds. The sponsor role could have tiers depending on the donation. Companies, will be interested in the publicity and functionality of the Sponsor role if it is designed to be appealing enough for them.
 
 **To do:** add a Sponsor role for EOA's that submit funds and add relevant functionality.
 
-#### Extend to any type of competition
+### Extend to any type of competition
 
 As can be seen, hackathons are just one kind of competition that can be decentralized. Roles, _Admin_, _Participant_, _Judge_ are agnosticly named so these contracts functionality can be easily expnded to other types of competitions. Competitions need not be online, they can have a physical component and still benefit from decentralized registration, prize funding, judge selection, voting, and prize disbursal.
 
@@ -174,7 +174,7 @@ Any sort of tournament: poker, esports, ping pong, or art competitions can lever
 **To do:** generalize functionality to provide registration, prize funding, judge selection, voting, and prize disbursal to any type of competition.
 
 
-#### Other To-do's:
+### Other To-do's:
 - Host the front-end on IPFS
 - Add capability for the Ethereum Name Service (ENS)
 - Auth \& signing with Uport and Blockstack
@@ -204,7 +204,7 @@ Any sort of tournament: poker, esports, ping pong, or art competitions can lever
 
 Below is a technical explanation of how to copy the project and run a local version of it in your machine. If you just want to play with the live, finished platform find it here [DeHack](). If you want to study & improve the platform by getting a local copy, please read on.
 
-#### Prerequisities
+### Prerequisities
 The platform runs on the following version of these frameworks. 
 
 * `node v8.12.0`
@@ -235,7 +235,7 @@ $ npm install -g ganache-cli
  
 [Metamask](https://metamask.io/) to interact with the dApp. It is a browser extension and can be easily installed following these [steps](https://metamask.io/).
 
-#### Running the project
+### Running the project
 
 Clone the repository to your local machine by:
 ```sh
@@ -302,7 +302,7 @@ This should start a development server, and open a web browser to [http://localh
 Here is where MetaMask comes in. Make sure you have MetaMask installed as an extension on that web browser. Open Metamask click on the top center where it says Networks, then click on Custom RPC, and paste `HTTP://127.0.0.1:8545` on the New RPC URL field. MetaMask is now connected to your ganache-cli private blockchain. You should now be able to locally with the platform.
 
 
-#### Tests
+### Tests
 
 Tests can be run by typing in the terminal. This should work anywhere, but go to the first terminal, the one where you ran `truffle compile` and `truffle migrate`
 ```sh
@@ -311,7 +311,7 @@ truffle test
 That's it! Here an example of what should display in your terminal.
 ![tests passing](./images/tests.png)
 
-#### Deployment to external networks
+### Deployment to external networks
 
 The platform can be deployed to Rinkeby, Ropsten, other testnets, as well as to ethereum's Mainnet. In fact, it already has, see the deployed addresses [here](./deployed_addresses.txt").
 
@@ -338,7 +338,10 @@ truffle deploy --network <yourPreferedNetwork>
 ## Authors
 + Alan Arvelo
 
-If you have any question or feedback, contact me at alanarvelo@gmail.com.
+If you have any question or feedback reach me at alanarvelo@gmail.com.
+
+---
+
 
 
 To Remember:
