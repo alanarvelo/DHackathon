@@ -113,7 +113,7 @@ contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
         external
         onlyAdmin()
     {
-        require(numJudgesWhoVoted >= 1, "At least 1 vote must have been submitted")
+        require(numJudgesWhoVoted >= 1, "At least 1 vote must have been submitted");
         _closeDHackathon(DHID, name, prize);
         prizePortion = address(this).balance.div(numJudgesWhoVoted);
     }

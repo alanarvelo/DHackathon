@@ -235,20 +235,72 @@ $ npm install -g ganache-cli
  
 [Metamask](https://metamask.io/) to interact with the dApp. It is a browser extension and can be easily installed following these [steps](https://metamask.io/).
 
-
-#### Installing
+#### Running the project
 
 Clone the repository to your local machine by:
 ```sh
 $ git clone https://github.com/alanarvelo/DHackathon.git
 ```
 
-#### Running the project
+**Smart Contracts — Back end**
 
-Once cloned you can get into the project's root path
+Once finished you can get into the project's root path (cd into it) by running:
+```sh
+$ cd DHackathon
+```
 
-#### Libraries & Dependencies
+This is the project's root path, where all the back-end code resides, mainly within `./contracts`, `./tests`, and `truffle-config.js`. All of the front-end code is within the `./app` folder.
+
+The back-end is strucutured as shown in the image below:
 ![data and dependencies diagram](./UML/UML_data_modeling.png)
+
+As you can see, we used OpenZeppelin's contracts as building blocks for our own, so lets install them in your local machine. Simply run the below command from the root path.
+```sh
+npm install
+```
+`openzeppelin-solidity` is the only package that should have installed.
+
+**React files — Front end**
+
+Open another terminal, let's call this the front-end terminal. This terminal should open on the root path, to get inside the front-end files do:
+```sh
+$ cd app
+```
+
+From here (you should now be on `<your-home-folders>/DHackathon/app`), install all the front-end dependencies, mainly `React`, Truffle's `Drizzle`, and `web3` by typing:
+```sh
+$ npm install
+```
+
+**Ganache-cli private blockchain**
+
+To start a private blockchain, open yet another new terminal, let's call it the ganche-cli terminal, and type:
+```sh
+$ ganache-cli
+```
+Note you must import the generated accounts, via their private keys, to the MetaMask browser extension, to intereact with the platform when it is running in the local blockchains of ganache-gli or Ganache-GUI.
+
+**Making them work together**
+
+Go back to the original terminal (the one that is on the root path, `<your-home-folders>/DHackathon`, the first one, the one we didn't give a name to) and run:
+```sh
+truffle compile
+```
+To compile the smart contracts.
+```sh
+truffle migrate
+```
+To send the compiled smart contracts to the private, ganache-cli blockchain.
+
+Now go back to the front-end terminal
+```sh
+npm run start
+```
+
+This should start a development server, and open a browser on 
+
+
+
 
 #### Tests
 
