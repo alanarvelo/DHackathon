@@ -21,6 +21,7 @@ const getCorrectWeb3 = () => {
 
 const contractEventNotifier = store => next => action => {
   //  to UI all succesfully emitted events
+  // To-Do: handle each event separately and add returned values in the notification toast.
   if (action.type === EventActions.EVENT_FIRED) {
     console.log("THIS IS THE ACTION: ", action)
     const contract = action.name
@@ -38,7 +39,7 @@ const contractEventNotifier = store => next => action => {
       })
     }
 
-    // specific DH Creation Event ic
+    // Specific DHackathon Creation Event
     if (action.event.event === "DHackathonCreated") {
       const { DHID, contractAddress } = action.event.returnValues;
       const contractName = `DH${DHID}`
@@ -57,21 +58,23 @@ const contractEventNotifier = store => next => action => {
 
   }
 
-  if (action.type === "DRIZZLE_INITIALIZED") {
-    // let { _DHID, _contractAddress } = action.event.returnValues;
-    let contractName = "TESTDH"
-    let currentContracts = store.getState()['contracts']
-    if (!Object.keys(currentContracts).includes(contractName)) {
-      let web3 = getCorrectWeb3()
-      let web3Contract = new web3.eth.Contract(DHackathon['abi'], "0x06b016851a67f45B7Ac2aCb4c266986f95A40f20")
-      let contractConfig = { contractName, web3Contract}
-      let events = ['FundingReceived', 'ProjectSubmitted', 'VoteSubmitted', 'PrizeWithdrawn',
-                    'DHInPreparation', 'DHOpen', 'DHInVoting', 'DHClosed',
-                    'JudgeAdded', 'JudgeRemoved', 'ParticipantAdded', 'ParticipantRemoved']
-      console.log("CREATING TEST CONTRACT: ", contractConfig)
-      store.dispatch({type: 'ADD_CONTRACT', contractConfig, events})
-    }
-  }
+// // Development purposes — creates a DHackathon contract at start, as to not have to hit createDHackathon every time.
+// // One must also add a DHackathon contract to the 2_deploy_contract.js and put the contract address below
+//   if (action.type === "DRIZZLE_INITIALIZED") {
+//     // let { _DHID, _contractAddress } = action.event.returnValues;
+//     let contractName = "TESTDH"
+//     let currentContracts = store.getState()['contracts']
+//     if (!Object.keys(currentContracts).includes(contractName)) {
+//       let web3 = getCorrectWeb3()
+//       let web3Contract = new web3.eth.Contract(DHackathon['abi'], "0x452c1DB15f47d86B41F746c1f3a19FaD6C29E8BA")
+//       let contractConfig = { contractName, web3Contract}
+//       let events = ['FundingReceived', 'ProjectSubmitted', 'VoteSubmitted', 'PrizeWithdrawn',
+//                     'DHInPreparation', 'DHOpen', 'DHInVoting', 'DHClosed',
+//                     'JudgeAdded', 'JudgeRemoved', 'ParticipantAdded', 'ParticipantRemoved']
+//       console.log("CREATING TEST CONTRACT: ", contractConfig)
+//       store.dispatch({type: 'ADD_CONTRACT', contractConfig, events})
+//     }
+//   }
 
   return next(action)
 }

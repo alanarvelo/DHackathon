@@ -187,6 +187,7 @@ Any sort of tournament: poker, esports, ping pong, or art competitions can lever
 - Block OpenDHFn if balance not great to Prize   
 - change size and beautify of DHackathon components instructions
 - Allow to submit funds along with OpenDH call
+- Add etherscan.io link to event notification
 
 - After DH creation redirect to new DH page 
 - make input size variable
@@ -232,6 +233,8 @@ Truffle and ganache-cli can be installed by running these commands in your termi
 $ npm install -g truffle
 $ npm install -g ganache-cli
 ```
+
+Note that we have installed the latest version of these packages, not the exact ones I utilized. Due to backwards compatibility, this should be fine. If you encounter any issue with these packages while developing, uninstall them and install the exact version that was used, shown above.
  
 [Metamask](https://metamask.io/) to interact with the dApp. It is a browser extension and can be easily installed following these [steps](https://metamask.io/).
 
@@ -290,7 +293,7 @@ To compile the smart contracts.
 ```sh
 truffle migrate
 ```
-To send the compiled smart contracts to any blockchain that is listening on port 8545, i.e. our ganache-cli private blockchain.
+To send the compiled smart contracts to any blockchain that is listening on port 8545, i.e. our ganache-cli private blockchain. If you have trouble in the future, the flag `--reset` comes handy on this command.
 
 Now go back to the front-end terminal and do:
 ```sh

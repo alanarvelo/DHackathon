@@ -4,7 +4,7 @@ try {
   const env = require("./ENV_VARS.env.json")
  }
  catch (e) {
-  console.log('the file "./ENV_VARS.env.json" has not been created, but it is only required to deploy to testnets or mainnet')
+  console.log('the file "./ENV_VARS.env.json" has not been created, but it is not required for ganache deployments, only for testnet or mainnet deployments')
  }
 
 module.exports = {
