@@ -180,6 +180,8 @@ Any sort of tournament: poker, esports, ping pong, or art competitions can lever
 - Auth \& signing with Uport and Blockstack
 
 - Allow proper login, MM-enable, with the MM button
+- Track connected network
+
 - Dont remove pop-up until interaction with MM is achieved, and show loading button
 - form validation for EOA for judges, participants, etc
 - Block OpenDHFn if balance not great to Prize   
@@ -194,23 +196,89 @@ Any sort of tournament: poker, esports, ping pong, or art competitions can lever
 - Make factory contract (and DHackathon ones) Mortal and/or Autodeprecation
 - Separate to new test file the state set-up functions
 - Deployable to with Hyperledger Besu private network
+- Separate the DH UI into componenets, only show compoenent relevant to role
 
 ---
 
 ## Getting Started
 
-#### Prerequisities
+Below is a technical explanation of how to copy the project and run a local version of it in your machine. If you just want to play with the live, finished platform find it here [DeHack](). If you want to study & improve the platform by getting a local copy, please read on.
 
-#### Installilng
+#### Prerequisities
+The platform runs on the following version of these frameworks. 
+
+* `node v8.12.0`
+* `npm@6.4.1`
+* `truffle@5.0.32`
+* `ganache-cli@6.6.0`
+
+[NodeJS](https://github.com/nodejs/node) as a compilation engine to run scripts. 
+
+[NPM](https://github.com/npm/cli), as a package manager.
+
+Check if you have node and npm by typing in your terminal:
+```sh
+$ node -v
+$ npm -v
+```
+If you don't yet have them, you can install them from [here](https://nodejs.org/en/). Npm typically comes with NodeJS, but make sure you have them both.
+
+[Truffle](https://github.com/trufflesuite/truffle) for everything related to writing, testing, compiling, and deploying smart contracts.
+
+[Ganache-CLI](https://github.com/trufflesuite/ganache-cli) to create a private blockchain to work during development (port 8545). I also utilized Ganache-GUI extensively,thus it will be set-up for you at port 9545.
+
+Truffle and ganache-cli can be installed by running these commands in your terminal. Ganache-GUI can be downloaded from [here](trufflesuite.com/ganache).
+```sh
+$ npm install -g truffle
+$ npm install -g ganache-cli
+```
+ 
+[Metamask](https://metamask.io/) to interact with the dApp. It is a browser extension and can be easily installed following these [steps](https://metamask.io/).
+
+
+#### Installing
+
+Clone the repository to your local machine by:
+```sh
+$ git clone https://github.com/alanarvelo/DHackathon.git
+```
 
 #### Running the project
+
+Once cloned you can get into the project's root path
 
 #### Libraries & Dependencies
 ![data and dependencies diagram](./UML/UML_data_modeling.png)
 
 #### Tests
 
+Tests can be run by typing in the terminal
+```sh
+truffle test
+```
+That's it!, test takes time but all of them can be completed with some patience. Here an example of how much time they take to complete:
+
 #### Deployment
+
+The platform can be deployed to Rinkeby, Ropsten, other testnets, as well as to ethereum's Mainnet. In fact, it already has, see the deployed addresses [here](./deployed_addresses.txt").
+
+To deploy it yourself create a file called `ENV_VARS.env.json` and add your [Infura](https://infura.io/) provider for the network you want to deploy and
+mnemonic information as follows.
+```
+{
+  "MNEMONIC":"",
+  "RINKEBY_INFURA_PROVIDER":"",
+  "ROPSTEN_INFURA_PROVIDER":"",
+  "MAINNET_PROVIDER":""
+}
+```
+**Important:**  the file must have the extension `.env.json` so it is ignored by `.gitignore`, thus preventing you from accidentally disclosing your mnemonic and thus your private keys. If you are not interested on deploying to a particular network, you can leave its provider value as an empty string (`""`).
+
+To deploy to testnets or mainnet, run:
+
+```
+truffle deploy --network <yourPreferedNetwork>
+```
 
 ---
 
