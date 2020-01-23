@@ -18,7 +18,6 @@ const getCorrectWeb3 = () => {
   }
 }
 
-
 const contractEventNotifier = store => next => action => {
   //  to UI all succesfully emitted events
   // To-Do: handle each event separately and add returned values in the notification toast.

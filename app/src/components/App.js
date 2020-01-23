@@ -28,38 +28,15 @@ class App extends Component {
     });
   }
 
+
   render() {
     const { drizzle, drizzleState } = this.props
     console.log(drizzle, drizzleState)
+    console.log("WEB 3: ", this.props.drizzle.web3)
     return (
       <div>
         <NavBar drizzleState={drizzleState}/> 
         <ToastMessage.Provider ref={node => (window.toastProvider = node)} />
-          {/* <Button
-            mb={3}
-            onClick={e =>
-              window.toastProvider.addMessage("Processing payment...", {
-                secondaryMessage: "Check progress on Etherscan",
-                actionHref:
-                  "https://etherscan.io/tx/0xcbc921418c360b03b96585ae16f906cbd48c8d6c2cc7b82c6db430390a9fcfed",
-                actionText: "Check",
-                variant: "processing"
-              })
-            }
-          >
-            Preview
-          </Button> */}
-        {/* <ToastContainer
-          position="top-center"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop
-          closeOnClick
-          rtl={false}
-          pauseOnVisibilityChange={false}
-          draggable
-          pauseOnHover
-          /> */}
           <div className="App">
             <Switch>
               <Route path='/DH/:DHID' render={(props) => <DHackathon {...props} drizzle={drizzle} drizzleState={drizzleState} /> }/>
