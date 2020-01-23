@@ -381,7 +381,8 @@ To Publish:
   
 
 To Share with Amal:
-  - proper config of web3 when adding new contract
-  - ability to get returned values both via events in middleware or via transaction receipt in State
-  - instant handling of metamask EOA update
-  - Pop-up components for gathering user input
+  - an alternative to account polling, listening to MM updates. It instantly updates the active MM EOA, without refresshing the state so often
+  - A getWeb3 function to use in the middleware, turns out when adding contracts dynamically, getting the proper web3 instance in the middleware file is tricky.
+  - Better explanation of how, returned values from events can also be obtained on from the state on the front-end, as opposed to capturing them in middleware.
+  - Modal / Popup style react components to gather user input for all write functions.
+  - Functions to expose if Metamask, or any other provider, is locked, connected, and to which network.
