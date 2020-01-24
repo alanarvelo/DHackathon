@@ -22,7 +22,7 @@ export default class NavBarBar extends Component {
           { (this.props.drizzleState.drizzleStatus.initialized && this.props.drizzleState.activeEOA.account) 
             ? (<Nav.Item style={{display: "flex", flexDirection: "column", marginBottom: "5px"}}> 
                 <span style={{fontSize: 8}}>{"Logged in with account:"}</span>
-                <span style={{fontSize: 10}}>{this.props.drizzleState.activeEOA.account}</span>
+                <span style={{fontSize: 12}}>{this.props.drizzleState.activeEOA.account}</span>
               </Nav.Item>)
             : (<MetaMaskButton.Outline size="small" style={{marginBottom: "5px"}} >
                   Connect with MetaMask
@@ -45,11 +45,3 @@ export default class NavBarBar extends Component {
     )
   }
 }
-
-// function mapStateToProps ({ authedUser, users }) {
-//   return {
-//     loggedIn: authedUser !== null,
-//     authedUser,
-//     users
-//   }
-// }

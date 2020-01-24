@@ -23,8 +23,8 @@ class App extends Component {
 
   // listens for updates on the MetaMask active account. Beware: this is a MetaMask beta feature
   listenToActiveAccountUpdates() {
-    this.props.drizzle.web3.currentProvider.publicConfigStore.on('update', ({ selectedAddress }) => {
-      this.props.drizzle.store.dispatch(setActiveEOA(selectedAddress))
+    this.props.drizzle.web3.givenProvider.publicConfigStore.on('update', ({ selectedAddress }) => {
+      if (selectedAddress !== null) this.props.drizzle.store.dispatch(setActiveEOA(selectedAddress))
     });
   }
 
@@ -33,6 +33,7 @@ class App extends Component {
     const { drizzle, drizzleState } = this.props
     console.log(drizzle, drizzleState)
     console.log("WEB 3: ", this.props.drizzle.web3)
+    console.log("maing a navbar")
     return (
       <div>
         <NavBar drizzleState={drizzleState}/> 
@@ -41,7 +42,7 @@ class App extends Component {
             <Switch>
               <Route path='/DH/:DHID' render={(props) => <DHackathon {...props} drizzle={drizzle} drizzleState={drizzleState} /> }/>
               <Route path='/docs' component={Docs} />
-              <Route path='/' exact render={() => <Container drizzle={drizzle} drizzleState={drizzleState} />} />
+              <Route path='/' exact render={() => <Container />} />
               <Route component={NotFound} />
             </Switch>
           </div>

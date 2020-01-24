@@ -175,12 +175,23 @@ Any sort of tournament: poker, esports, ping pong, or art competitions can lever
 
 
 ### Other To-do's:
-- Host the front-end on IPFS
-- Add capability for the Ethereum Name Service (ENS)
 - Auth \& signing with Uport and Blockstack
+- Add capability for the Ethereum Name Service (ENS)
+- Host the front-end on IPFS
+
 
 - Allow proper login, MM-enable, with the MM button
 - Track connected network
+
+- fix too many listeners tracking the MM updates problem
+- fix methods of undefined in Factory Contract at sign-in problem
+
+- Make function to get owner of Factory Contract
+- Make Logic to get all DHackathons from a Factory in a given network
+
+- deploy to mainnet, and various testnets, and make the front-end work smoothly with all
+
+- Get a loading bar in place
 
 - Dont remove pop-up until interaction with MM is achieved, and show loading button
 - form validation for EOA for judges, participants, etc
@@ -370,7 +381,7 @@ To Remember:
 To Publish:
   - UML of process, stages, actors and functions    -------- DONE
   - Instruction page with UML and caveats, exceptions, requires, and diagrams
-  - Properly document own github repo according to requirements   -- DO
+  - Properly document own github repo according to requirements  ------- DONE
 
   - Host project
   - Youtube videos about usage

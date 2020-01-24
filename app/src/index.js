@@ -12,28 +12,47 @@ import appReducers from "./reducers/index.js";
 import { Drizzle, generateStore } from "@drizzle/store";
 
 import { BrowserRouter } from 'react-router-dom'
+import WithWeb3 from './ethereumZFY/web3/hoc/WithWeb3';
 
-// Drizzle Instance Set-up
-const drizzleStore = generateStore({drizzleOptions, appReducers, appMiddlewares, disableReduxDevTools: false});
-const drizzle = new Drizzle(drizzleOptions, drizzleStore);
+import { getCurrentConfig } from './configZFY';
+const config = getCurrentConfig();
+console.log("index: ", config)
 
 ReactDOM.render(
   <BrowserRouter>
-    <DrizzleContext.Provider drizzle={drizzle}>
-      <DrizzleContext.Consumer>
-        {drizzleContext => {
-          const { drizzle, drizzleState, initialized } = drizzleContext;
-
-          if (!initialized) {
-            return "Loading...";
-          }
-          
+    <WithWeb3
+      config={config}
+      network={config.network}
+      contracts={config.contracts}
+      handleStatus={false}
+      currentContract="DHackathonFactory"
+    >
+      {( {web3Cleared} ) => {
+        console.log("props children delivery: ", web3Cleared)
+        // if (web3Cleared) {
+        // Drizzle Instance Set-up
+        const drizzleStore = generateStore({drizzleOptions, appReducers, appMiddlewares, disableReduxDevTools: false});
+        const drizzle = new Drizzle(drizzleOptions, drizzleStore);
           return (
-            <App drizzle={drizzle} drizzleState={drizzleState} />
+            <DrizzleContext.Provider drizzle={drizzle}>
+              <DrizzleContext.Consumer>
+                {drizzleContext => {
+                  const { drizzle, drizzleState, initialized } = drizzleContext;
+
+                  if (!initialized) {
+                    return "Loading...";
+                  }
+                  console.log("made it here")
+                  return (
+                    <App drizzle={drizzle} drizzleState={drizzleState} />
+                  )
+                }}
+              </DrizzleContext.Consumer>
+            </DrizzleContext.Provider>
           )
-        }}
-      </DrizzleContext.Consumer>
-    </DrizzleContext.Provider>
+        // }
+      }}
+    </WithWeb3>
   </BrowserRouter>
   ,
   document.getElementById('root')

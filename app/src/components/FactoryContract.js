@@ -16,12 +16,16 @@ export default class FactoryContract extends React.Component {
       showPopup: false, 
       createDHackathonTx: null
     }
+    console.log("constructor here: ", this.props.drizzle.contracts, this.props.drizzleState)
   }
 
-  componentDidMount() {
-    const DHFContract = this.props.drizzle.contracts.DHackathonFactory;
+  async componentDidMount() {
+    console.log("here: ", this.props.drizzle.contracts, this.props.drizzleState)
+    const DHFContract = await this.props.drizzle.contracts.DHackathonFactory;
+    console.log(DHFContract)
     // get and save the keys to retrieve operational and counter from the store (drizzleState)
-    let operationalKey = DHFContract.methods["operational"].cacheCall();
+    if (DHFContract === undefined) console.log("I AM UNDEFINED")
+    let operationalKey = this.props.drizzle.contracts["DHackathonFactory"].methods["operational"].cacheCall();
     let counterKey = DHFContract.methods["counter"].cacheCall();
 
     this.setState({ operationalKey, counterKey });
