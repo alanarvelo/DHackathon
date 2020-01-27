@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
+import ErrorPage from './components/misc/ErrorPage'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -25,7 +26,7 @@ ReactDOM.render(
           const { drizzle, drizzleState, initialized } = drizzleContext;
 
           if (!initialized) {
-            return "Loading...";
+            return <ErrorPage />;
           }
           
           return (

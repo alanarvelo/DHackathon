@@ -4,6 +4,7 @@ import DHackathonFactory from "./contracts/DHackathonFactory.json";
 const options = {
   web3: {
     block: false,
+    custoProvider: window.web3.currentProvider, // experimental
     fallback: {
       case: 'ws',
       url: "HTTP://127.0.0.1:8545"

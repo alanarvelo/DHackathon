@@ -11,7 +11,7 @@ import { ToastMessage, ToastContainer, Button } from 'rimble-ui'
 import Container from "./Container";
 import DHackathon from "./DH/DHackathon";
 import NavBar from "./misc/NavBar";
-import Docs from "./misc/Docs"
+import DocsPage from "./misc/DocsPage"
 import NotFound from "./misc/NotFound"
 
 class App extends Component {
@@ -35,12 +35,12 @@ class App extends Component {
     console.log("WEB 3: ", this.props.drizzle.web3)
     return (
       <div>
-        <NavBar drizzleState={drizzleState}/> 
+        <NavBar drizzleState={drizzleState}/>
         <ToastMessage.Provider ref={node => (window.toastProvider = node)} />
           <div className="App">
             <Switch>
               <Route path='/DH/:DHID' render={(props) => <DHackathon {...props} drizzle={drizzle} drizzleState={drizzleState} /> }/>
-              <Route path='/docs' component={Docs} />
+              <Route path='/docs' component={DocsPage} />
               <Route path='/' exact render={() => <Container drizzle={drizzle} drizzleState={drizzleState} />} />
               <Route component={NotFound} />
             </Switch>

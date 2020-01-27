@@ -3,9 +3,14 @@
   margin: 2rem;
 }
 
-.section {
+.sectionL {
   text-align: left;
-  max-width: 720px;
+  max-width: 900px;
+  margin: 4rem auto auto;
+}
+
+.section {
+  max-width: 900px;
   margin: 4rem auto auto;
 }
 

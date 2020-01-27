@@ -50,25 +50,25 @@ export default class DHackathon extends React.Component {
     return (
       <Flex style={styles.container} >
           {/* <Heading as={"h4"} width={1/8}>DHackathon Contract</Heading> */}
-          <Box style={styles.box}  p={1} width={1/10} >
+          <Box style={styles.box}  p={1} width={3/10} >
             <span style={{fontSize: 12}} >Name:  </span>
             <strong >
               { name && name.value }
             </strong>
           </Box>
-          <Box style={styles.box}  p={1} width={1/10} >
+          <Box style={styles.box}  p={1} width={0.5/10} >
             <span style={{fontSize: 12}} >ID:  </span>
             <strong>
               { DHID && DHID.value }
             </strong>
           </Box>
-          <Box style={styles.box}  p={1} width={2/10} >
+          <Box style={styles.box}  p={1} width={1.5/10} >
             <span style={{fontSize: 12}} >Admin:  </span>
             <strong >
               { admin && admin.value.slice(0,4) +'...'+ admin.value.slice(-4) }
             </strong>
           </Box>
-          <Box style={styles.box}  p={1} width={2/10} >
+          <Box style={styles.box}  p={1} width={1.5/10} >
             <span style={{fontSize: 12}} >Stage:  </span>
             <strong >
               { state && this.DHstates[state.value] }
@@ -86,7 +86,7 @@ export default class DHackathon extends React.Component {
               { prize && Web3.utils.fromWei(prize.value) + " eth"}
             </strong>
           </Box>
-          <Box style={styles.box}  p={1} width={2/10} >
+          <Box style={styles.box}  p={1} width={1.5/10} >
             <span style={{fontSize: 12}} >Created On:  </span>
             <strong>
               { createdOn && new Date(parseInt(createdOn.value)*1000).toLocaleDateString("en-US") }
@@ -99,10 +99,10 @@ export default class DHackathon extends React.Component {
 
 const styles = {
   container: {
-    backgroundColor: '#add8e6',
-    padding: 20,
-    margin:5,
-    height: 120,
+    backgroundColor: '#b5daff',
+    // padding: 5,
+    // margin: 0,
+    height: 90,
     borderWidth: 20,
     borderColor: '#982e4b',
     borderRadius: 10,
@@ -115,6 +115,10 @@ const styles = {
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: 'center'
+  },
+  varSizeText: {
+    fontSize: "16px",
+    fontSize: "4vw",
   }
 
 }

@@ -1,4 +1,4 @@
-![diagram](./UML/UML_state_diagram_simplified.png)
+![diagram](./app/src/images/UML/UML_state_diagram_simplified.png)
 
 # Welcome to Decentralized Hackathons!
 ---
@@ -28,13 +28,13 @@ Note that hackathons, and all competitions, are group efforts where certain indi
 
 Because an image is worth more than a thousand words:
 
-![sequence diagram](./UML/UML_sequence_diagram.png)
+![sequence diagram](./app/src/images/UML/UML_sequence_diagram.png)
 
 The platform is based on two main contracts that have a factory-child relationship, the `DHackathonFactory` contract and the `DHackathon`, DHackathon standing for Decentralized Hackathon. Any externally owned account (EOA) can call the `createDHackathon(string memory _name, uint256 _prize)` function of the `DHackathonFactory` contract to instantiate and become the _Admin_ of a newly minted `DHackathon` contract (more on _Admin_ and roles below). The caller must specify what `name` and `prize` the `DHackathon` will have. The contract's balance will have to be greater or equal to the promised `prize` for the `DHackathon` contract to change to the `Open` stage (more on _Open_ and stages below).
 
 ### Roles
 
-Each hackathon has 4 types of users: _Admin_, _Participant_, _Judge_ everyone else (_No role_). Function access is restricted via modifiers to EOA's with the appropriate roles. Roles are exclusive, the same EOA can hold two roles, e.g. the _Admin_ can't be a _judge_, nor can a _judge_ be a _participant_.
+Each hackathon has 4 types of users: _Admin_, _Participant_, _Judge_ everyone else (_No role_). Function access is restricted via modifiers to EOA's with the appropriate roles. Roles are exclusive, the same EOA can't hold two roles, e.g. the _Admin_ can't be a _judge_, nor can a _judge_ be a _participant_.
 
 + **Admin:**  in charge of adding and removing judges and moving the contract through its stages (_In Preparation_, _Open_, _In Voting_, _Closed_, more on stages below).
 + **Participant:** submit a link to their project and withdraw a piece of the prize if they got any votes from judges.
@@ -109,7 +109,7 @@ medium here
 Currently, the _Admin_ is reponsible for moving the `DHackathon` contract, which  represents a hackathon in the Ethereum blockchain, through its stages by calling the functions:  `openDHackathon()`, `toVotingDHackathon()`, and `closeDHackathon()`.
 Given that at creation, each `DHackathon` contract gets a _createdOn_ property, these stage changes can be time based. The contract can last a fixed number of days on each stage, or the user can define the length of each stage at creation.
 
-**To do:** time-based state management.
+**To do:** Make stage transitions, from _In Preparation_ to _Open_, _Open_ to _In Voting_, and _In Voting_ to _Closed_, time or date based.
 
 ### Project submission
 
@@ -179,26 +179,6 @@ Any sort of tournament: poker, esports, ping pong, or art competitions can lever
 - Add capability for the Ethereum Name Service (ENS)
 - Auth \& signing with Uport and Blockstack
 
-- Allow proper login, MM-enable, with the MM button
-- Track connected network
-
-- Dont remove pop-up until interaction with MM is achieved, and show loading button
-- form validation for EOA for judges, participants, etc
-- Block OpenDHFn if balance not great to Prize   
-- change size and beautify of DHackathon components instructions
-- Allow to submit funds along with OpenDH call
-- Add etherscan.io link to event notification
-
-- After DH creation redirect to new DH page 
-- make input size variable
-- Add Loading Container
-- specific event configuration for each type of event to display its returned values
-- make the contracts upgradeable
-- Make factory contract (and DHackathon ones) Mortal and/or Autodeprecation
-- Separate to new test file the state set-up functions
-- Deployable to with Hyperledger Besu private network
-- Separate the DH UI into componenets, only show compoenent relevant to role
-
 ---
 
 ## Getting Started
@@ -255,7 +235,7 @@ $ cd DHackathon
 This is the project's root path, where all the back-end code resides, mainly within `./contracts`, `./tests`, and `truffle-config.js`. All of the front-end code is within the `./app` folder.
 
 The back-end is strucutured as shown in the image below:
-![data and dependencies diagram](./UML/UML_data_modeling.png)
+![data and dependencies diagram](./app/src/images/UML/UML_data_modeling.png)
 
 As you can see, we used OpenZeppelin's contracts as building blocks for our own, so lets install them in your local machine. Simply run the below command from the root path.
 ```sh
@@ -344,45 +324,3 @@ truffle deploy --network <yourPreferedNetwork>
 If you have any question or feedback reach me at alanarvelo@gmail.com.
 
 ---
-
-
-
-To Remember:
-  - On video demo, mention all the TO-DO/Nice-to-haves and explain how this can be generalized for any type of competition
-      enforce expected prize
-  - On video, end with a shameless plug to get hired
-  
-
-  - Update Balance display after submitFunds runs    ----- DONE
-  - Not found DH page, reroute or error    ------- DONE
-  - NavBAr  ------- DONE
-  - Contract Balance display also for Factory Contract, and State, on DHCard  ----- DONE
-  - way to click out of pop up, to go back  ------ DONE
-  - Get events working right and neatly   -------- DONE
-  - display more recent DH first  ------- DONE
-
-  - display judges and participants via store-reducer-loop ------- DONE
-  - show projects submitted by whom  ------- DONE
-  - show if project/participant has a vote & can therefore call withdrawPrize ------ DONE
-  
-
-
-To Publish:
-  - UML of process, stages, actors and functions    -------- DONE
-  - Instruction page with UML and caveats, exceptions, requires, and diagrams
-  - Properly document own github repo according to requirements   -- DO
-
-  - Host project
-  - Youtube videos about usage
-  - Medium Post
-  - Post on reddit, product hunt, etc, devpost
-  - email companies about engagement / job opps
-  - Ubuntu compatibility to replicate
-  
-
-To Share with Amal:
-  - an alternative to account polling, listening to MM updates. It instantly updates the active MM EOA, without refresshing the state so often
-  - A getWeb3 function to use in the middleware, turns out when adding contracts dynamically, getting the proper web3 instance in the middleware file is tricky.
-  - Better explanation of how, returned values from events can also be obtained on from the state on the front-end, as opposed to capturing them in middleware.
-  - Modal / Popup style react components to gather user input for all write functions.
-  - Functions to expose if Metamask, or any other provider, is locked, connected, and to which network.

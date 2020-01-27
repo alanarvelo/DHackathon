@@ -1,4 +1,4 @@
-![data and dependencies diagram](./UML/UML_data_modeling.png)
+![data and dependencies diagram](./app/src/images/UML/UML_data_modeling.png)
 
 # Design Pattern Decisions
 ---
@@ -94,5 +94,5 @@ To change the `DHackathon` state from _In Preparation_ to _Open_ the contract's 
 
 Below an UML sequence diagram depicting the factory-child design pattern, along with the state machine design pattern and roles of the `DHackathon` contract.
 
-![sequence diagram](./UML/UML_sequence_diagram.png)
+![sequence diagram](./app/src/images/UML/UML_sequence_diagram.png)
 
