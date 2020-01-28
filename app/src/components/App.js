@@ -31,8 +31,8 @@ class App extends Component {
 
   render() {
     const { drizzle, drizzleState } = this.props
-    console.log(drizzle, drizzleState)
-    console.log("WEB 3: ", this.props.drizzle.web3)
+    console.log("drizzle: ", drizzle)
+    console.log("drizzleState: ", drizzleState) 
     return (
       <div>
         <NavBar drizzleState={drizzleState}/>

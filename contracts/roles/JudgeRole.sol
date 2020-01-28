@@ -22,6 +22,12 @@ contract JudgeRole {
         _;
     }
 
+    /// Define a modifier that checks if `msg.sender` does not have the role
+    modifier isNotJudge() {
+        require(!isJudge(msg.sender), "The `msg.sender` is a Judge.");
+        _;
+    }
+
     /// Define a function `isJudge` to check this role
     function isJudge(address account)
         public

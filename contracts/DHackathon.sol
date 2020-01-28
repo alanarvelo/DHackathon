@@ -71,6 +71,9 @@ contract DHackathon is JudgeRole, ParticipantRole, StateTracker {
     function submitFunds()
         public
         payable
+        isNotJudge()
+        isNotParticipant()
+        isNotClosed()
     {
         require(msg.value > 0, "Must send some funds");
         emit FundingReceived(msg.sender, msg.value);

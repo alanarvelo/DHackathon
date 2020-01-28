@@ -22,6 +22,12 @@ contract ParticipantRole {
         _;
     }
 
+    /// Define a modifier that checks if `msg.sender` does not have the role
+    modifier isNotParticipant() {
+        require(!isParticipant(msg.sender), "The `msg.sender` is a Participant.");
+        _;
+    }
+
     /// Define a function `isParticipant` to check this role
     function isParticipant(address account)
         public

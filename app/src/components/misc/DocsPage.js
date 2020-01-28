@@ -2,6 +2,7 @@ import React from 'react'
 import { Heading, Box, Image } from 'rimble-ui'
 import stateDiagram from "../../images/UML/UML_state_diagram_simplified.png"
 import sequenceDiagram from "../../images/UML/UML_sequence_diagram.png"
+import allPanels from "../../images/all_panels.png"
 
 export default function DocsPage () {
   return (
@@ -14,7 +15,7 @@ export default function DocsPage () {
       </p>
 
       <p align="left">
-        To create a DHackathon, you must use the createDHackathon function of <it>DHackathonFactory</it>. When you pass it a <it>name</it> and a <it>prize</it>, it will
+        To create a DHackathon, you must use the createDHackathon function of <i>DHackathonFactory</i>. When you pass it a <i>name</i> and a <i>prize</i>, it will
         instantiate a new DHackathon contract and grant you the Admin role. This function has a cost of 0.1 ether.
         A DHackathon has 4 types of users: Admin, Participant, Judge, and everyone else (No role).
         A DHakcathon has 4 states (or stages):  In Preparation, Open, In Voting, Closed.
@@ -40,6 +41,11 @@ export default function DocsPage () {
       <p align="left">
         Any EOA, including ones with assigned roles, can `submitFunds()` that will be accumulated in the `DHackathon` contract as the prize to be withdrawn by the winners.
       </p>
+
+      <p align="left">
+        Each role has a dedicated <i>panel</i> to perform its actions. Below the interface of a DHackathon with all roles' panels.
+      </p>
+      <img src={allPanels} alt={"Sequence Diagram"} style={styles.imgs} />
 
       <Heading as={"h5"}> Stages </Heading>
       <p align="left">
@@ -82,7 +88,7 @@ export default function DocsPage () {
       </ul>
 
       <p align="left">
-        Below, a sequence diagram to further illustrate the process.
+        Below, a sequence diagram to further illustrate each stage.
       </p>
       <img src={sequenceDiagram} alt={"Sequence Diagram"} style={styles.imgs} />
 
@@ -116,11 +122,6 @@ const styles = {
     alignItems: 'flex-start',
     // justifyContent: 'space-around',
   },
-  // boxH: {
-  //   display: "flex",
-  //   flexDirection: 'row',
-  //   alignItems: "center"
-  // },
   imgs: {
     display: "block",
     margin: "1em",
@@ -128,19 +129,4 @@ const styles = {
     marginRight: "auto",
     width: "70%",
   }
-  // boxV: {
-  //   display: "flex",
-  //   flexDirection: 'column',
-  //   alignItems: 'flex-start',
-  //   width: "100%",
-  // },
-  // boxVL: {
-  //   fontSize: 12,
-  //   display: "flex",
-  //   flexDirection:"column",
-  //   alignItems:"flex-start",
-  //   justifyContent:"center",
-  //   width: "100%",
-  //   marginTop: "18",
-  // }
 }

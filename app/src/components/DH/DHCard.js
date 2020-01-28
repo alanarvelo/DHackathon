@@ -100,8 +100,8 @@ export default class DHackathon extends React.Component {
 const styles = {
   container: {
     backgroundColor: '#b5daff',
-    // padding: 5,
-    // margin: 0,
+    padding: 5,
+    margin: 10,
     height: 90,
     borderWidth: 20,
     borderColor: '#982e4b',

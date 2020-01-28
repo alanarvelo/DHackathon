@@ -36,12 +36,15 @@ The platform is based on two main contracts that have a factory-child relationsh
 
 Each hackathon has 4 types of users: _Admin_, _Participant_, _Judge_ everyone else (_No role_). Function access is restricted via modifiers to EOA's with the appropriate roles. Roles are exclusive, the same EOA can't hold two roles, e.g. the _Admin_ can't be a _judge_, nor can a _judge_ be a _participant_.
 
-+ **Admin:**  in charge of adding and removing judges and moving the contract through its stages (_In Preparation_, _Open_, _In Voting_, _Closed_, more on stages below).
++ **Admin:**  in charge of adding and removing judges, moving the contract through its stages (_In Preparation_, _Open_, _In Voting_, _Closed_, more on stages below) and adding funds for the prize.
 + **Participant:** submit a link to their project and withdraw a piece of the prize if they got any votes from judges.
 + **Judge:** review the submitted projects and vote for their elected winner.
-+ **Anyone:** regiser as a participant (gaining participant role access, i.e. can participate in the hackathon by submitting a project).
++ **Anyone:** regiser as a participant (gaining participant role access, i.e. can participate in the hackathon by submitting a project) and submit funds for prize.
 
-Any EOA, including ones with assigned roles, can `submitFunds()` that will be accumulated in the `DHackathon` contract as the prize to be withdrawn by the winners.
+Each role has a dedicated _panel_ to perform its actions. Below the interface of a DHackathon displaying all roles' panels.
+
+![sequence diagram](./app/src/images/all_panels.png)
+
 
 ### Stages
 
@@ -67,8 +70,6 @@ The stages of a hackathon are sequentially: _In Preparation_, _Open_, _In Voting
   + *Participant:* can withdraw prize, if they have received votes.
   + *Judge:* -
   + *No role:* -
-
-With the caveat, that anyone, with role or without role, can call `submitFunds`, `balance`, `isAdmin` at any stage.
 
 For a more techncial description of the above see [design pattern decisions](./design_pattern_decisions.md) and [avoiding common attacks](./avoiding_common_attacks.md).
 

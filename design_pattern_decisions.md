@@ -88,8 +88,6 @@ The `StateTracker` contract keeps track of what stage the `DHackathon` is on. Us
   + *Judge:* -
   + *No role:* -
 
-With the caveat, that anyone, with role or without role, can call `submitFunds`, `balance`, `isAdmin` at any stage.
-
 To change the `DHackathon` state from _In Preparation_ to _Open_ the contract's balance must be equal or greater than the _prize_ the _Admin_ declared when calling the `createDHackathon` function from the `DHackathonFactory` contract.
 
 Below an UML sequence diagram depicting the factory-child design pattern, along with the state machine design pattern and roles of the `DHackathon` contract.
