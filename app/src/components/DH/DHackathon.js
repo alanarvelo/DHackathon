@@ -7,7 +7,8 @@ import DHCard from './DHCard'
 import Popup from '../misc/Popup'
 import { Redirect } from 'react-router-dom'
 
-// TO-DO: create POP-UP for when transaction succeeds and fails
+// TO-DO: modularize this component into several compoenents
+// Due to time constraints will be left as is until revisit
 
 export default class DHackathon extends React.Component {
   constructor(props) {
@@ -24,7 +25,7 @@ export default class DHackathon extends React.Component {
 
     // this.DHContract = this.props.drizzle.contracts[this.DHName];
     this.DHName = this.props.match.params.DHID
-    this.DHRoles = ["Admin", "Judge", "Participant", "N/A"]
+    this.DHRoles = ["Admin", "Judge", "Participant", "No role"]
     this.DHContract = this.props.drizzle.contracts[this.DHName];
   }
 
@@ -222,65 +223,16 @@ export default class DHackathon extends React.Component {
     let { EOARole } = this.state
 
     return (
-      <div>
-        <Heading mb={2}>{`${name ? name.value : "-" }`}</Heading>
-        <Heading  mb={2} as={"h5"}>{`Active account's role: ${EOARole != null ? this.DHRoles[EOARole] : "-"}`}</Heading>
-
+      <div className="section">
         <Flex style={styles.container}>
+          <Heading mb={2} as={"h2"} >{`${name ? name.value : "-" }`}</Heading>
+          <Heading  mb={2} as={"h6"} >{`Active account's role: ${EOARole != null ? this.DHRoles[EOARole] : "-"}`}</Heading>
           <DHCard DHContract={this.DHContract} DHState={DHState} />
-
+        
           <Box p={1} width={1} style={styles.boxH} >
-            <TextButton text={"Submit Funds for Prize"} onClick={() => this.togglePopup("submitFunds")} size="small" style={{'margin':10, fontSize: 10}} />
-          </Box>
-
-          <Heading as={"h2"}>Admin Panel</Heading>
-          <Box p={1} width={1} style={styles.boxV} >
-            <span>DHackathon stage changes are irrevercible</span>
-            <span>Only admin can change stages</span>
-            <span>Contract balance must be equal or greater than Prize for DHackathon to open</span>
-          </Box>
-
-          <Box p={1} width={1} style={styles.boxH} >
-            <TextButton text={"Open DHackathon"} onClick={this.openDHackathon} size="small" variant="danger" disabled={EOARole === 0 && state === 0 ? false : true} style={{'margin':10, fontSize: 10}} />
-            <TextButton text={"To Voting Stage"} onClick={this.toVotingDHackathon} size="small" variant="danger" disabled={EOARole === 0 && state === 1 ? false : true} style={{'margin':10, fontSize: 10}} />
-            <TextButton text={"Close DHackathon"} onClick={this.closeDHackathon} size="small" variant="danger" disabled={EOARole === 0 && state === 2 ? false : true} style={{'margin':10, fontSize: 10}} />
-          </Box>
-
-          <Box p={1} width={1} style={styles.boxV} >
-            <span>Judges can only be added in the In Preparation Stage</span>
-          </Box>
-          <Box p={1} width={1} style={styles.boxH} >
-            <TextButton text={"Add Judge"} onClick={() => this.togglePopup("addJudge")} size="small" variant="danger" disabled={EOARole === 0 && state === 0 ? false : true} style={{'margin':10, fontSize: 10}} />
-            <TextButton text={"Remove Judge"} onClick={() => this.togglePopup("removeJudge")} size="small" variant="danger" disabled={EOARole === 0 && state != 3 ? false : true} style={{'margin':10, fontSize: 10}} />
-          </Box>
-
-          <Heading as={"h2"}>Judge Panel</Heading>
-          <Box p={1} width={1} style={styles.boxV} >
-            <span>Judges can only vote once and must be during the In Voting stage.</span>
-          </Box>
-
-          <Box p={1} width={1/4} style={styles.boxH} >
-            <TextButton text={"Vote for winner"} onClick={() => this.togglePopup("submitVote")} size="small" disabled={EOARole === 1 && state === 2 ? false : true} style={{'margin':10, fontSize: 10}} />
-          </Box>
-          
-          
-          
-          <Heading as={"h2"}>Participant Panel</Heading>
-          <Box p={1} width={1} style={styles.boxV} >
-            <span>Projects can only be submitted in the Open State</span>
-            <span>Participants can updated their project's url by re-submitting</span>
-          </Box>
-          <Box p={1} width={1} style={styles.boxH} >
-            <TextButton text={"Register as Participant"} onClick={() => this.togglePopup("registerAsParticipant")} size="small" disabled={EOARole === 3 && state === 0 ? false : true} style={{'margin':10, fontSize: 10}} />
-            <TextButton text={"Deregister as Participant"} onClick={() => this.togglePopup("deregisterAsParticipant")} size="small" disabled={EOARole === 2 && state != 3 ? false : true} style={{'margin':10, fontSize: 10}} />
-            <TextButton text={"Submit Project's Github URL"} onClick={() => this.togglePopup("submitProject")} size="small" disabled={EOARole === 2 && state === 1 ? false : true} style={{'margin':10, fontSize: 10}} />
-            <TextButton text={"Withdraw Prize"} onClick={this.withdrawPrize} size="small" disabled={EOARole === 2 && state === 3 ? false : true} style={{'margin':10, fontSize: 10}} />
-          </Box>
-
-          <Heading as={"h2"}>Information</Heading>
-          <Box p={1} width={1} style={styles.boxH} >
+            <div>
+            <Heading as={"h5"}>Judges</Heading>
             <Box p={1} width={1/2} style={styles.boxV} >
-              <Heading as={"h5"}>Judges</Heading>
               {judgesList.map(judge => (
                   <Box p={1} key={judge.account} width={1/judgesList.length} style={{fontSize: 12, margin:8, display: "flex", flexDirection:"column", alignItems:"flex-start", justifyContent:"space-around", width: "100%"}}>
                     <span> <strong>Account: </strong> {`${judge.account ? judge.account : ""}`} </span>
@@ -288,8 +240,12 @@ export default class DHackathon extends React.Component {
                   </Box>
                 ))}
             </Box>
+            </div>
+            
+            <div>
+            <Heading as={"h5"}>Participants</Heading>
             <Box p={1} width={1/2} style={styles.boxV} >
-              <Heading as={"h5"}>Participants</Heading>
+              
                 {participantsList.map(participant => (
                   <Box p={1} key={participant.account} width={1/participantsList.length} style={styles.boxVL}>
                     <span> <strong>Account: </strong> {`${participant.account ? participant.account : ""}`} </span>
@@ -298,10 +254,116 @@ export default class DHackathon extends React.Component {
                   </Box>
                 ))}
             </Box>
+            </div>
           </Box>
-
-
         </Flex>
+
+        {EOARole === 0
+          ?(<Flex style={styles.container}>
+              <Heading as={"h3"}>Admin Panel</Heading>
+              <Box p={1} width={1} style={styles.boxH} >
+                <TextButton text={"Submit Funds for Prize"} onClick={() => this.togglePopup("submitFunds")} size="small" style={{'margin':10, fontSize: 10}} />
+                <TextButton text={"Open DHackathon"} onClick={this.openDHackathon} size="small" variant="danger" disabled={EOARole === 0 && state === 0 ? false : true} style={{'margin':10, fontSize: 10}} />
+                <TextButton text={"To Voting Stage"} onClick={this.toVotingDHackathon} size="small" variant="danger" disabled={EOARole === 0 && state === 1 ? false : true} style={{'margin':10, fontSize: 10}} />
+                <TextButton text={"Close DHackathon"} onClick={this.closeDHackathon} size="small" variant="danger" disabled={EOARole === 0 && state === 2 ? false : true} style={{'margin':10, fontSize: 10}} />
+                <TextButton text={"Add Judge"} onClick={() => this.togglePopup("addJudge")} size="small" variant="danger" disabled={EOARole === 0 && state === 0 ? false : true} style={{'margin':10, fontSize: 10}} />
+                <TextButton text={"Remove Judge"} onClick={() => this.togglePopup("removeJudge")} size="small" variant="danger" disabled={EOARole === 0 && state != 3 ? false : true} style={{'margin':10, fontSize: 10}} />
+              </Box>
+              <Box p={1} width={1} style={styles.boxH} >
+                <Box p={1} width={1} style={styles.boxVText}>
+                  <ul align="left">
+                    <li>To <i>Open</i> stage, contract balance must be >= than prize</li>
+                    <li>Can submit funds until <i>Closed</i> stage</li>
+                  </ul>
+                </Box>
+                <Box p={1} width={1} style={styles.boxVText}>
+                  <ul align="left">
+                    <li>To <i>Open</i> stage, at least 1 judge and 2 participants</li>
+                    <li>Stage changes by Admin only</li>
+                    <li>Stage changes are irrevercible</li>
+                  </ul>
+                </Box>
+                <Box p={1} width={1} style={styles.boxVText}>
+                  <ul align="left">
+                    <li>Judges can only be added on the <i>In Preparation</i> stage</li>
+                    <li>Judges can be removed before the <i>Closed</i> stage</li>
+                  </ul>
+                </Box>
+              </Box>
+            </Flex>)
+          : null
+        }
+
+        {EOARole === 2
+          ?(<Flex style={styles.container}>
+            <Heading as={"h3"}>Participant Panel</Heading>
+              <Box p={1} width={1} style={styles.boxH} >
+                <Box width={1/3}> <TextButton text={"Deregister as Participant"} onClick={() => this.togglePopup("deregisterAsParticipant")} size="small" disabled={EOARole === 2 && state != 3 ? false : true} style={{'margin':10, fontSize: 10}} /> </Box>
+                <Box width={1/3}> <TextButton text={"Submit Project's Github URL"} onClick={() => this.togglePopup("submitProject")} size="small" disabled={EOARole === 2 && state === 1 ? false : true} style={{'margin':10, fontSize: 10}} /> </Box>
+                <Box width={1/3}> <TextButton text={"Withdraw Prize"} onClick={this.withdrawPrize} size="small" disabled={EOARole === 2 && state === 3 ? false : true} style={{'margin':10, fontSize: 10}} /> </Box>
+              </Box>
+              <Box p={1} width={1} style={styles.boxH} >
+                <Box p={1} width={1} style={styles.boxVText} >
+                  <ul align="left" >
+                    <li>Can deregister before <i>Closed</i> stage</li>
+                  </ul>
+                </Box>
+                <Box p={1} width={1} style={styles.boxVText} >
+                  <ul align="left" >
+                    <li>Projects submission during <i>Open</i> stage only</li>
+                    <li>Project's url can be updated by re-submitting</li>
+                  </ul>
+                </Box>
+                <Box p={1} width={1} style={styles.boxVText} >
+                  <ul align="left" >
+                    <li>Prize withdrawl on <i>Closed</i> stage if votes received</li>
+                  </ul>
+                </Box>
+              </Box>
+          </Flex>)
+          : null
+        }
+
+        
+        {EOARole === 1
+          ?(<Flex style={styles.container}>
+            <Heading as={"h3"}>Judge Panel</Heading>
+            <Box p={1} width={1} style={styles.boxH} >
+              <TextButton text={"Vote for winner"} onClick={() => this.togglePopup("submitVote")} size="small" disabled={EOARole === 1 && state === 2 ? false : true} style={{'margin':10, fontSize: 10}} />
+            </Box>
+            <Box p={1} width={1} style={styles.boxVText} >
+              <ul align="left">
+                <li>Can only vote once</li>
+                <li>Must vote during <i>In Voting</i> stage </li>
+              </ul>
+            </Box>
+          </Flex>)
+          : null
+        }
+        
+        {EOARole === 3
+          ?(<Flex style={styles.container}>
+            <Heading as={"h4"}>No Role Panel</Heading>
+            <Box p={1} width={1} style={styles.boxH} >
+              <TextButton text={"Submit Funds for Prize"} onClick={() => this.togglePopup("submitFunds")} size="small" style={{'margin':10, fontSize: 10}} />
+              <TextButton text={"Register as Participant"} onClick={() => this.togglePopup("registerAsParticipant")} size="small" disabled={EOARole === 3 && state === 0 ? false : true} style={{'margin':10, fontSize: 10}} />
+            </Box>
+            <Box p={1} width={1} style={styles.boxH} >
+              <Box p={1} width={1} style={styles.boxVText} >
+                <ul align="left">
+                  <li>Can submit funds before <i>Closed</i> stage</li>
+                </ul>
+              </Box>
+              <Box p={1} width={1} style={styles.boxVText} >
+                <ul align="left">
+                  <li>Can register on <i>Open</i> stage only</li>
+                </ul>
+              </Box>
+            </Box>
+          </Flex>)
+          : null
+        }
+
         {/* Popup Land */}
         <div className="section">
           {this.state.activePopup === "submitFunds" ?
@@ -376,9 +438,9 @@ export default class DHackathon extends React.Component {
 
 const styles = {
   container: {
-    backgroundColor: '#add8e6',
-    padding: 20,
-    margin: 5,
+    backgroundColor: '#b5daff',
+    padding: 10,
+    margin: 3,
     // // "position":"center",
     // "width":"90%",
     // "height":"90%",
@@ -396,11 +458,24 @@ const styles = {
   boxH: {
     display: "flex",
     flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: "center",
+    // marginBottom: "20px"
   },
   boxV: {
     display: "flex",
     flexDirection: 'column',
     alignItems: 'flex-start',
+    width: "100%",
+  },
+  boxV2: {
+    display: "flex",
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: "100%",
+    justifyContent: 'flex-start',
+    // padding: '20px',
+    paddingBottom: '15px',
   },
   boxVL: {
     fontSize: 12,
@@ -410,5 +485,14 @@ const styles = {
     justifyContent:"center",
     width: "100%",
     marginTop: "18",
+  },
+  boxVText: {
+    fontSize: 11,
+    display: "flex",
+    flexDirection:"column",
+    alignItems:"center",
+    justifyContent:"flex-start",
+    width: "100%",
+    // marginTop: "18",
   }
 }

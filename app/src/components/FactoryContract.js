@@ -3,9 +3,7 @@ import TextButton from './misc/TextButton'
 import { Flex, Box, Heading } from 'rimble-ui'
 import Web3 from "web3";
 import Popup from './misc/Popup'
-import DHackathon from "../contracts/DHackathon.json";
-
-// TO-DO: create POP-UP for when transaction succeeds and fails
+// import DHackathon from "../contracts/DHackathon.json";
 
 export default class FactoryContract extends React.Component {
   constructor(props) {
@@ -43,8 +41,6 @@ export default class FactoryContract extends React.Component {
       // let { DHName, prize } = argsFromPopup
       DHFContract.methods["createDHackathon"].cacheSend(DHName, Web3.utils.toWei(prize, 'ether'), 
                                           {from: this.props.drizzleState.activeEOA.account, value: Web3.utils.toWei('.1', 'ether')})
-      // this.addNewContract()
-      // this.setState({ createDHackathonTx })
       this.togglePopup()
     // }
   }
@@ -53,31 +49,18 @@ export default class FactoryContract extends React.Component {
     this.setState({showPopup: !this.state.showPopup }) 
   }
 
-  // let { _DHID, _contractAddress } = action.event.returnValues;
-    //   let contractName = `DH${_DHID}`
-    //   let currentContracts = store.getState()['contracts']
-    //   console.log("STATE ON MIDDLEWARE: ", currentContracts.web3)
-    //   if (!Object.keys(currentContracts).includes(contractName)) {
-    //     let web3 = getCorrectWeb3()
-    //     let web3Contract = new web3.eth.Contract(DHackathon['abi'], _contractAddress)
-    //     let contractConfig = { contractName, web3Contract}
-    //     let events = ['LogFundingReceived', 'LogProjectSubmitted', 'LogVoteSubmitted', 'LogPrizeWithdrawn',
-    //                   'LogDHInPreparation', 'LogDHOpen', 'LogDHInVoting', 'LogDHClosed']
-        
-    //     store.dispatch({type: 'ADD_CONTRACT', contractConfig, events})
-
-  addNewContract = () => {
-    let contractName = "New DHackathon"
-    // let web3 = new Web3()
-    let web3Contract = new this.props.drizzle.web3.eth.Contract(DHackathon['abi'], "0xaA8E7D69bB55FF538c207029ffCf70C2Fb3C68aE") //second argument is new contract's address 
-    console.log("THIS IS THE WEB3 Contract: ", web3Contract)
-    let contractConfig = { contractName, web3Contract }
-    let events = ['LogFundingReceived']
+  // addNewContract = () => {
+  //   let contractName = "New DHackathon"
+  //   // let web3 = new Web3()
+  //   let web3Contract = new this.props.drizzle.web3.eth.Contract(DHackathon['abi'], "0xaA8E7D69bB55FF538c207029ffCf70C2Fb3C68aE") //second argument is new contract's address 
+  //   console.log("THIS IS THE WEB3 Contract: ", web3Contract)
+  //   let contractConfig = { contractName, web3Contract }
+  //   let events = ['LogFundingReceived']
   
-    // Using the Drizzle context object
-    // this.props.drizzle.addContract(contractConfig, events)
-    this.props.drizzle.store.dispatch({type: 'ADD_CONTRACT', contractConfig, events}) // web3: this.props.drizzle.web3
-  }
+  //   // Using the Drizzle context object
+  //   // this.props.drizzle.addContract(contractConfig, events)
+  //   this.props.drizzle.store.dispatch({type: 'ADD_CONTRACT', contractConfig, events}) // web3: this.props.drizzle.web3
+  // }
 
   render() {
     const DHFState = this.props.drizzleState.contracts.DHackathonFactory;
@@ -121,7 +104,7 @@ export default class FactoryContract extends React.Component {
             <span style={{fontSize: 12}} >Costs 0.1 ETH</span>
           </Box>
         )}
-        <div className="section">
+        <div>
           {this.state.showPopup ?
           <Popup
             text='Create New DHackathon'
