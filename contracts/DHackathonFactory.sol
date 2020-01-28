@@ -10,14 +10,7 @@ contract DHackathonFactory is Ownable {
 
     uint256 public counter;
     bool public operational = true;
-
-    struct DHackathonBirthCertificate {
-      uint256 DHID;
-      address admin;
-      uint256 createdOn;
-      DHackathon contractAddress;
-    }
-    mapping (uint256 => DHackathonBirthCertificate) public DHackathonRegistry;
+    address[] public children;
 
     event DHackathonCreated(uint256 DHID, string name, address admin, uint256 prize, DHackathon contractAddress);
     event FundsWithdrawn(uint256 funds);
@@ -36,8 +29,9 @@ contract DHackathonFactory is Ownable {
         require(msg.value >= 0.1 ether, "DHackathon creation price of 0.1 ether not met.");
         counter += 1;
         newDH = new DHackathon(counter, _name, msg.sender, _prize, block.timestamp);
-        DHackathonRegistry[counter] = DHackathonBirthCertificate(counter, msg.sender, block.timestamp, newDH);
         emit DHackathonCreated(counter, _name, msg.sender, _prize, newDH);
+        return newDH;
+        // children.push(newDH.address);
     }
 
     function withdrawFunds()
@@ -55,5 +49,9 @@ contract DHackathonFactory is Ownable {
         onlyOwner()
     {
         operational = !operational;
+    }
+
+    function getChildren() public view returns(address[] memory){
+        return children;
     }
 }

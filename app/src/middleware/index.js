@@ -59,21 +59,21 @@ const contractEventNotifier = store => next => action => {
 
 // // Development purposes — creates a DHackathon contract at start, as to not have to hit createDHackathon every time.
 // // One must also add a DHackathon contract to the 2_deploy_contract.js and put the contract address below
-  // if (action.type === "DRIZZLE_INITIALIZED") {
-  //   // let { _DHID, _contractAddress } = action.event.returnValues;
-  //   let contractName = "DH0"
-  //   let currentContracts = store.getState()['contracts']
-  //   if (!Object.keys(currentContracts).includes(contractName)) {
-  //     let web3 = getCorrectWeb3()
-  //     let web3Contract = new web3.eth.Contract(DHackathon['abi'], "0x8647353CD6e92f5f06FC4083481b741fa354B77a")
-  //     let contractConfig = { contractName, web3Contract}
-  //     let events = ['FundingReceived', 'ProjectSubmitted', 'VoteSubmitted', 'PrizeWithdrawn',
-  //                   'DHInPreparation', 'DHOpen', 'DHInVoting', 'DHClosed',
-  //                   'JudgeAdded', 'JudgeRemoved', 'ParticipantAdded', 'ParticipantRemoved']
-  //     console.log("CREATING TEST CONTRACT: ", contractConfig)
-  //     store.dispatch({type: 'ADD_CONTRACT', contractConfig, events})
-  //   }
-  // }
+  if (action.type === "DRIZZLE_INITIALIZED") {
+    // let { _DHID, _contractAddress } = action.event.returnValues;
+    let contractName = "DH0"
+    let currentContracts = store.getState()['contracts']
+    if (!Object.keys(currentContracts).includes(contractName)) {
+      let web3 = getCorrectWeb3()
+      let web3Contract = new web3.eth.Contract(DHackathon['abi'], "0x8647353CD6e92f5f06FC4083481b741fa354B77a")
+      let contractConfig = { contractName, web3Contract}
+      let events = ['FundingReceived', 'ProjectSubmitted', 'VoteSubmitted', 'PrizeWithdrawn',
+                    'DHInPreparation', 'DHOpen', 'DHInVoting', 'DHClosed',
+                    'JudgeAdded', 'JudgeRemoved', 'ParticipantAdded', 'ParticipantRemoved']
+      console.log("CREATING TEST CONTRACT: ", contractConfig)
+      store.dispatch({type: 'ADD_CONTRACT', contractConfig, events})
+    }
+  }
 
   return next(action)
 }
