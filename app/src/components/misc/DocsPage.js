@@ -88,7 +88,7 @@ export default function DocsPage () {
       </ul>
 
       <p align="left">
-        Below, a sequence diagram to further illustrate each stage.
+        Below, a diagram that further illustrates the sequential nature of stages.
       </p>
       <img src={sequenceDiagram} alt={"Sequence Diagram"} style={styles.imgs} />
 

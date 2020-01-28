@@ -26,10 +26,6 @@ Note that hackathons, and all competitions, are group efforts where certain indi
 
 ## Description
 
-Because an image is worth more than a thousand words:
-
-![sequence diagram](./app/src/images/UML/UML_sequence_diagram.png)
-
 The platform is based on two main contracts that have a factory-child relationship, the `DHackathonFactory` contract and the `DHackathon`, DHackathon standing for Decentralized Hackathon. Any externally owned account (EOA) can call the `createDHackathon(string memory _name, uint256 _prize)` function of the `DHackathonFactory` contract to instantiate and become the _Admin_ of a newly minted `DHackathon` contract (more on _Admin_ and roles below). The caller must specify what `name` and `prize` the `DHackathon` will have. The contract's balance will have to be greater or equal to the promised `prize` for the `DHackathon` contract to change to the `Open` stage (more on _Open_ and stages below).
 
 ### Roles
@@ -70,6 +66,10 @@ The stages of a hackathon are sequentially: _In Preparation_, _Open_, _In Voting
   + *Participant:* can withdraw prize, if they have received votes.
   + *Judge:* -
   + *No role:* -
+
+To further illustrate the sequential nature of stages:
+
+![sequence diagram](./app/src/images/UML/UML_sequence_diagram.png)
 
 For a more techncial description of the above see [design pattern decisions](./design_pattern_decisions.md) and [avoiding common attacks](./avoiding_common_attacks.md).
 
