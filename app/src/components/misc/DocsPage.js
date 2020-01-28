@@ -95,10 +95,9 @@ export default function DocsPage () {
       <br></br>
       <br></br>
       <p align="left">
-        Here is the project's <a href="https://github.com/alanarvelo/DHackathon">Github Page</a>. If you want to get in contact, <a href="mailto:alanarvelo@gmail.com">email me</a>.
+        Here is the project's <a href="https://github.com/alanarvelo/DHackathon">Github Page</a> and here the <a href="https://www.youtube.com/watch?v=pTHeNLgnt3o&list=PLka73JsQwWGvu_jQ94KNlWbVVGDWcU1s5&index=1">tutorial videos</a>. If you want to get in contact, <a href="mailto:alanarvelo@gmail.com">email me</a>.
       </p>
-
-
+      
     </div>
   )
 }
