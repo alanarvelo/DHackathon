@@ -12,7 +12,7 @@ contract DHackathonFactory is Ownable {
     bool public operational = true;
     address[] public children;
 
-    event DHackathonCreated(uint256 DHID, string name, address admin, uint256 prize, DHackathon contractAddress);
+    event DHackathonCreated(uint256 DHID, string name, address admin, uint256 prize, address contractAddress);
     event FundsWithdrawn(uint256 funds);
 
     modifier isOperational() {
@@ -24,14 +24,12 @@ contract DHackathonFactory is Ownable {
         public
         payable
         isOperational()
-        returns (DHackathon newDH)
     {
         require(msg.value >= 0.1 ether, "DHackathon creation price of 0.1 ether not met.");
         counter += 1;
-        newDH = new DHackathon(counter, _name, msg.sender, _prize, block.timestamp);
-        emit DHackathonCreated(counter, _name, msg.sender, _prize, newDH);
-        return newDH;
-        // children.push(newDH.address);
+        DHackathon newDH = new DHackathon(counter, _name, msg.sender, _prize, block.timestamp);
+        children.push(address(newDH));
+        emit DHackathonCreated(counter, _name, msg.sender, _prize, address(newDH));
     }
 
     function withdrawFunds()
