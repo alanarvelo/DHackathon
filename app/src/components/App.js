@@ -38,8 +38,8 @@ class App extends Component {
         if (!initialized) {
           return "Loading...";
         }
-        console.log("drizzle: ", drizzle)
-        console.log("drizzleState: ", drizzleState) 
+        // console.log("drizzle: ", drizzle)
+        // console.log("drizzleState: ", drizzleState) 
         return (
           <div>
             <NavBar drizzleState={drizzleState}/>

@@ -196,9 +196,7 @@ export default class DHackathon extends React.Component {
       judgesList = this.getJudgesCompleteInfo(judgesList)
     }
     
-
     let { EOARole } = this.state
-    console.log(this.props.drizzleState.activeEOA.account)
 
     return (
       <div className="section">
