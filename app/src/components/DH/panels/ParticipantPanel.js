@@ -42,7 +42,7 @@ export default class ParticipantPanel extends React.Component {
         {this.state.activePopup === "deregisterAsParticipant" 
           ? <Popup
               text='Deregister active account from Participant role'
-              submitFn={(inputs) => this.props.deregisterAsParticipant(inputs) && this.togglePopup("") }
+              submitFn={(inputs) => { this.props.deregisterAsParticipant(inputs); this.togglePopup("") }}
               inputsConfig={[ {displayName: 'Account: ', name: "account", type: "text", placeholder: "e.g. 0xAc03BB73b6a9e108530AFf4Df5077c2B3D481e5A", initialValue: this.props.activeEOA} ]}
               removePopup={() => this.togglePopup("")}
             />
@@ -51,7 +51,7 @@ export default class ParticipantPanel extends React.Component {
         {this.state.activePopup === "submitProject"
           ? <Popup
               text="Submit project's github url"
-              submitFn={ (inputs) => this.props.submitProject(inputs) && this.togglePopup("") }
+              submitFn={ (inputs) => { this.props.submitProject(inputs); this.togglePopup("") }}
               inputsConfig={[ {displayName: "Project's github url: ", name: "url", type: "url", placeholder: "e.g. https://github.com/alanarvelo/DHackathon/blob/master/app/src/middleware/index.js"} ]}
               removePopup={() => this.togglePopup("")}
             />

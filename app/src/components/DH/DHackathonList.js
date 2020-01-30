@@ -19,14 +19,14 @@ export default class DHackathonList extends React.Component {
             return "Loading...";
           }
           let DHList = Object.keys(drizzle.contracts)
-                        .filter(contractName => contractName !== "DHackathonFactory")
+                        .filter(contractName => contractName !== "DHackathonFactory").reverse()
                                     
           return (
             <Flex style={{flex: 1, flexDirection: 'column'}}>
               <Heading as={"h2"} width={1} style={{align: "left"}}> Active DHackathons </Heading>
               <br></br>
               { DHList.map(DHName => (
-                <Link to={`/DH/${DHName}`} key={DHName} style={{ textDecoration: 'none' }}>
+                <Link to={`/DH/${drizzle.contracts[DHName].address}`} key={DHName} style={{ textDecoration: 'none' }}>
                   <DHCard DHContract={drizzle.contracts[DHName]} DHState={drizzleState.contracts[DHName]} />
                 </Link>
               )

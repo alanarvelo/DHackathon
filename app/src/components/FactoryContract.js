@@ -3,6 +3,7 @@ import TextButton from './misc/TextButton'
 import { Flex, Box, Heading } from 'rimble-ui'
 import Web3 from "web3";
 import Popup from './misc/Popup'
+import DHackathon from "../contracts/DHackathon.json"
 
 
 export default class FactoryContract extends React.Component {
@@ -14,6 +15,9 @@ export default class FactoryContract extends React.Component {
       ownerKey: null,
       showPopup: false,
     }
+    this.DHContractEvents = ['FundingReceived', 'ProjectSubmitted', 'VoteSubmitted', 'PrizeWithdrawn',
+                              'DHInPreparation', 'DHOpen', 'DHInVoting', 'DHClosed',
+                              'JudgeAdded', 'JudgeRemoved', 'ParticipantAdded', 'ParticipantRemoved']
   }
 
   async componentDidMount() {
@@ -22,8 +26,21 @@ export default class FactoryContract extends React.Component {
     const operationalKey = DHFContract.methods["operational"].cacheCall();
     const counterKey = DHFContract.methods["counter"].cacheCall();
     const ownerKey = DHFContract.methods["owner"].cacheCall();
-
     this.setState({ operationalKey, counterKey, ownerKey });
+
+    // add previously created DHackathon contract by getting their address from the Factory
+    const children = await this.props.drizzle.contracts.DHackathonFactory.methods.getChildren().call();
+    console.log("CHILDREN: ",children)
+    children.map((childAddress) => this.addChildren(childAddress))
+    
+  }
+
+  async addChildren(childAddress) {
+    let contractName = `DH${childAddress.toLowerCase().slice(-4)}`
+    if (!Object.keys(this.props.drizzleState.contracts).includes(contractName)) {
+      let web3Contract = new this.props.drizzle.web3.eth.Contract(DHackathon['abi'], childAddress)
+      await this.props.drizzle.addContract({contractName, web3Contract}, this.DHContractEvents)
+    }
   }
 
   shutdownContract = () => {

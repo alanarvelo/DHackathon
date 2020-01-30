@@ -37,8 +37,8 @@ const contractEventNotifier = store => next => action => {
 
     // Specific DHackathon Creation Event
     if (action.event.event === "DHackathonCreated") {
-      const { DHID, contractAddress } = action.event.returnValues;
-      const contractName = `DH${DHID}`
+      const { contractAddress } = action.event.returnValues;
+      const contractName = `DH${contractAddress.toLowerCase().slice(-4)}`
       if (!Object.keys(currentContracts).includes(contractName)) {
         let web3 = getCorrectWeb3()
         let web3Contract = new web3.eth.Contract(DHackathon['abi'], contractAddress)

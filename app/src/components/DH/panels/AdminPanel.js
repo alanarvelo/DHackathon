@@ -48,7 +48,7 @@ export default class AdminPanel extends React.Component {
         {this.state.activePopup === "submitFunds"
           ? <Popup
               text='Fund DHackathon Prize'
-              submitFn={(inputs) => {this.props.submitFunds(inputs) && this.togglePopup("")} }
+              submitFn={(inputs) => { this.props.submitFunds(inputs); this.togglePopup("") }}
               inputsConfig={[ {displayName: 'Funds in ETH: ', name: "funding", type: "number", placeholder: "e.g. 3.00"} ]}
               removePopup={() => this.togglePopup("")}
             />
@@ -57,7 +57,7 @@ export default class AdminPanel extends React.Component {
         {this.state.activePopup === "addJudge" ?
           <Popup
             text='Add a new Judge'
-            submitFn={(inputs) => {this.props.addJudge(inputs) && this.togglePopup("")} }
+            submitFn={(inputs) => { this.props.addJudge(inputs); this.togglePopup("") }}
             inputsConfig={[ {displayName: 'Account: ', name: "account", type: "text", placeholder: "e.g. 0xAc03BB73b6a9e108530AFf4Df5077c2B3D481e5A"} ]}
             removePopup={() => this.togglePopup("")}
           />
@@ -66,7 +66,7 @@ export default class AdminPanel extends React.Component {
         {this.state.activePopup === "removeJudge" ?
           <Popup
             text='Remove a current Judge'
-            submitFn={(inputs) => {this.props.removeJudge(inputs) && this.togglePopup("")} }
+            submitFn={(inputs) => { this.props.removeJudge(inputs); this.togglePopup("") }}
             inputsConfig={[ {displayName: 'Account: ', name: "account", type: "text", placeholder: "e.g. 0xAc03BB73b6a9e108530AFf4Df5077c2B3D481e5A"} ]}
             removePopup={() => this.togglePopup("")}
           />

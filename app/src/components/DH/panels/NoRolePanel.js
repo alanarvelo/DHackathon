@@ -35,7 +35,7 @@ export default class NoRolePanel extends React.Component {
         {this.state.activePopup === "submitFunds"
           ? <Popup
               text='Fund DHackathon Prize'
-              submitFn={(inputs) => (this.props.submitFunds(inputs) && this.togglePopup("")) }
+              submitFn={(inputs) => { this.props.submitFunds(inputs); this.togglePopup("") }}
               inputsConfig={[ {displayName: 'Funds in ETH: ', name: "funding", type: "number", placeholder: "e.g. 3.00"} ]}
               removePopup={() => this.togglePopup("")}
             />
@@ -44,7 +44,7 @@ export default class NoRolePanel extends React.Component {
         {this.state.activePopup === "registerAsParticipant"
           ? <Popup
               text='Register active account as a Participant'
-              submitFn={(inputs) => (this.props.registerAsParticipant(inputs) && this.togglePopup("")) }
+              submitFn={(inputs) => { this.props.registerAsParticipant(inputs); this.togglePopup("") }} 
               inputsConfig={[ {displayName: 'Account: ', name: "account", type: "text", placeholder: "e.g. 0xAc03BB73b6a9e108530AFf4Df5077c2B3D481e5A", initialValue: this.props.activeEOA} ]}
               removePopup={() => this.togglePopup("")}
             />

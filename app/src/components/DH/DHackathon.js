@@ -6,14 +6,13 @@ import { BN } from 'bn.js'
 import DHCard from './DHCard'
 // import Popup from '../misc/Popup'
 import { Redirect } from 'react-router-dom'
-import { DrizzleContext } from "@drizzle/react-plugin";
+// import { DrizzleContext } from "@drizzle/react-plugin";
 import JudgePanel from './panels/JudgePanel'
 import NoRolePanel from './panels/NoRolePanel'
 import ParticipantPanel from './panels/ParticipantPanel'
 import AdminPanel from './panels/AdminPanel'
 
-// TO-DO: modularize this component into several compoenents
-// Due to time constraints will be left as is until revisit
+// TO-DO: clean and further modularize this componenet
 
 export default class DHackathon extends React.Component {
   constructor(props) {
@@ -28,20 +27,21 @@ export default class DHackathon extends React.Component {
       judgeToTx: {}
     }
 
-    // this.DHContract = this.props.drizzle.contracts[this.DHName];
-    this.DHName = this.props.match.params.DHID
+    // this.DHContract = this.props.DHContract;
+    this.DHName = this.props.DHName
     this.DHRoles = ["Admin", "Judge", "Participant", "No role"]
-    // this.DHContract = this.props.drizzle.contracts[this.DHName]
+    this.DHContract = this.props.drizzle.contracts[this.DHName]
   }
 
   async componentDidMount() {
-    // this.DHContract = this.props.drizzle.contracts[this.DHName]
-    // const DHContract = this.props.drizzle.contracts[this.DHName];
-    let nameKey = this.DHContract.methods["name"].cacheCall();
-    let stateKey = this.DHContract.methods["state"].cacheCall();
-    let balanceKey = this.DHContract.methods["balance"].cacheCall();
-    let judgesListKey = await this.DHContract.methods["getJudgesList"].cacheCall();
-    let participantsListKey = await this.DHContract.methods["getParticipantsList"].cacheCall();
+    this.DHContract = this.props.drizzle.contracts[this.DHName]
+    const DHContract = this.props.drizzle.contracts[this.DHName];
+    console.log("did mount here comp")
+    let nameKey = DHContract.methods["name"].cacheCall();
+    let stateKey = DHContract.methods["state"].cacheCall();
+    let balanceKey = DHContract.methods["balance"].cacheCall();
+    let judgesListKey = await DHContract.methods["getJudgesList"].cacheCall();
+    let participantsListKey = await DHContract.methods["getParticipantsList"].cacheCall();
 
     this.setState({ nameKey, stateKey, balanceKey, judgesListKey, participantsListKey });
 
@@ -53,6 +53,7 @@ export default class DHackathon extends React.Component {
     if (stateNow > 0) {
       this.trackRolesInfo()
     }
+    console.log("DHACKATHON MOUNTED")
     
   }
 
@@ -181,120 +182,108 @@ export default class DHackathon extends React.Component {
     })
     return completeInfoArray
   }
-   
+  
 
   render() {
+    const DHState = this.props.drizzleState.contracts[this.DHName]
+    const DHContract = this.props.drizzle.contracts[this.DHName]
+    this.DHContract = DHContract
+
+    let name = DHState.name[this.state.nameKey]
+    let state = DHState.state[this.state.stateKey]
+    state = state ? parseInt(state.value) : null
+
+    let balance = DHState.balance[this.state.balanceKey]
+    balance = balance ? parseInt(balance.value) : null
+
+    let judgesList = this.getCleanedJudgesList()
+    let participantsList = this.getCleanedParticipantsList()
+    if (state > 0) {
+      participantsList = this.getParticipantsCompleteInfo(participantsList)
+      judgesList = this.getJudgesCompleteInfo(judgesList)
+      console.log(judgesList)
+    }
+    
+
+    let { EOARole } = this.state
+
     return (
-      <DrizzleContext.Consumer>
-        {drizzleContext => {
-          const { drizzle, drizzleState, initialized } = drizzleContext;
-
-          if (!initialized) {
-            return "Loading...";
-          }
-
-          if (!Object.keys(drizzleState.contracts).includes(this.DHName)) {
-            return <Redirect to='/404' />
-          }
-      
-          const DHState = drizzleState.contracts[this.DHName]
-          const DHContract = drizzle.contracts[this.DHName]
-          this.DHContract = DHContract
-      
-          let name = DHState.name[this.state.nameKey]
-          let state = DHState.state[this.state.stateKey]
-          state = state ? parseInt(state.value) : null
-      
-          let judgesList = this.getCleanedJudgesList()
-          let participantsList = this.getCleanedParticipantsList()
-          if (state > 0) {
-            participantsList = this.getParticipantsCompleteInfo(participantsList)
-            judgesList = this.getJudgesCompleteInfo(judgesList)
-            console.log(judgesList)
-          }
-          
-      
-          let { EOARole } = this.state
-
-          return (
-            <div className="section">
-              <Flex style={styles.container}>
-                <Heading mb={2} as={"h2"} >{`${name ? name.value : "-" }`}</Heading>
-                <Heading  mb={2} as={"h6"} >{`Active account's role: ${EOARole != null ? this.DHRoles[EOARole] : "-"}`}</Heading>
-                <DHCard DHContract={DHContract} DHState={DHState} />
-              
-                <Box p={1} width={1} style={styles.boxH} >
-                  <div>
-                  <Heading as={"h5"}>Judges</Heading>
-                  <Box p={1} width={1/2} style={styles.boxV} >
-                    {judgesList.map(judge => (
-                        <Box p={1} key={judge.account} width={1/judgesList.length} style={{fontSize: 12, margin:8, display: "flex", flexDirection:"column", alignItems:"flex-start", justifyContent:"space-around", width: "100%"}}>
-                          <span> <strong>Account: </strong> {`${judge.account ? judge.account : ""}`} </span>
-                          <span> <strong>Has voted: </strong> {`${judge.voted ? "yes": "no"}`} </span>
-                        </Box>
-                      ))}
+      <div className="section">
+        <Flex style={styles.container}>
+          <Heading mb={2} as={"h2"} >{`${name ? name.value : "-" }`}</Heading>
+          <Heading  mb={2} as={"h6"} >{`Active account's role: ${EOARole != null ? this.DHRoles[EOARole] : "-"}`}</Heading>
+          <DHCard DHContract={DHContract} DHState={DHState} />
+        
+          <Box p={1} width={1} style={styles.boxH} >
+            <div>
+            <Heading as={"h5"}>Judges</Heading>
+            <Box p={1} width={1/2} style={styles.boxV} >
+              {judgesList.map(judge => (
+                  <Box p={1} key={judge.account} width={1/judgesList.length} style={{fontSize: 12, margin:8, display: "flex", flexDirection:"column", alignItems:"flex-start", justifyContent:"space-around", width: "100%"}}>
+                    <span> <strong>Account: </strong> {`${judge.account ? judge.account : ""}`} </span>
+                    <span> <strong>Has voted: </strong> {`${judge.voted ? "yes": "no"}`} </span>
                   </Box>
-                  </div>
-                  
-                  <div>
-                  <Heading as={"h5"}>Participants</Heading>
-                  <Box p={1} width={1/2} style={styles.boxV} >
-                    
-                      {participantsList.map(participant => (
-                        <Box p={1} key={participant.account} width={1/participantsList.length} style={styles.boxVL}>
-                          <span> <strong>Account: </strong> {`${participant.account ? participant.account : ""}`} </span>
-                          <span style={{"display": "flex", flexDirection:"column", alignItems:"flex-start"}}> <strong>Project's url: </strong> {`${participant.url ? participant.url : ""}`} </span>
-                          <span> <strong>Votes received: </strong> {`${participant.votes ? participant.votes : ""}`}</span>
-                        </Box>
-                      ))}
-                  </Box>
-                  </div>
-                </Box>
-              </Flex>
-
-              {EOARole === 0
-                ? <AdminPanel 
-                    state={state}
-                    submitFunds={this.submitFunds}
-                    openDHackathon={this.openDHackathon}
-                    toVotingDHackathon={this.toVotingDHackathon}
-                    closeDHackathon={this.closeDHackathon}
-                    addJudge={this.addJudge}
-                    removeJudge={this.removeJudge}
-                  />
-                : null
-              }
-              {EOARole === 2
-                ? <ParticipantPanel 
-                    state={state}
-                    deregisterAsParticipant={this.deregisterAsParticipant}
-                    submitProject={this.submitProject}
-                    withdrawPrize={this.withdrawPrize}
-                    activeEOA={this.props.drizzleState.activeEOA.account} 
-                  />
-                : null
-              }
-              {EOARole === 1
-                ? <JudgePanel
-                    state={state}
-                    submitVote={this.submitVote}
-                  />
-                : null
-              }
-              {EOARole === 3 ?
-                <NoRolePanel
-                  state={state}
-                  submitFunds={this.submitFunds}
-                  registerAsParticipant={this.registerAsParticipant}
-                  activeEOA={this.props.drizzleState.activeEOA.account}
-                />
-                : null
-              }
-              
+                ))}
+            </Box>
             </div>
-          )
-        }}
-      </DrizzleContext.Consumer> 
+            
+            <div>
+            <Heading as={"h5"}>Participants</Heading>
+            <Box p={1} width={1/2} style={styles.boxV} >
+              
+                {participantsList.map(participant => (
+                  <Box p={1} key={participant.account} width={1/participantsList.length} style={styles.boxVL}>
+                    <span> <strong>Account: </strong> {`${participant.account ? participant.account : ""}`} </span>
+                    <span style={{"display": "flex", flexDirection:"column", alignItems:"flex-start"}}> <strong>Project's url: </strong> {`${participant.url ? participant.url : ""}`} </span>
+                    <span> <strong>Votes received: </strong> {`${participant.votes ? participant.votes : ""}`}</span>
+                  </Box>
+                ))}
+            </Box>
+            </div>
+          </Box>
+        </Flex>
+
+        {EOARole === 0
+          ? <AdminPanel 
+              state={state}
+              submitFunds={this.submitFunds}
+              openDHackathon={this.openDHackathon}
+              toVotingDHackathon={this.toVotingDHackathon}
+              closeDHackathon={this.closeDHackathon}
+              addJudge={this.addJudge}
+              removeJudge={this.removeJudge}
+              balance={balance}
+            />
+          : null
+        }
+        {EOARole === 2
+          ? <ParticipantPanel 
+              state={state}
+              deregisterAsParticipant={this.deregisterAsParticipant}
+              submitProject={this.submitProject}
+              withdrawPrize={this.withdrawPrize}
+              activeEOA={this.props.drizzleState.activeEOA.account} 
+            />
+          : null
+        }
+        {EOARole === 1
+          ? <JudgePanel
+              state={state}
+              submitVote={this.submitVote}
+            />
+          : null
+        }
+        {EOARole === 3 ?
+          <NoRolePanel
+            state={state}
+            submitFunds={this.submitFunds}
+            registerAsParticipant={this.registerAsParticipant}
+            activeEOA={this.props.drizzleState.activeEOA.account}
+            balance={balance}
+          />
+          : null
+        }
+      </div>
     )
   }
 

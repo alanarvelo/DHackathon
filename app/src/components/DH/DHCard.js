@@ -1,5 +1,4 @@
 import React from 'react'
-import TextButton from '../misc/TextButton'
 import { Flex, Box } from 'rimble-ui'
 import Web3 from "web3"
 
