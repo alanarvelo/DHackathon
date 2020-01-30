@@ -4,11 +4,15 @@ import { Flex, Box, Heading } from 'rimble-ui'
 import Web3 from "web3"
 import { BN } from 'bn.js'
 import DHCard from './DHCard'
-import Popup from '../misc/Popup'
+// import Popup from '../misc/Popup'
 import { Redirect } from 'react-router-dom'
+// import { DrizzleContext } from "@drizzle/react-plugin";
+import JudgePanel from './panels/JudgePanel'
+import NoRolePanel from './panels/NoRolePanel'
+import ParticipantPanel from './panels/ParticipantPanel'
+import AdminPanel from './panels/AdminPanel'
 
-// TO-DO: modularize this component into several compoenents
-// Due to time constraints will be left as is until revisit
+// TO-DO: clean and further modularize this componenet
 
 export default class DHackathon extends React.Component {
   constructor(props) {
@@ -18,19 +22,21 @@ export default class DHackathon extends React.Component {
       stateKey: null,
       balanceKey: null,
       EOARole: null,
-      activePopup: "",
+      // activePopup: "",
       participantToTx: {},
       judgeToTx: {}
     }
 
-    // this.DHContract = this.props.drizzle.contracts[this.DHName];
-    this.DHName = this.props.match.params.DHID
+    // this.DHContract = this.props.DHContract;
+    this.DHName = this.props.DHName
     this.DHRoles = ["Admin", "Judge", "Participant", "No role"]
-    this.DHContract = this.props.drizzle.contracts[this.DHName];
+    this.DHContract = this.props.drizzle.contracts[this.DHName]
   }
 
   async componentDidMount() {
+    this.DHContract = this.props.drizzle.contracts[this.DHName]
     const DHContract = this.props.drizzle.contracts[this.DHName];
+    console.log("did mount here comp")
     let nameKey = DHContract.methods["name"].cacheCall();
     let stateKey = DHContract.methods["state"].cacheCall();
     let balanceKey = DHContract.methods["balance"].cacheCall();
@@ -43,10 +49,11 @@ export default class DHackathon extends React.Component {
 
     this.listenToActiveAccountUpdates()
 
-    let stateNow = await DHContract.methods.state().call()
+    let stateNow = await this.DHContract.methods.state().call()
     if (stateNow > 0) {
       this.trackRolesInfo()
     }
+    console.log("DHACKATHON MOUNTED")
     
   }
 
@@ -67,12 +74,12 @@ export default class DHackathon extends React.Component {
     else this.setState({EOARole: 3})
   }
 
-  togglePopup = (popupName) => {  
-    this.setState(prevState => ({
-      ...prevState,
-      "activePopup": popupName
-    }))
-  }
+  // togglePopup = (popupName) => {  
+  //   this.setState(prevState => ({
+  //     ...prevState,
+  //     "activePopup": popupName
+  //   }))
+  // }
 
   trackRolesInfo() {
     let participantsList = this.getCleanedParticipantsList()
@@ -91,13 +98,9 @@ export default class DHackathon extends React.Component {
     this.setState({ participantToTx, judgeToTx})
   }
 
-
-  // submitFunds, openDHackathon, toVotingDHackathon, closeDHackathon, addJudge, removeJudge
-  // J: submitVote
-  // P: registerAsParticipant, deregisterAsParticipant, submitProject, viewProject, withdrawPrize
-  submitFunds = async ({ funding }) => {
+  /** ******************************************************************* FUNCTIONS ***************************************************************** */
+  submitFunds = ({ funding }) => {
     this.DHContract.methods["submitFunds"].cacheSend({from: this.props.drizzleState.activeEOA.account, value: Web3.utils.toWei(funding, 'ether')})
-    this.togglePopup("")
   }
 
   /** ******************************************************************* ADMIN Functions *************************************************************** */
@@ -110,43 +113,29 @@ export default class DHackathon extends React.Component {
 
   addJudge = ({ account }) => {
     this.DHContract.methods["addJudge"].cacheSend(account, {from: this.props.drizzleState.activeEOA.account})
-    this.togglePopup("")
   }
 
   removeJudge = ({ account }) => {
     this.DHContract.methods["removeJudge"].cacheSend(account, {from: this.props.drizzleState.activeEOA.account})
-    this.togglePopup("")
   }
 
   /** ******************************************************************* JUDGE Functions *************************************************************** */
-  
   submitVote = ({ winner }) => {
     this.DHContract.methods["submitVote"].cacheSend(winner, {from: this.props.drizzleState.activeEOA.account})
-    this.togglePopup("")
   }
-
 
   /** **************************************************************** PARTICIPANT Functions ************************************************************ */
   registerAsParticipant = ({ account }) => {
     this.DHContract.methods["registerAsParticipant"].cacheSend({from: this.props.drizzleState.activeEOA.account})
-    this.togglePopup("")
   }
 
   deregisterAsParticipant = ({ account }) => {
     this.DHContract.methods["deregisterAsParticipant"].cacheSend({from: this.props.drizzleState.activeEOA.account})
-    this.togglePopup("")
   }
 
-  // submitProject, viewProject, withdrawPrize
   submitProject = ({ url }) => {
     this.DHContract.methods["submitProject"].cacheSend(url, {from: this.props.drizzleState.activeEOA.account})
-    this.togglePopup("")
   }
-
-  // viewProject = ({ url }) => {
-  //   this.DHContract.methods["viewProject"].cacheSend(url, {from: this.props.drizzleState.activeEOA.account})
-  //   this.togglePopup("viewProject")
-  // }
 
   withdrawPrize = () => this.DHContract.methods["withdrawPrize"].cacheSend({from: this.props.drizzleState.activeEOA.account})
 
@@ -193,23 +182,19 @@ export default class DHackathon extends React.Component {
     })
     return completeInfoArray
   }
-   
+  
 
   render() {
-    if (!Object.keys(this.props.drizzleState.contracts).includes(this.DHName)) {
-      return <Redirect to='/404' />
-    }
-
     const DHState = this.props.drizzleState.contracts[this.DHName]
-    // console.log("drizzle: ", this.props.drizzle)
-    // console.log("STATE: ", this.props.drizzleState)
+    const DHContract = this.props.drizzle.contracts[this.DHName]
+    this.DHContract = DHContract
 
     let name = DHState.name[this.state.nameKey]
     let state = DHState.state[this.state.stateKey]
     state = state ? parseInt(state.value) : null
 
-    // let balance = DHState.balance[this.state.balanceKey]
-    // balance = balance ? Web3.utils.fromWei(balance.value) : "-"
+    let balance = DHState.balance[this.state.balanceKey]
+    balance = balance ? parseInt(balance.value) : null
 
     let judgesList = this.getCleanedJudgesList()
     let participantsList = this.getCleanedParticipantsList()
@@ -227,7 +212,7 @@ export default class DHackathon extends React.Component {
         <Flex style={styles.container}>
           <Heading mb={2} as={"h2"} >{`${name ? name.value : "-" }`}</Heading>
           <Heading  mb={2} as={"h6"} >{`Active account's role: ${EOARole != null ? this.DHRoles[EOARole] : "-"}`}</Heading>
-          <DHCard DHContract={this.DHContract} DHState={DHState} />
+          <DHCard DHContract={DHContract} DHState={DHState} />
         
           <Box p={1} width={1} style={styles.boxH} >
             <div>
@@ -259,177 +244,45 @@ export default class DHackathon extends React.Component {
         </Flex>
 
         {EOARole === 0
-          ?(<Flex style={styles.container}>
-              <Heading as={"h3"}>Admin Panel</Heading>
-              <Box p={1} width={1} style={styles.boxH} >
-                <TextButton text={"Submit Funds for Prize"} onClick={() => this.togglePopup("submitFunds")} size="small" style={{'margin':10, fontSize: 10}} />
-                <TextButton text={"Open DHackathon"} onClick={this.openDHackathon} size="small" variant="danger" disabled={EOARole === 0 && state === 0 ? false : true} style={{'margin':10, fontSize: 10}} />
-                <TextButton text={"To Voting Stage"} onClick={this.toVotingDHackathon} size="small" variant="danger" disabled={EOARole === 0 && state === 1 ? false : true} style={{'margin':10, fontSize: 10}} />
-                <TextButton text={"Close DHackathon"} onClick={this.closeDHackathon} size="small" variant="danger" disabled={EOARole === 0 && state === 2 ? false : true} style={{'margin':10, fontSize: 10}} />
-                <TextButton text={"Add Judge"} onClick={() => this.togglePopup("addJudge")} size="small" variant="danger" disabled={EOARole === 0 && state === 0 ? false : true} style={{'margin':10, fontSize: 10}} />
-                <TextButton text={"Remove Judge"} onClick={() => this.togglePopup("removeJudge")} size="small" variant="danger" disabled={EOARole === 0 && state != 3 ? false : true} style={{'margin':10, fontSize: 10}} />
-              </Box>
-              <Box p={1} width={1} style={styles.boxH} >
-                <Box p={1} width={1} style={styles.boxVText}>
-                  <ul align="left">
-                    <li>To <i>Open</i> stage, contract balance must be >= than prize</li>
-                    <li>Can submit funds until <i>Closed</i> stage</li>
-                  </ul>
-                </Box>
-                <Box p={1} width={1} style={styles.boxVText}>
-                  <ul align="left">
-                    <li>To <i>Open</i> stage, at least 1 judge and 2 participants</li>
-                    <li>Stage changes by Admin only</li>
-                    <li>Stage changes are irrevercible</li>
-                  </ul>
-                </Box>
-                <Box p={1} width={1} style={styles.boxVText}>
-                  <ul align="left">
-                    <li>Judges can only be added on the <i>In Preparation</i> stage</li>
-                    <li>Judges can be removed before the <i>Closed</i> stage</li>
-                  </ul>
-                </Box>
-              </Box>
-            </Flex>)
+          ? <AdminPanel 
+              state={state}
+              submitFunds={this.submitFunds}
+              openDHackathon={this.openDHackathon}
+              toVotingDHackathon={this.toVotingDHackathon}
+              closeDHackathon={this.closeDHackathon}
+              addJudge={this.addJudge}
+              removeJudge={this.removeJudge}
+              balance={balance}
+            />
           : null
         }
-
         {EOARole === 2
-          ?(<Flex style={styles.container}>
-            <Heading as={"h3"}>Participant Panel</Heading>
-              <Box p={1} width={1} style={styles.boxH} >
-                <Box width={1/3}> <TextButton text={"Deregister as Participant"} onClick={() => this.togglePopup("deregisterAsParticipant")} size="small" disabled={EOARole === 2 && state != 3 ? false : true} style={{'margin':10, fontSize: 10}} /> </Box>
-                <Box width={1/3}> <TextButton text={"Submit Project's Github URL"} onClick={() => this.togglePopup("submitProject")} size="small" disabled={EOARole === 2 && state === 1 ? false : true} style={{'margin':10, fontSize: 10}} /> </Box>
-                <Box width={1/3}> <TextButton text={"Withdraw Prize"} onClick={this.withdrawPrize} size="small" disabled={EOARole === 2 && state === 3 ? false : true} style={{'margin':10, fontSize: 10}} /> </Box>
-              </Box>
-              <Box p={1} width={1} style={styles.boxH} >
-                <Box p={1} width={1} style={styles.boxVText} >
-                  <ul align="left" >
-                    <li>Can deregister before <i>Closed</i> stage</li>
-                  </ul>
-                </Box>
-                <Box p={1} width={1} style={styles.boxVText} >
-                  <ul align="left" >
-                    <li>Projects submission during <i>Open</i> stage only</li>
-                    <li>Project's url can be updated by re-submitting</li>
-                  </ul>
-                </Box>
-                <Box p={1} width={1} style={styles.boxVText} >
-                  <ul align="left" >
-                    <li>Prize withdrawl on <i>Closed</i> stage if votes received</li>
-                  </ul>
-                </Box>
-              </Box>
-          </Flex>)
+          ? <ParticipantPanel 
+              state={state}
+              deregisterAsParticipant={this.deregisterAsParticipant}
+              submitProject={this.submitProject}
+              withdrawPrize={this.withdrawPrize}
+              activeEOA={this.props.drizzleState.activeEOA.account} 
+            />
           : null
         }
-
-        
         {EOARole === 1
-          ?(<Flex style={styles.container}>
-            <Heading as={"h3"}>Judge Panel</Heading>
-            <Box p={1} width={1} style={styles.boxH} >
-              <TextButton text={"Vote for winner"} onClick={() => this.togglePopup("submitVote")} size="small" disabled={EOARole === 1 && state === 2 ? false : true} style={{'margin':10, fontSize: 10}} />
-            </Box>
-            <Box p={1} width={1} style={styles.boxVText} >
-              <ul align="left">
-                <li>Can only vote once</li>
-                <li>Must vote during <i>In Voting</i> stage </li>
-              </ul>
-            </Box>
-          </Flex>)
+          ? <JudgePanel
+              state={state}
+              submitVote={this.submitVote}
+            />
           : null
         }
-        
-        {EOARole === 3
-          ?(<Flex style={styles.container}>
-            <Heading as={"h4"}>No Role Panel</Heading>
-            <Box p={1} width={1} style={styles.boxH} >
-              <TextButton text={"Submit Funds for Prize"} onClick={() => this.togglePopup("submitFunds")} size="small" style={{'margin':10, fontSize: 10}} />
-              <TextButton text={"Register as Participant"} onClick={() => this.togglePopup("registerAsParticipant")} size="small" disabled={EOARole === 3 && state === 0 ? false : true} style={{'margin':10, fontSize: 10}} />
-            </Box>
-            <Box p={1} width={1} style={styles.boxH} >
-              <Box p={1} width={1} style={styles.boxVText} >
-                <ul align="left">
-                  <li>Can submit funds before <i>Closed</i> stage</li>
-                </ul>
-              </Box>
-              <Box p={1} width={1} style={styles.boxVText} >
-                <ul align="left">
-                  <li>Can register on <i>Open</i> stage only</li>
-                </ul>
-              </Box>
-            </Box>
-          </Flex>)
+        {EOARole === 3 ?
+          <NoRolePanel
+            state={state}
+            submitFunds={this.submitFunds}
+            registerAsParticipant={this.registerAsParticipant}
+            activeEOA={this.props.drizzleState.activeEOA.account}
+            balance={balance}
+          />
           : null
         }
-
-        {/* Popup Land */}
-        <div className="section">
-          {this.state.activePopup === "submitFunds" ?
-            <Popup
-              text='Fund DHackathon Prize'
-              submitFn={this.submitFunds}
-              inputsConfig={[ {displayName: 'Funds in ETH: ', name: "funding", type: "number", placeholder: "e.g. 3.00"} ]}
-              removePopup={() => this.togglePopup("")}
-            />
-            : null  
-          }
-          {this.state.activePopup === "addJudge" ?
-            <Popup
-              text='Add a new Judge'
-              submitFn={this.addJudge}
-              inputsConfig={[ {displayName: 'Account: ', name: "account", type: "text", placeholder: "e.g. 0xAc03BB73b6a9e108530AFf4Df5077c2B3D481e5A"} ]}
-              removePopup={() => this.togglePopup("")}
-            />
-            : null  
-          }
-          {this.state.activePopup === "removeJudge" ?
-            <Popup
-              text='Remove a current Judge'
-              submitFn={this.removeJudge}
-              inputsConfig={[ {displayName: 'Account: ', name: "account", type: "text", placeholder: "e.g. 0xAc03BB73b6a9e108530AFf4Df5077c2B3D481e5A"} ]}
-              removePopup={() => this.togglePopup("")}
-            />
-            : null
-          }
-          {this.state.activePopup === "registerAsParticipant" ?
-            <Popup
-              text='Register active account as a Participant'
-              submitFn={this.registerAsParticipant}
-              inputsConfig={[ {displayName: 'Account: ', name: "account", type: "text", placeholder: "e.g. 0xAc03BB73b6a9e108530AFf4Df5077c2B3D481e5A", initialValue: this.props.drizzleState.activeEOA.account} ]}
-              removePopup={() => this.togglePopup("")}
-            />
-            : null  
-          }
-          {this.state.activePopup === "deregisterAsParticipant" ?
-            <Popup
-              text='Deregister active account from Participant role'
-              submitFn={this.deregisterAsParticipant}
-              inputsConfig={[ {displayName: 'Account: ', name: "account", type: "text", placeholder: "e.g. 0xAc03BB73b6a9e108530AFf4Df5077c2B3D481e5A", initialValue: this.props.drizzleState.activeEOA.account} ]}
-              removePopup={() => this.togglePopup("")}
-            />
-            : null  
-          }
-          {this.state.activePopup === "submitProject" ?
-            <Popup
-              text="Submit project's github url"
-              submitFn={this.submitProject}
-              inputsConfig={[ {displayName: "Project's github url: ", name: "url", type: "url", placeholder: "e.g. https://github.com/alanarvelo/DHackathon/blob/master/app/src/middleware/index.js"} ]}
-              removePopup={() => this.togglePopup("")}
-            />
-            : null  
-          } 
-          {this.state.activePopup === "submitVote" ?
-            <Popup
-              text="Submit address of proposed winner"
-              submitFn={this.submitVote}
-              inputsConfig={[ {displayName: "Account: ", name: "winner", type: "text", placeholder: "e.g. 0xAc03BB73b6a9e108530AFf4Df5077c2B3D481e5A"} ]}
-              removePopup={() => this.togglePopup("")}
-            />
-            : null  
-          }
-        </div>
       </div>
     )
   }
@@ -446,7 +299,7 @@ const styles = {
     // "height":"90%",
     borderWidth: 20,
     borderColor: '#982e4b',
-    borderRadius: 10,
+    borderRadius: 5,
     // alignItems: 'center',
     // justifyContent: 'space-between',
     color: 'black',
@@ -468,15 +321,6 @@ const styles = {
     alignItems: 'flex-start',
     width: "100%",
   },
-  boxV2: {
-    display: "flex",
-    flexDirection: 'column',
-    alignItems: 'center',
-    width: "100%",
-    justifyContent: 'flex-start',
-    // padding: '20px',
-    paddingBottom: '15px',
-  },
   boxVL: {
     fontSize: 12,
     display: "flex",
@@ -486,13 +330,4 @@ const styles = {
     width: "100%",
     marginTop: "18",
   },
-  boxVText: {
-    fontSize: 11,
-    display: "flex",
-    flexDirection:"column",
-    alignItems:"center",
-    justifyContent:"flex-start",
-    width: "100%",
-    // marginTop: "18",
-  }
 }

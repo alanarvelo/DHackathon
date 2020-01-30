@@ -14,10 +14,10 @@ const options = {
   events: {
     DHackathonFactory: ["DHackathonCreated", "FundsWithdrawn", "OwnershipTransferred"],
   },
-  polls: {
-    accounts: 1500,
-  //   blocks: 1500
-  },
+  // polls: {
+  //   accounts: 1500,
+  // //   blocks: 1500
+  // },
 };
 
 export default options;

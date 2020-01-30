@@ -1,6 +1,7 @@
 pragma solidity >=0.5.11;
 
 import '../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol';
+
 import './roles/JudgeRole.sol';
 import './roles/ParticipantRole.sol';
 import './states/StateTracker.sol';

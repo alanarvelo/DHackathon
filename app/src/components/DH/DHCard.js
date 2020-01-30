@@ -1,5 +1,4 @@
 import React from 'react'
-import TextButton from '../misc/TextButton'
 import { Flex, Box } from 'rimble-ui'
 import Web3 from "web3"
 
@@ -100,12 +99,12 @@ export default class DHackathon extends React.Component {
 const styles = {
   container: {
     backgroundColor: '#b5daff',
-    padding: 5,
-    margin: 10,
+    padding: 10,
+    margin: 5,
     height: 90,
     borderWidth: 20,
     borderColor: '#982e4b',
-    borderRadius: 10,
+    borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'space-between',
     color: 'black'

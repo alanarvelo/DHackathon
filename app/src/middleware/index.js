@@ -1,9 +1,6 @@
 import { EventActions } from '@drizzle/store'
-import { toast } from 'react-toastify'
-import logger from './logger'
 import DHackathon from "../contracts/DHackathon.json";
 import Web3 from "web3";
-import { ToastMessage } from 'rimble-ui'
 
 const getCorrectWeb3 = () => {
   if (window.ethereum) {
@@ -40,8 +37,8 @@ const contractEventNotifier = store => next => action => {
 
     // Specific DHackathon Creation Event
     if (action.event.event === "DHackathonCreated") {
-      const { DHID, contractAddress } = action.event.returnValues;
-      const contractName = `DH${DHID}`
+      const { contractAddress } = action.event.returnValues;
+      const contractName = `DH${contractAddress.toLowerCase().slice(-4)}`
       if (!Object.keys(currentContracts).includes(contractName)) {
         let web3 = getCorrectWeb3()
         let web3Contract = new web3.eth.Contract(DHackathon['abi'], contractAddress)
@@ -57,27 +54,12 @@ const contractEventNotifier = store => next => action => {
 
   }
 
-// // Development purposes — creates a DHackathon contract at start, as to not have to hit createDHackathon every time.
-// // One must also add a DHackathon contract to the 2_deploy_contract.js and put the contract address below
+  // // Development purposes — to do stuff once drizzles initializes
   // if (action.type === "DRIZZLE_INITIALIZED") {
-  //   // let { _DHID, _contractAddress } = action.event.returnValues;
-  //   let contractName = "DH0"
-  //   let currentContracts = store.getState()['contracts']
-  //   if (!Object.keys(currentContracts).includes(contractName)) {
-  //     let web3 = getCorrectWeb3()
-  //     let web3Contract = new web3.eth.Contract(DHackathon['abi'], "0x8647353CD6e92f5f06FC4083481b741fa354B77a")
-  //     let contractConfig = { contractName, web3Contract}
-  //     let events = ['FundingReceived', 'ProjectSubmitted', 'VoteSubmitted', 'PrizeWithdrawn',
-  //                   'DHInPreparation', 'DHOpen', 'DHInVoting', 'DHClosed',
-  //                   'JudgeAdded', 'JudgeRemoved', 'ParticipantAdded', 'ParticipantRemoved']
-  //     console.log("CREATING TEST CONTRACT: ", contractConfig)
-  //     store.dispatch({type: 'ADD_CONTRACT', contractConfig, events})
-  //   }
   // }
 
   return next(action)
 }
-
 
 const appMiddlewares = [contractEventNotifier]
 

@@ -3,7 +3,8 @@ import TextButton from './misc/TextButton'
 import { Flex, Box, Heading } from 'rimble-ui'
 import Web3 from "web3";
 import Popup from './misc/Popup'
-// import DHackathon from "../contracts/DHackathon.json";
+import DHackathon from "../contracts/DHackathon.json"
+
 
 export default class FactoryContract extends React.Component {
   constructor(props) {
@@ -11,18 +12,35 @@ export default class FactoryContract extends React.Component {
     this.state = {
       operationalKey: null,
       counterKey: null,
-      showPopup: false, 
-      createDHackathonTx: null
+      ownerKey: null,
+      showPopup: false,
     }
+    this.DHContractEvents = ['FundingReceived', 'ProjectSubmitted', 'VoteSubmitted', 'PrizeWithdrawn',
+                              'DHInPreparation', 'DHOpen', 'DHInVoting', 'DHClosed',
+                              'JudgeAdded', 'JudgeRemoved', 'ParticipantAdded', 'ParticipantRemoved']
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const DHFContract = this.props.drizzle.contracts.DHackathonFactory;
     // get and save the keys to retrieve operational and counter from the store (drizzleState)
-    let operationalKey = DHFContract.methods["operational"].cacheCall();
-    let counterKey = DHFContract.methods["counter"].cacheCall();
+    const operationalKey = DHFContract.methods["operational"].cacheCall();
+    const counterKey = DHFContract.methods["counter"].cacheCall();
+    const ownerKey = DHFContract.methods["owner"].cacheCall();
+    this.setState({ operationalKey, counterKey, ownerKey });
 
-    this.setState({ operationalKey, counterKey });
+    // add previously created DHackathon contract by getting their address from the Factory
+    const children = await this.props.drizzle.contracts.DHackathonFactory.methods.getChildren().call();
+    console.log("CHILDREN: ",children)
+    children.map((childAddress) => this.addChildren(childAddress))
+    
+  }
+
+  async addChildren(childAddress) {
+    let contractName = `DH${childAddress.toLowerCase().slice(-4)}`
+    if (!Object.keys(this.props.drizzleState.contracts).includes(contractName)) {
+      let web3Contract = new this.props.drizzle.web3.eth.Contract(DHackathon['abi'], childAddress)
+      await this.props.drizzle.addContract({contractName, web3Contract}, this.DHContractEvents)
+    }
   }
 
   shutdownContract = () => {
@@ -38,7 +56,6 @@ export default class FactoryContract extends React.Component {
   createDHackathon = ({ DHName, prize }) => {
     // if (this.props.drizzleState.drizzleStatus.initialized) {
       const DHFContract = this.props.drizzle.contracts.DHackathonFactory;
-      // let { DHName, prize } = argsFromPopup
       DHFContract.methods["createDHackathon"].cacheSend(DHName, Web3.utils.toWei(prize, 'ether'), 
                                           {from: this.props.drizzleState.activeEOA.account, value: Web3.utils.toWei('.1', 'ether')})
       this.togglePopup()
@@ -49,32 +66,12 @@ export default class FactoryContract extends React.Component {
     this.setState({showPopup: !this.state.showPopup }) 
   }
 
-  // addNewContract = () => {
-  //   let contractName = "New DHackathon"
-  //   // let web3 = new Web3()
-  //   let web3Contract = new this.props.drizzle.web3.eth.Contract(DHackathon['abi'], "0xaA8E7D69bB55FF538c207029ffCf70C2Fb3C68aE") //second argument is new contract's address 
-  //   console.log("THIS IS THE WEB3 Contract: ", web3Contract)
-  //   let contractConfig = { contractName, web3Contract }
-  //   let events = ['LogFundingReceived']
-  
-  //   // Using the Drizzle context object
-  //   // this.props.drizzle.addContract(contractConfig, events)
-  //   this.props.drizzle.store.dispatch({type: 'ADD_CONTRACT', contractConfig, events}) // web3: this.props.drizzle.web3
-  // }
-
   render() {
     const DHFState = this.props.drizzleState.contracts.DHackathonFactory;
     const operational = DHFState.operational[this.state.operationalKey]
     const counter = DHFState.counter[this.state.counterKey]
-    let isOwner = this.props.drizzleState.activeEOA.isFactoryOwner
-    // console.log("STATE: ", this.props.drizzleState)
-    // console.log(this.state)
-    // if ( (this.state.createDHackathonTx != null) &&
-    //      (Object.keys(this.props.drizzleState.transactions).includes([this.state.createDHackathonTx])) &&
-    //      (this.props.drizzleState.transactions[this.state.createDHackathonTx].status === "success")
-    //      ) {
-    //   console.log("TX RECEIPT: ", this.state.createDHackathonTx, this.props.drizzleState.transactions[this.state.createDHackathonTx].receipt)
-    // }
+    const owner = DHFState.owner[this.state.ownerKey]
+    let isOwner = owner ? this.props.drizzleState.activeEOA.account.toLowerCase() === owner.value.toLowerCase() : false
 
     return (
       <Flex style={styles.container}>

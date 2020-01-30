@@ -29,9 +29,9 @@ contract("DHackathonFactory", async accounts => {
     });
 
     it("Creates a new DHackathon when fee is payed", async () => {
-      await instance.createDHackathon(_name, _prize, {from: _admin1, value: toWei("0.1", "ether")});
-      let newDH = await instance.DHackathonRegistry.call(1);
-      assert.equal((newDH['DHID'], newDH['admin']), (1, _admin1), "DHackathon was not created properly");
+      let tx = await instance.createDHackathon(_name, _prize, {from: _admin1, value: toWei("0.1", "ether")});
+      let children = await instance.getChildren();
+      assert.equal(children[0], tx.logs[0].args.contractAddress, "DHackathon was not created properly");
     });
 
     it("It reverts if Circuit Breaker is open (not operational)", async () => {

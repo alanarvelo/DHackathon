@@ -175,6 +175,7 @@ Any sort of tournament: poker, esports, ping pong, or art competitions can lever
 - Host the front-end on IPFS
 - Add capability for the Ethereum Name Service (ENS)
 - Auth \& signing with Uport and Blockstack
+- Add Loading Bar
 
 ---
 

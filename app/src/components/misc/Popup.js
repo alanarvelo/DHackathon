@@ -37,7 +37,6 @@ export default class Popup extends React.Component {
   handleChange = (e) => {
     const name = e.target.name
     const value = e.target.value
-    console.log("change handled: ", name, value)
     this.setState((prevState) => (
       Object.assign(prevState, {[name]: value})
     ))
