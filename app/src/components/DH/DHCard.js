@@ -38,13 +38,12 @@ export default class DHackathon extends React.Component {
     const name = DHState.name[this.state.nameKey]
     const DHID = DHState.DHID[this.state.DHIDKey]
     const admin = DHState.admin[this.state.adminKey]
-    const prize = DHState.prize[this.state.prizeKey]
+    let prize = DHState.prize[this.state.prizeKey]
+    prize = prize ? Math.round(Web3.utils.fromWei(prize.value) * 100)/100   + " eth" : "-"
     const createdOn = DHState.createdOn[this.state.createdOnKey]
     const state = DHState.state[this.state.stateKey]
     let balance = DHState.balance[this.state.balanceKey]
-    balance = balance ? Web3.utils.fromWei(balance.value)  + " eth" : "-"
-    // console.log("DHState: ", DHState, this.props.DHContract)
-
+    balance = balance ? Math.round(Web3.utils.fromWei(balance.value) * 100)/100 + " eth" : "-"
 
     return (
       <Flex style={styles.container} >
@@ -82,7 +81,7 @@ export default class DHackathon extends React.Component {
           <Box style={styles.box}  p={1} width={1/10} >
             <span style={{fontSize: 12}} >Prize:  </span>
             <strong>
-              { prize && Web3.utils.fromWei(prize.value) + " eth"}
+              { prize }
             </strong>
           </Box>
           <Box style={styles.box}  p={1} width={1.5/10} >
@@ -115,9 +114,5 @@ const styles = {
     justifyContent: "space-between",
     alignItems: 'center'
   },
-  varSizeText: {
-    fontSize: "16px",
-    fontSize: "4vw",
-  }
 
 }

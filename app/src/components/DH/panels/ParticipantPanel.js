@@ -17,9 +17,9 @@ export default class ParticipantPanel extends React.Component {
       <Flex style={styles.container}>
         <Heading as={"h3"}>Participant Panel</Heading>
           <Box p={1} width={1} style={styles.boxH} >
-            <Box width={1/3}> <TextButton text={"Deregister as Participant"} onClick={() => this.togglePopup("deregisterAsParticipant")} size="small" disabled={this.props.state!= 3 ? false : true} style={{'margin':10, fontSize: 10}} /> </Box>
-            <Box width={1/3}> <TextButton text={"Submit Project's Github URL"} onClick={() => this.togglePopup("submitProject")} size="small" disabled={this.props.state=== 1 ? false : true} style={{'margin':10, fontSize: 10}} /> </Box>
-            <Box width={1/3}> <TextButton text={"Withdraw Prize"} onClick={this.props.withdrawPrize} size="small" disabled={this.props.state=== 3 ? false : true} style={{'margin':10, fontSize: 10}} /> </Box>
+            <Box width={1/3}> <TextButton text={"Deregister as Participant"} onClick={() => this.togglePopup("deregisterAsParticipant")} size="small" disabled={this.props.state !== 3 ? false : true} style={{'margin':10, fontSize: 10}} /> </Box>
+            <Box width={1/3}> <TextButton text={"Submit Project's Github URL"} onClick={() => this.togglePopup("submitProject")} size="small" disabled={this.props.state === 1 ? false : true} style={{'margin':10, fontSize: 10}} /> </Box>
+            <Box width={1/3}> <TextButton text={"Withdraw Prize"} onClick={this.props.withdrawPrize} size="small" disabled={this.props.state === 3 ? false : true} style={{'margin':10, fontSize: 10}} /> </Box>
           </Box>
           <Box p={1} width={1} style={styles.boxH} >
             <Box p={1} width={1} style={styles.boxVText} >

@@ -1,5 +1,6 @@
 {
-  "name": "app",
+  "name": "dehackapp",
+  "author":"Alan Arvelo",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

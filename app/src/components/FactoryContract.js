@@ -30,7 +30,6 @@ export default class FactoryContract extends React.Component {
 
     // add previously created DHackathon contract by getting their address from the Factory
     const children = await this.props.drizzle.contracts.DHackathonFactory.methods.getChildren().call();
-    console.log("CHILDREN: ",children)
     children.map((childAddress) => this.addChildren(childAddress))
     
   }
@@ -45,12 +44,12 @@ export default class FactoryContract extends React.Component {
 
   shutdownContract = () => {
     const DHFContract = this.props.drizzle.contracts.DHackathonFactory;
-    let tx = DHFContract.methods["shutdown"].cacheSend({from: this.props.drizzleState.activeEOA.account})
+    DHFContract.methods["shutdown"].cacheSend({from: this.props.drizzleState.activeEOA.account})
   }
 
   withdrawFunds = () => {
     const DHFContract = this.props.drizzle.contracts.DHackathonFactory;
-    let tx = DHFContract.methods["withdrawFunds"].cacheSend({from: this.props.drizzleState.activeEOA.account})
+    DHFContract.methods["withdrawFunds"].cacheSend({from: this.props.drizzleState.activeEOA.account})
   }
 
   createDHackathon = ({ DHName, prize }) => {
@@ -71,7 +70,7 @@ export default class FactoryContract extends React.Component {
     const operational = DHFState.operational[this.state.operationalKey]
     const counter = DHFState.counter[this.state.counterKey]
     const owner = DHFState.owner[this.state.ownerKey]
-    let isOwner = owner ? this.props.drizzleState.activeEOA.account.toLowerCase() === owner.value.toLowerCase() : false
+    let isOwner = owner && owner.value ? this.props.drizzleState.activeEOA.account.toLowerCase() === owner.value.toLowerCase() : false
 
     return (
       <Flex style={styles.container}>

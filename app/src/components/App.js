@@ -10,7 +10,6 @@ import { ToastMessage } from 'rimble-ui'
 
 import Container from "./Container";
 import DHWrapper from "./DH/DHWrapper"
-import DHackathon from "./DH/DHackathon";
 import NavBar from "./misc/NavBar";
 import DocsPage from "./misc/DocsPage"
 import NotFound from "./misc/NotFound"
@@ -39,8 +38,6 @@ class App extends Component {
         if (!initialized) {
           return "Loading...";
         }
-
-        // const { drizzle, drizzleState } = this.props
         console.log("drizzle: ", drizzle)
         console.log("drizzleState: ", drizzleState) 
         return (

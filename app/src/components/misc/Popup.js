@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, Box, Button, Input, Form, Flash  } from 'rimble-ui'
+import { Flex, Box, Button, Input, Form  } from 'rimble-ui'
 
 
 export default class Popup extends React.Component {
@@ -17,6 +17,7 @@ export default class Popup extends React.Component {
         ...prevState,
         [config.name]: config.initialValue ? config.initialValue : null,
       }))
+      return null
     })
   }
 

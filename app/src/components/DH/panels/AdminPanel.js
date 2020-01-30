@@ -22,7 +22,7 @@ export default class AdminPanel extends React.Component {
           <TextButton text={"To Voting Stage"} onClick={this.props.toVotingDHackathon} size="small" variant="danger" disabled={this.props.state === 1 ? false : true} style={{'margin':10, fontSize: 10}} />
           <TextButton text={"Close DHackathon"} onClick={this.props.closeDHackathon} size="small" variant="danger" disabled={this.props.state === 2 ? false : true} style={{'margin':10, fontSize: 10}} />
           <TextButton text={"Add Judge"} onClick={() => this.togglePopup("addJudge")} size="small" variant="danger" disabled={this.props.state === 0 ? false : true} style={{'margin':10, fontSize: 10}} />
-          <TextButton text={"Remove Judge"} onClick={() => this.togglePopup("removeJudge")} size="small" variant="danger" disabled={this.props.state != 3 ? false : true} style={{'margin':10, fontSize: 10}} />
+          <TextButton text={"Remove Judge"} onClick={() => this.togglePopup("removeJudge")} size="small" variant="danger" disabled={this.props.state !== 3 ? false : true} style={{'margin':10, fontSize: 10}} />
         </Box>
         <Box p={1} width={1} style={styles.boxH} >
           <Box p={1} width={1} style={styles.boxVText}>

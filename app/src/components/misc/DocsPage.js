@@ -1,5 +1,5 @@
 import React from 'react'
-import { Heading, Box, Image } from 'rimble-ui'
+import { Heading } from 'rimble-ui'
 import stateDiagram from "../../images/UML/UML_state_diagram_simplified.png"
 import sequenceDiagram from "../../images/UML/UML_sequence_diagram.png"
 import allPanels from "../../images/all_panels.png"

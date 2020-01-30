@@ -19,10 +19,8 @@ const contractEventNotifier = store => next => action => {
   //  to UI all succesfully emitted events
   // To-Do: handle each event separately and add returned values in the notification toast.
   if (action.type === EventActions.EVENT_FIRED) {
-    console.log("THIS IS THE ACTION: ", action)
     const contract = action.name
     const currentContracts = store.getState()['contracts']
-    console.log(currentContracts[contract].events.map(evt => evt.id), action.event.id)
     if (!currentContracts[contract].events.map(evt => evt.id).includes(action.event.id)) {
       window.toastProvider.addMessage(`🚀 Event: ${action.event.event}`, {
         // secondaryMessage: JSON.stringify(action.event.returnValues),

@@ -25,11 +25,10 @@ export default class JudgePanel extends React.Component {
             <li>Must vote during <i>In Voting</i> stage </li>
           </ul>
         </Box>
-        {console.log(this.state.activePopup, "submitVote")}
         {this.state.activePopup === "submitVote" 
         ? <Popup
             text="Submit address of proposed winner"
-            submitFn={(inputs) => { this.props.submitVote(inputs) && this.togglePopup("") }}
+            submitFn={(inputs) => { this.props.submitVote(inputs); this.togglePopup("") }}
             inputsConfig={[ {displayName: "Account: ", name: "winner", type: "text", placeholder: "e.g. 0xAc03BB73b6a9e108530AFf4Df5077c2B3D481e5A"} ]}
             removePopup={() => this.togglePopup("")}
           />

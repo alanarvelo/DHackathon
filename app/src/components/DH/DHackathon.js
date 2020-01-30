@@ -1,12 +1,8 @@
 import React from 'react'
-import TextButton from '../misc/TextButton'
 import { Flex, Box, Heading } from 'rimble-ui'
 import Web3 from "web3"
-import { BN } from 'bn.js'
 import DHCard from './DHCard'
-// import Popup from '../misc/Popup'
-import { Redirect } from 'react-router-dom'
-// import { DrizzleContext } from "@drizzle/react-plugin";
+
 import JudgePanel from './panels/JudgePanel'
 import NoRolePanel from './panels/NoRolePanel'
 import ParticipantPanel from './panels/ParticipantPanel'
@@ -36,7 +32,6 @@ export default class DHackathon extends React.Component {
   async componentDidMount() {
     this.DHContract = this.props.drizzle.contracts[this.DHName]
     const DHContract = this.props.drizzle.contracts[this.DHName];
-    console.log("did mount here comp")
     let nameKey = DHContract.methods["name"].cacheCall();
     let stateKey = DHContract.methods["state"].cacheCall();
     let balanceKey = DHContract.methods["balance"].cacheCall();
@@ -45,7 +40,7 @@ export default class DHackathon extends React.Component {
 
     this.setState({ nameKey, stateKey, balanceKey, judgesListKey, participantsListKey });
 
-    this.getActiveEOARole(this.props.drizzleState.accounts[0])
+    this.getActiveEOARole(this.props.drizzleState.activeEOA.account)
 
     this.listenToActiveAccountUpdates()
 
@@ -53,7 +48,6 @@ export default class DHackathon extends React.Component {
     if (stateNow > 0) {
       this.trackRolesInfo()
     }
-    console.log("DHACKATHON MOUNTED")
     
   }
 
@@ -87,14 +81,15 @@ export default class DHackathon extends React.Component {
     participantsList.map(participant => {
       let tx = this.DHContract.methods["projects"].cacheCall(participant.account)
       participantToTx[participant.account] = tx
+      return null
     })
     let judgesList = this.getCleanedJudgesList()
     let judgeToTx = {}
     judgesList.map(judge => {
       let tx = this.DHContract.methods["judgeVoted"].cacheCall(judge.account)
       judgeToTx[judge.account] = tx
+      return null
     })
-    console.log(judgeToTx)
     this.setState({ participantToTx, judgeToTx})
   }
 
@@ -157,15 +152,12 @@ export default class DHackathon extends React.Component {
     const DHState = this.props.drizzleState.contracts[this.DHName]
     let completeInfoArray = []
     judgesList.map((judge) => {
-      console.log("here with judge: ", judge.account)
-      console.log("JUDGES TXs: ", this.state.judgeToTx)
       let tx = this.state.judgeToTx[judge.account]
-      console.log("JUDGEVOTED: ", tx, DHState.judgeVoted[tx])
       if (DHState.judgeVoted[tx]) {
         const voted = DHState.judgeVoted[tx].value
-        console.log("PROJECTS: ", voted)
         completeInfoArray.push( {"account": judge.account, voted} )
       } else completeInfoArray.push( {"account": judge.account} )
+      return null
     })
     return completeInfoArray
   }
@@ -179,6 +171,7 @@ export default class DHackathon extends React.Component {
         let { url, votes, withdrewPrize } = DHState.projects[tx].value
         completeInfoArray.push( {"account": participant.account, url, votes, withdrewPrize} )
       } else completeInfoArray.push( {"account": participant.account} )
+      return null
     })
     return completeInfoArray
   }
@@ -201,11 +194,11 @@ export default class DHackathon extends React.Component {
     if (state > 0) {
       participantsList = this.getParticipantsCompleteInfo(participantsList)
       judgesList = this.getJudgesCompleteInfo(judgesList)
-      console.log(judgesList)
     }
     
 
     let { EOARole } = this.state
+    console.log(this.props.drizzleState.activeEOA.account)
 
     return (
       <div className="section">

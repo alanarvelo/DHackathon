@@ -2,6 +2,8 @@ import React from 'react'
 import { Redirect } from 'react-router-dom'
 import DHackathon from "./DHackathon"
 import DHackathonJSON from "../../contracts/DHackathon.json"
+import { DrizzleContext } from "@drizzle/react-plugin";
+
 
 
 export default class DHWrapper extends React.Component {
@@ -23,7 +25,6 @@ export default class DHWrapper extends React.Component {
 
   async identifyDH() {
     const children = await this.props.drizzle.contracts.DHackathonFactory.methods.getChildren().call();
-    console.log("comp address comparison: ", children, this.contractAddress )
     if (!children.map((a) => a.toLowerCase()).includes(this.contractAddress)) return "NotFound"
     let contractName = `DH${this.contractAddress.slice(-4)}`
     if (!Object.keys(this.props.drizzleState.contracts).includes(contractName)) {
@@ -34,56 +35,24 @@ export default class DHWrapper extends React.Component {
   }
 
   render() {
-    if (!this.state.DHName === "NotFound") return <Redirect to='/404' />
-    else if (!this.state.DHName === "") return "LOADING DHACKATHON"
-    else  { if (this.props.drizzleState.contracts && this.props.drizzleState.contracts[this.state.DHName]) {
-              return <DHackathon drizzle={this.props.drizzle} drizzleState={this.props.drizzleState} DHName={this.state.DHName} />
-            }
-          else return null
+    return (
+      <DrizzleContext.Consumer>
+        {drizzleContext => {
+          const { drizzle, drizzleState, initialized } = drizzleContext;
+  
+          if (!initialized) {
+            return "Loading...";
           }
+            if (!this.state.DHName === "NotFound") return <Redirect to='/404' />
+            else if (!this.state.DHName === "") return "LOADING DHACKATHON"
+            else  { if (this.props.drizzleState.contracts && this.props.drizzleState.contracts[this.state.DHName]) {
+                      return <DHackathon drizzle={drizzle} drizzleState={drizzleState} DHName={this.state.DHName} />
+                    }
+                  else return null
+                  }
+        }}
+      </DrizzleContext.Consumer>  
+    ) 
   }
 
-}
-
-const styles = {
-  container: {
-    backgroundColor: '#b5daff',
-    padding: 10,
-    margin: 3,
-    // // "position":"center",
-    // "width":"90%",
-    // "height":"90%",
-    borderWidth: 20,
-    borderColor: '#982e4b',
-    borderRadius: 5,
-    // alignItems: 'center',
-    // justifyContent: 'space-between',
-    color: 'black',
-    display: "flex",
-    flexDirection: 'column',
-    alignItems: 'space-between',
-    justifyContent: 'space-around',
-  },
-  boxH: {
-    display: "flex",
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: "center",
-    // marginBottom: "20px"
-  },
-  boxV: {
-    display: "flex",
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    width: "100%",
-  },
-  boxVL: {
-    fontSize: 12,
-    display: "flex",
-    flexDirection:"column",
-    alignItems:"flex-start",
-    justifyContent:"center",
-    width: "100%",
-    marginTop: "18",
-  },
 }
