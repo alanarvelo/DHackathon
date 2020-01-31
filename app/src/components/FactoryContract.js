@@ -3,7 +3,7 @@ import TextButton from './misc/TextButton'
 import { Flex, Box, Heading } from 'rimble-ui'
 import Web3 from "web3";
 import Popup from './misc/Popup'
-import DHackathon from "../contracts/DHackathon.json"
+import DHackathon from "../abis/DHackathon.json"
 
 
 export default class FactoryContract extends React.Component {

@@ -1,0 +1,4335 @@
+{
+  "contractName": "StateTracker",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "state",
+      "outputs": [
+        {
+          "internalType": "enum StateTracker.DHState",
+          "name": "",
+          "type": "uint8"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "DHID",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "estimatedPrize",
+          "type": "uint256"
+        }
+      ],
+      "name": "DHInPreparation",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "DHID",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "estimatedPrize",
+          "type": "uint256"
+        }
+      ],
+      "name": "DHOpen",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "DHID",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "estimatedPrize",
+          "type": "uint256"
+        }
+      ],
+      "name": "DHInVoting",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "DHID",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "estimatedPrize",
+          "type": "uint256"
+        }
+      ],
+      "name": "DHClosed",
+      "type": "event"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.11+commit.c082d0b4\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[],\"name\":\"state\",\"outputs\":[{\"internalType\":\"enum StateTracker.DHState\",\"name\":\"\",\"type\":\"uint8\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"DHID\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"estimatedPrize\",\"type\":\"uint256\"}],\"name\":\"DHInPreparation\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"DHID\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"estimatedPrize\",\"type\":\"uint256\"}],\"name\":\"DHOpen\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"DHID\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"estimatedPrize\",\"type\":\"uint256\"}],\"name\":\"DHInVoting\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"DHID\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"estimatedPrize\",\"type\":\"uint256\"}],\"name\":\"DHClosed\",\"type\":\"event\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{},\"notice\":\"Define a contract `StateTracker` to manage the stages of the competition\"}},\"settings\":{\"compilationTarget\":{\"/Users/alanarvelo/Documents/COURSES/CONSENSYS/final-project/contracts/states/StateTracker.sol\":\"StateTracker\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/alanarvelo/Documents/COURSES/CONSENSYS/final-project/contracts/states/StateTracker.sol\":{\"keccak256\":\"0xab9bce5f73be2844022f03a32388c8d41662659494b3702aed36b4251bffa628\",\"urls\":[\"bzz-raw://8e43e2d6b923663109cd965fc93d919e6cd199f987a1bce790bb41fe74e8f6a4\",\"dweb:/ipfs/QmTzNRX1m3vMoG8CroxUfrUV5emrKpqqKLc2ARdmoPPotG\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50609d8061001e6000396000f3fe6080604052348015600f57600080fd5b506004361060285760003560e01c8063c19d93fb14602d575b600080fd5b60336056565b60405180826003811115604257fe5b60ff16815260200191505060405180910390f35b6000809054906101000a900460ff168156fea265627a7a7231582085eb5fb267e6d7f3e010d18d4cd98da570ab12aa03d222a9b5ab028c12cb1b1364736f6c634300050b0032",
+  "deployedBytecode": "0x6080604052348015600f57600080fd5b506004361060285760003560e01c8063c19d93fb14602d575b600080fd5b60336056565b60405180826003811115604257fe5b60ff16815260200191505060405180910390f35b6000809054906101000a900460ff168156fea265627a7a7231582085eb5fb267e6d7f3e010d18d4cd98da570ab12aa03d222a9b5ab028c12cb1b1364736f6c634300050b0032",
+  "sourceMap": "105:2250:5:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;105:2250:5;;;;;;;",
+  "deployedSourceMap": "105:2250:5:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;105:2250:5;;;;;;;;;;;;;;;;;;;191:20;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o",
+  "source": "pragma solidity >=0.5.11;\n\n\n/// Define a contract `StateTracker` to manage the stages of the competition\ncontract StateTracker {\n\n    enum DHState {InPreparation, Open, InVoting, Closed}\n    DHState public state;\n\n    event DHInPreparation(uint256 DHID, string name, uint256 estimatedPrize);\n    event DHOpen(uint256 DHID, string name, uint256 estimatedPrize);\n    event DHInVoting(uint256 DHID, string name, uint256 estimatedPrize);\n    event DHClosed(uint256 DHID, string name, uint256 estimatedPrize);\n\n    /// Define a modifier that checks if DHackathon is in the `InPreparation` state\n    modifier isInPreparation() {\n        require(state == DHState.InPreparation, \"DHackathon is not in the Preparation state\");\n        _;\n    }\n\n    /// Define a modifier that checks if DHackathon is in the `Open` state\n    modifier isOpen() {\n        require(state == DHState.Open, \"DHackathon is not in the Open state\");\n        _;\n    }\n\n    /// Define a modifier that checks if DHackathon is in the `InVoting` state\n    modifier isInVoting() {\n        require(state == DHState.InVoting, \"DHackathon is not in the Voting state\");\n        _;\n    }\n\n    /// Define a modifier that checks if DHackathon is in the `Closed` state\n    modifier isClosed() {\n        require(state == DHState.Closed, \"DHackathon is not in the Closed state\");\n        _;\n    }\n\n    /// Define a modifier that checks if DHackathon is not in the `Closed` state\n    modifier isNotClosed() {\n        require(state != DHState.Closed, \"DHackathon is not in the Closed state\");\n        _;\n    }\n\n    /// Define function to open the competition\n    function _openDHackathon(uint256 _DHID, string memory _name, uint256 _prize)\n        internal\n        isInPreparation()\n    {\n        state = DHState.Open;\n        emit DHOpen(_DHID, _name, _prize);\n    }\n\n    /// Define function to set the competition to the voting state\n    function _toVotingDHackathon(uint256 _DHID, string memory _name, uint256 _prize)\n        internal\n        isOpen()\n    {\n        state = DHState.InVoting;\n        emit DHInVoting(_DHID, _name, _prize);\n    }\n\n    /// Define function to close the competition\n    function _closeDHackathon(uint256 _DHID, string memory _name, uint256 _prize)\n        internal\n        isInVoting()\n    {\n        state = DHState.Closed;\n        emit DHClosed(_DHID, _name, _prize);\n    }\n\n}",
+  "sourcePath": "/Users/alanarvelo/Documents/COURSES/CONSENSYS/final-project/contracts/states/StateTracker.sol",
+  "ast": {
+    "absolutePath": "/Users/alanarvelo/Documents/COURSES/CONSENSYS/final-project/contracts/states/StateTracker.sol",
+    "exportedSymbols": {
+      "StateTracker": [
+        1162
+      ]
+    },
+    "id": 1163,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 993,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.5",
+          ".11"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:25:5"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": "Define a contract `StateTracker` to manage the stages of the competition",
+        "fullyImplemented": true,
+        "id": 1162,
+        "linearizedBaseContracts": [
+          1162
+        ],
+        "name": "StateTracker",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "StateTracker.DHState",
+            "id": 998,
+            "members": [
+              {
+                "id": 994,
+                "name": "InPreparation",
+                "nodeType": "EnumValue",
+                "src": "148:13:5"
+              },
+              {
+                "id": 995,
+                "name": "Open",
+                "nodeType": "EnumValue",
+                "src": "163:4:5"
+              },
+              {
+                "id": 996,
+                "name": "InVoting",
+                "nodeType": "EnumValue",
+                "src": "169:8:5"
+              },
+              {
+                "id": 997,
+                "name": "Closed",
+                "nodeType": "EnumValue",
+                "src": "179:6:5"
+              }
+            ],
+            "name": "DHState",
+            "nodeType": "EnumDefinition",
+            "src": "134:52:5"
+          },
+          {
+            "constant": false,
+            "id": 1000,
+            "name": "state",
+            "nodeType": "VariableDeclaration",
+            "scope": 1162,
+            "src": "191:20:5",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_enum$_DHState_$998",
+              "typeString": "enum StateTracker.DHState"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 999,
+              "name": "DHState",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 998,
+              "src": "191:7:5",
+              "typeDescriptions": {
+                "typeIdentifier": "t_enum$_DHState_$998",
+                "typeString": "enum StateTracker.DHState"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1008,
+            "name": "DHInPreparation",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1007,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1002,
+                  "indexed": false,
+                  "name": "DHID",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1008,
+                  "src": "240:12:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1001,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "240:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1004,
+                  "indexed": false,
+                  "name": "name",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1008,
+                  "src": "254:11:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 1003,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "254:6:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1006,
+                  "indexed": false,
+                  "name": "estimatedPrize",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1008,
+                  "src": "267:22:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1005,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "267:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "239:51:5"
+            },
+            "src": "218:73:5"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1016,
+            "name": "DHOpen",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1015,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1010,
+                  "indexed": false,
+                  "name": "DHID",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1016,
+                  "src": "309:12:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1009,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "309:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1012,
+                  "indexed": false,
+                  "name": "name",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1016,
+                  "src": "323:11:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 1011,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "323:6:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1014,
+                  "indexed": false,
+                  "name": "estimatedPrize",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1016,
+                  "src": "336:22:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1013,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "336:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "308:51:5"
+            },
+            "src": "296:64:5"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1024,
+            "name": "DHInVoting",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1023,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1018,
+                  "indexed": false,
+                  "name": "DHID",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1024,
+                  "src": "382:12:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1017,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "382:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1020,
+                  "indexed": false,
+                  "name": "name",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1024,
+                  "src": "396:11:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 1019,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "396:6:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1022,
+                  "indexed": false,
+                  "name": "estimatedPrize",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1024,
+                  "src": "409:22:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1021,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "409:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "381:51:5"
+            },
+            "src": "365:68:5"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1032,
+            "name": "DHClosed",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1031,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1026,
+                  "indexed": false,
+                  "name": "DHID",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1032,
+                  "src": "453:12:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1025,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "453:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1028,
+                  "indexed": false,
+                  "name": "name",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1032,
+                  "src": "467:11:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 1027,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "467:6:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1030,
+                  "indexed": false,
+                  "name": "estimatedPrize",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1032,
+                  "src": "480:22:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1029,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "480:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "452:51:5"
+            },
+            "src": "438:66:5"
+          },
+          {
+            "body": {
+              "id": 1043,
+              "nodeType": "Block",
+              "src": "621:113:5",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_enum$_DHState_$998",
+                          "typeString": "enum StateTracker.DHState"
+                        },
+                        "id": 1038,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 1035,
+                          "name": "state",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 1000,
+                          "src": "639:5:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DHState_$998",
+                            "typeString": "enum StateTracker.DHState"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "==",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 1036,
+                            "name": "DHState",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 998,
+                            "src": "648:7:5",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_type$_t_enum$_DHState_$998_$",
+                              "typeString": "type(enum StateTracker.DHState)"
+                            }
+                          },
+                          "id": 1037,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "memberName": "InPreparation",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "648:21:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DHState_$998",
+                            "typeString": "enum StateTracker.DHState"
+                          }
+                        },
+                        "src": "639:30:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "444861636b6174686f6e206973206e6f7420696e20746865205072657061726174696f6e207374617465",
+                        "id": 1039,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "671:44:5",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_b8d4b96c8c90933aadcd6b7b3f100ba0a218992993b3f3960e9127f526c0b2f0",
+                          "typeString": "literal_string \"DHackathon is not in the Preparation state\""
+                        },
+                        "value": "DHackathon is not in the Preparation state"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_b8d4b96c8c90933aadcd6b7b3f100ba0a218992993b3f3960e9127f526c0b2f0",
+                          "typeString": "literal_string \"DHackathon is not in the Preparation state\""
+                        }
+                      ],
+                      "id": 1034,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        1511,
+                        1512
+                      ],
+                      "referencedDeclaration": 1512,
+                      "src": "631:7:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 1040,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "631:85:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1041,
+                  "nodeType": "ExpressionStatement",
+                  "src": "631:85:5"
+                },
+                {
+                  "id": 1042,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "726:1:5"
+                }
+              ]
+            },
+            "documentation": "Define a modifier that checks if DHackathon is in the `InPreparation` state",
+            "id": 1044,
+            "name": "isInPreparation",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 1033,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "618:2:5"
+            },
+            "src": "594:140:5",
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 1055,
+              "nodeType": "Block",
+              "src": "833:97:5",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_enum$_DHState_$998",
+                          "typeString": "enum StateTracker.DHState"
+                        },
+                        "id": 1050,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 1047,
+                          "name": "state",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 1000,
+                          "src": "851:5:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DHState_$998",
+                            "typeString": "enum StateTracker.DHState"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "==",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 1048,
+                            "name": "DHState",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 998,
+                            "src": "860:7:5",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_type$_t_enum$_DHState_$998_$",
+                              "typeString": "type(enum StateTracker.DHState)"
+                            }
+                          },
+                          "id": 1049,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "memberName": "Open",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "860:12:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DHState_$998",
+                            "typeString": "enum StateTracker.DHState"
+                          }
+                        },
+                        "src": "851:21:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "444861636b6174686f6e206973206e6f7420696e20746865204f70656e207374617465",
+                        "id": 1051,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "874:37:5",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_d11c9086bdf04225f55c98bd9c76623d2fff3a371e01d2f967b5689b648d5748",
+                          "typeString": "literal_string \"DHackathon is not in the Open state\""
+                        },
+                        "value": "DHackathon is not in the Open state"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_d11c9086bdf04225f55c98bd9c76623d2fff3a371e01d2f967b5689b648d5748",
+                          "typeString": "literal_string \"DHackathon is not in the Open state\""
+                        }
+                      ],
+                      "id": 1046,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        1511,
+                        1512
+                      ],
+                      "referencedDeclaration": 1512,
+                      "src": "843:7:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 1052,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "843:69:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1053,
+                  "nodeType": "ExpressionStatement",
+                  "src": "843:69:5"
+                },
+                {
+                  "id": 1054,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "922:1:5"
+                }
+              ]
+            },
+            "documentation": "Define a modifier that checks if DHackathon is in the `Open` state",
+            "id": 1056,
+            "name": "isOpen",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 1045,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "830:2:5"
+            },
+            "src": "815:115:5",
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 1067,
+              "nodeType": "Block",
+              "src": "1037:103:5",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_enum$_DHState_$998",
+                          "typeString": "enum StateTracker.DHState"
+                        },
+                        "id": 1062,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 1059,
+                          "name": "state",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 1000,
+                          "src": "1055:5:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DHState_$998",
+                            "typeString": "enum StateTracker.DHState"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "==",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 1060,
+                            "name": "DHState",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 998,
+                            "src": "1064:7:5",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_type$_t_enum$_DHState_$998_$",
+                              "typeString": "type(enum StateTracker.DHState)"
+                            }
+                          },
+                          "id": 1061,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "memberName": "InVoting",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "1064:16:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DHState_$998",
+                            "typeString": "enum StateTracker.DHState"
+                          }
+                        },
+                        "src": "1055:25:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "444861636b6174686f6e206973206e6f7420696e2074686520566f74696e67207374617465",
+                        "id": 1063,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "1082:39:5",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_48c8b50e1fed5775845c87690be4c69d85d7b63991380e357cc84d2b9cb7e0c3",
+                          "typeString": "literal_string \"DHackathon is not in the Voting state\""
+                        },
+                        "value": "DHackathon is not in the Voting state"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_48c8b50e1fed5775845c87690be4c69d85d7b63991380e357cc84d2b9cb7e0c3",
+                          "typeString": "literal_string \"DHackathon is not in the Voting state\""
+                        }
+                      ],
+                      "id": 1058,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        1511,
+                        1512
+                      ],
+                      "referencedDeclaration": 1512,
+                      "src": "1047:7:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 1064,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1047:75:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1065,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1047:75:5"
+                },
+                {
+                  "id": 1066,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "1132:1:5"
+                }
+              ]
+            },
+            "documentation": "Define a modifier that checks if DHackathon is in the `InVoting` state",
+            "id": 1068,
+            "name": "isInVoting",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 1057,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1034:2:5"
+            },
+            "src": "1015:125:5",
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 1079,
+              "nodeType": "Block",
+              "src": "1243:101:5",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_enum$_DHState_$998",
+                          "typeString": "enum StateTracker.DHState"
+                        },
+                        "id": 1074,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 1071,
+                          "name": "state",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 1000,
+                          "src": "1261:5:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DHState_$998",
+                            "typeString": "enum StateTracker.DHState"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "==",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 1072,
+                            "name": "DHState",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 998,
+                            "src": "1270:7:5",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_type$_t_enum$_DHState_$998_$",
+                              "typeString": "type(enum StateTracker.DHState)"
+                            }
+                          },
+                          "id": 1073,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "memberName": "Closed",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "1270:14:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DHState_$998",
+                            "typeString": "enum StateTracker.DHState"
+                          }
+                        },
+                        "src": "1261:23:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "444861636b6174686f6e206973206e6f7420696e2074686520436c6f736564207374617465",
+                        "id": 1075,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "1286:39:5",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_e5f67f7f56e78df4edeee4fd36eea539a2bab1421bd0ccd67e11ed1ef5f6274f",
+                          "typeString": "literal_string \"DHackathon is not in the Closed state\""
+                        },
+                        "value": "DHackathon is not in the Closed state"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_e5f67f7f56e78df4edeee4fd36eea539a2bab1421bd0ccd67e11ed1ef5f6274f",
+                          "typeString": "literal_string \"DHackathon is not in the Closed state\""
+                        }
+                      ],
+                      "id": 1070,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        1511,
+                        1512
+                      ],
+                      "referencedDeclaration": 1512,
+                      "src": "1253:7:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 1076,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1253:73:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1077,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1253:73:5"
+                },
+                {
+                  "id": 1078,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "1336:1:5"
+                }
+              ]
+            },
+            "documentation": "Define a modifier that checks if DHackathon is in the `Closed` state",
+            "id": 1080,
+            "name": "isClosed",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 1069,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1240:2:5"
+            },
+            "src": "1223:121:5",
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 1091,
+              "nodeType": "Block",
+              "src": "1454:101:5",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_enum$_DHState_$998",
+                          "typeString": "enum StateTracker.DHState"
+                        },
+                        "id": 1086,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 1083,
+                          "name": "state",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 1000,
+                          "src": "1472:5:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DHState_$998",
+                            "typeString": "enum StateTracker.DHState"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "!=",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 1084,
+                            "name": "DHState",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 998,
+                            "src": "1481:7:5",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_type$_t_enum$_DHState_$998_$",
+                              "typeString": "type(enum StateTracker.DHState)"
+                            }
+                          },
+                          "id": 1085,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "memberName": "Closed",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "1481:14:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DHState_$998",
+                            "typeString": "enum StateTracker.DHState"
+                          }
+                        },
+                        "src": "1472:23:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "444861636b6174686f6e206973206e6f7420696e2074686520436c6f736564207374617465",
+                        "id": 1087,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "1497:39:5",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_e5f67f7f56e78df4edeee4fd36eea539a2bab1421bd0ccd67e11ed1ef5f6274f",
+                          "typeString": "literal_string \"DHackathon is not in the Closed state\""
+                        },
+                        "value": "DHackathon is not in the Closed state"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_e5f67f7f56e78df4edeee4fd36eea539a2bab1421bd0ccd67e11ed1ef5f6274f",
+                          "typeString": "literal_string \"DHackathon is not in the Closed state\""
+                        }
+                      ],
+                      "id": 1082,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        1511,
+                        1512
+                      ],
+                      "referencedDeclaration": 1512,
+                      "src": "1464:7:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 1088,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1464:73:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1089,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1464:73:5"
+                },
+                {
+                  "id": 1090,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "1547:1:5"
+                }
+              ]
+            },
+            "documentation": "Define a modifier that checks if DHackathon is not in the `Closed` state",
+            "id": 1092,
+            "name": "isNotClosed",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 1081,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1451:2:5"
+            },
+            "src": "1431:124:5",
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 1114,
+              "nodeType": "Block",
+              "src": "1733:80:5",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 1106,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 1103,
+                      "name": "state",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1000,
+                      "src": "1743:5:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_enum$_DHState_$998",
+                        "typeString": "enum StateTracker.DHState"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 1104,
+                        "name": "DHState",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 998,
+                        "src": "1751:7:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_enum$_DHState_$998_$",
+                          "typeString": "type(enum StateTracker.DHState)"
+                        }
+                      },
+                      "id": 1105,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "memberName": "Open",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": null,
+                      "src": "1751:12:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_enum$_DHState_$998",
+                        "typeString": "enum StateTracker.DHState"
+                      }
+                    },
+                    "src": "1743:20:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_enum$_DHState_$998",
+                      "typeString": "enum StateTracker.DHState"
+                    }
+                  },
+                  "id": 1107,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1743:20:5"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1109,
+                        "name": "_DHID",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1094,
+                        "src": "1785:5:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1110,
+                        "name": "_name",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1096,
+                        "src": "1792:5:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1111,
+                        "name": "_prize",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1098,
+                        "src": "1799:6:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "id": 1108,
+                      "name": "DHOpen",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1016,
+                      "src": "1778:6:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$_t_string_memory_ptr_$_t_uint256_$returns$__$",
+                        "typeString": "function (uint256,string memory,uint256)"
+                      }
+                    },
+                    "id": 1112,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1778:28:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1113,
+                  "nodeType": "EmitStatement",
+                  "src": "1773:33:5"
+                }
+              ]
+            },
+            "documentation": "Define function to open the competition",
+            "id": 1115,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "arguments": [],
+                "id": 1101,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 1100,
+                  "name": "isInPreparation",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 1044,
+                  "src": "1711:15:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1711:17:5"
+              }
+            ],
+            "name": "_openDHackathon",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1099,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1094,
+                  "name": "_DHID",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1115,
+                  "src": "1634:13:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1093,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1634:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1096,
+                  "name": "_name",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1115,
+                  "src": "1649:19:5",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 1095,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1649:6:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1098,
+                  "name": "_prize",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1115,
+                  "src": "1670:14:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1097,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1670:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1633:52:5"
+            },
+            "returnParameters": {
+              "id": 1102,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1733:0:5"
+            },
+            "scope": 1162,
+            "src": "1609:204:5",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 1137,
+              "nodeType": "Block",
+              "src": "2005:88:5",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 1129,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 1126,
+                      "name": "state",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1000,
+                      "src": "2015:5:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_enum$_DHState_$998",
+                        "typeString": "enum StateTracker.DHState"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 1127,
+                        "name": "DHState",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 998,
+                        "src": "2023:7:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_enum$_DHState_$998_$",
+                          "typeString": "type(enum StateTracker.DHState)"
+                        }
+                      },
+                      "id": 1128,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "memberName": "InVoting",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": null,
+                      "src": "2023:16:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_enum$_DHState_$998",
+                        "typeString": "enum StateTracker.DHState"
+                      }
+                    },
+                    "src": "2015:24:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_enum$_DHState_$998",
+                      "typeString": "enum StateTracker.DHState"
+                    }
+                  },
+                  "id": 1130,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2015:24:5"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1132,
+                        "name": "_DHID",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1117,
+                        "src": "2065:5:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1133,
+                        "name": "_name",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1119,
+                        "src": "2072:5:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1134,
+                        "name": "_prize",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1121,
+                        "src": "2079:6:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "id": 1131,
+                      "name": "DHInVoting",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1024,
+                      "src": "2054:10:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$_t_string_memory_ptr_$_t_uint256_$returns$__$",
+                        "typeString": "function (uint256,string memory,uint256)"
+                      }
+                    },
+                    "id": 1135,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2054:32:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1136,
+                  "nodeType": "EmitStatement",
+                  "src": "2049:37:5"
+                }
+              ]
+            },
+            "documentation": "Define function to set the competition to the voting state",
+            "id": 1138,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "arguments": [],
+                "id": 1124,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 1123,
+                  "name": "isOpen",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 1056,
+                  "src": "1992:6:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1992:8:5"
+              }
+            ],
+            "name": "_toVotingDHackathon",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1122,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1117,
+                  "name": "_DHID",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1138,
+                  "src": "1915:13:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1116,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1915:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1119,
+                  "name": "_name",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1138,
+                  "src": "1930:19:5",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 1118,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1930:6:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1121,
+                  "name": "_prize",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1138,
+                  "src": "1951:14:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1120,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1951:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1914:52:5"
+            },
+            "returnParameters": {
+              "id": 1125,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2005:0:5"
+            },
+            "scope": 1162,
+            "src": "1886:207:5",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 1160,
+              "nodeType": "Block",
+              "src": "2268:84:5",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 1152,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 1149,
+                      "name": "state",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1000,
+                      "src": "2278:5:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_enum$_DHState_$998",
+                        "typeString": "enum StateTracker.DHState"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 1150,
+                        "name": "DHState",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 998,
+                        "src": "2286:7:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_enum$_DHState_$998_$",
+                          "typeString": "type(enum StateTracker.DHState)"
+                        }
+                      },
+                      "id": 1151,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "memberName": "Closed",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": null,
+                      "src": "2286:14:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_enum$_DHState_$998",
+                        "typeString": "enum StateTracker.DHState"
+                      }
+                    },
+                    "src": "2278:22:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_enum$_DHState_$998",
+                      "typeString": "enum StateTracker.DHState"
+                    }
+                  },
+                  "id": 1153,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2278:22:5"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1155,
+                        "name": "_DHID",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1140,
+                        "src": "2324:5:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1156,
+                        "name": "_name",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1142,
+                        "src": "2331:5:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1157,
+                        "name": "_prize",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1144,
+                        "src": "2338:6:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "id": 1154,
+                      "name": "DHClosed",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1032,
+                      "src": "2315:8:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$_t_string_memory_ptr_$_t_uint256_$returns$__$",
+                        "typeString": "function (uint256,string memory,uint256)"
+                      }
+                    },
+                    "id": 1158,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2315:30:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1159,
+                  "nodeType": "EmitStatement",
+                  "src": "2310:35:5"
+                }
+              ]
+            },
+            "documentation": "Define function to close the competition",
+            "id": 1161,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "arguments": [],
+                "id": 1147,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 1146,
+                  "name": "isInVoting",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 1068,
+                  "src": "2251:10:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "2251:12:5"
+              }
+            ],
+            "name": "_closeDHackathon",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1145,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1140,
+                  "name": "_DHID",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1161,
+                  "src": "2174:13:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1139,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2174:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1142,
+                  "name": "_name",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1161,
+                  "src": "2189:19:5",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 1141,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2189:6:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1144,
+                  "name": "_prize",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1161,
+                  "src": "2210:14:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1143,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2210:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2173:52:5"
+            },
+            "returnParameters": {
+              "id": 1148,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2268:0:5"
+            },
+            "scope": 1162,
+            "src": "2148:204:5",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "internal"
+          }
+        ],
+        "scope": 1163,
+        "src": "105:2250:5"
+      }
+    ],
+    "src": "0:2355:5"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/alanarvelo/Documents/COURSES/CONSENSYS/final-project/contracts/states/StateTracker.sol",
+    "exportedSymbols": {
+      "StateTracker": [
+        1162
+      ]
+    },
+    "id": 1163,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 993,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.5",
+          ".11"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:25:5"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": "Define a contract `StateTracker` to manage the stages of the competition",
+        "fullyImplemented": true,
+        "id": 1162,
+        "linearizedBaseContracts": [
+          1162
+        ],
+        "name": "StateTracker",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "StateTracker.DHState",
+            "id": 998,
+            "members": [
+              {
+                "id": 994,
+                "name": "InPreparation",
+                "nodeType": "EnumValue",
+                "src": "148:13:5"
+              },
+              {
+                "id": 995,
+                "name": "Open",
+                "nodeType": "EnumValue",
+                "src": "163:4:5"
+              },
+              {
+                "id": 996,
+                "name": "InVoting",
+                "nodeType": "EnumValue",
+                "src": "169:8:5"
+              },
+              {
+                "id": 997,
+                "name": "Closed",
+                "nodeType": "EnumValue",
+                "src": "179:6:5"
+              }
+            ],
+            "name": "DHState",
+            "nodeType": "EnumDefinition",
+            "src": "134:52:5"
+          },
+          {
+            "constant": false,
+            "id": 1000,
+            "name": "state",
+            "nodeType": "VariableDeclaration",
+            "scope": 1162,
+            "src": "191:20:5",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_enum$_DHState_$998",
+              "typeString": "enum StateTracker.DHState"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 999,
+              "name": "DHState",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 998,
+              "src": "191:7:5",
+              "typeDescriptions": {
+                "typeIdentifier": "t_enum$_DHState_$998",
+                "typeString": "enum StateTracker.DHState"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1008,
+            "name": "DHInPreparation",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1007,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1002,
+                  "indexed": false,
+                  "name": "DHID",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1008,
+                  "src": "240:12:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1001,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "240:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1004,
+                  "indexed": false,
+                  "name": "name",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1008,
+                  "src": "254:11:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 1003,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "254:6:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1006,
+                  "indexed": false,
+                  "name": "estimatedPrize",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1008,
+                  "src": "267:22:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1005,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "267:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "239:51:5"
+            },
+            "src": "218:73:5"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1016,
+            "name": "DHOpen",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1015,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1010,
+                  "indexed": false,
+                  "name": "DHID",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1016,
+                  "src": "309:12:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1009,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "309:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1012,
+                  "indexed": false,
+                  "name": "name",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1016,
+                  "src": "323:11:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 1011,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "323:6:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1014,
+                  "indexed": false,
+                  "name": "estimatedPrize",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1016,
+                  "src": "336:22:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1013,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "336:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "308:51:5"
+            },
+            "src": "296:64:5"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1024,
+            "name": "DHInVoting",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1023,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1018,
+                  "indexed": false,
+                  "name": "DHID",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1024,
+                  "src": "382:12:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1017,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "382:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1020,
+                  "indexed": false,
+                  "name": "name",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1024,
+                  "src": "396:11:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 1019,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "396:6:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1022,
+                  "indexed": false,
+                  "name": "estimatedPrize",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1024,
+                  "src": "409:22:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1021,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "409:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "381:51:5"
+            },
+            "src": "365:68:5"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1032,
+            "name": "DHClosed",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1031,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1026,
+                  "indexed": false,
+                  "name": "DHID",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1032,
+                  "src": "453:12:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1025,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "453:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1028,
+                  "indexed": false,
+                  "name": "name",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1032,
+                  "src": "467:11:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 1027,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "467:6:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1030,
+                  "indexed": false,
+                  "name": "estimatedPrize",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1032,
+                  "src": "480:22:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1029,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "480:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "452:51:5"
+            },
+            "src": "438:66:5"
+          },
+          {
+            "body": {
+              "id": 1043,
+              "nodeType": "Block",
+              "src": "621:113:5",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_enum$_DHState_$998",
+                          "typeString": "enum StateTracker.DHState"
+                        },
+                        "id": 1038,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 1035,
+                          "name": "state",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 1000,
+                          "src": "639:5:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DHState_$998",
+                            "typeString": "enum StateTracker.DHState"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "==",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 1036,
+                            "name": "DHState",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 998,
+                            "src": "648:7:5",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_type$_t_enum$_DHState_$998_$",
+                              "typeString": "type(enum StateTracker.DHState)"
+                            }
+                          },
+                          "id": 1037,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "memberName": "InPreparation",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "648:21:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DHState_$998",
+                            "typeString": "enum StateTracker.DHState"
+                          }
+                        },
+                        "src": "639:30:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "444861636b6174686f6e206973206e6f7420696e20746865205072657061726174696f6e207374617465",
+                        "id": 1039,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "671:44:5",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_b8d4b96c8c90933aadcd6b7b3f100ba0a218992993b3f3960e9127f526c0b2f0",
+                          "typeString": "literal_string \"DHackathon is not in the Preparation state\""
+                        },
+                        "value": "DHackathon is not in the Preparation state"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_b8d4b96c8c90933aadcd6b7b3f100ba0a218992993b3f3960e9127f526c0b2f0",
+                          "typeString": "literal_string \"DHackathon is not in the Preparation state\""
+                        }
+                      ],
+                      "id": 1034,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        1511,
+                        1512
+                      ],
+                      "referencedDeclaration": 1512,
+                      "src": "631:7:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 1040,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "631:85:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1041,
+                  "nodeType": "ExpressionStatement",
+                  "src": "631:85:5"
+                },
+                {
+                  "id": 1042,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "726:1:5"
+                }
+              ]
+            },
+            "documentation": "Define a modifier that checks if DHackathon is in the `InPreparation` state",
+            "id": 1044,
+            "name": "isInPreparation",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 1033,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "618:2:5"
+            },
+            "src": "594:140:5",
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 1055,
+              "nodeType": "Block",
+              "src": "833:97:5",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_enum$_DHState_$998",
+                          "typeString": "enum StateTracker.DHState"
+                        },
+                        "id": 1050,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 1047,
+                          "name": "state",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 1000,
+                          "src": "851:5:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DHState_$998",
+                            "typeString": "enum StateTracker.DHState"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "==",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 1048,
+                            "name": "DHState",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 998,
+                            "src": "860:7:5",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_type$_t_enum$_DHState_$998_$",
+                              "typeString": "type(enum StateTracker.DHState)"
+                            }
+                          },
+                          "id": 1049,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "memberName": "Open",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "860:12:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DHState_$998",
+                            "typeString": "enum StateTracker.DHState"
+                          }
+                        },
+                        "src": "851:21:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "444861636b6174686f6e206973206e6f7420696e20746865204f70656e207374617465",
+                        "id": 1051,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "874:37:5",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_d11c9086bdf04225f55c98bd9c76623d2fff3a371e01d2f967b5689b648d5748",
+                          "typeString": "literal_string \"DHackathon is not in the Open state\""
+                        },
+                        "value": "DHackathon is not in the Open state"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_d11c9086bdf04225f55c98bd9c76623d2fff3a371e01d2f967b5689b648d5748",
+                          "typeString": "literal_string \"DHackathon is not in the Open state\""
+                        }
+                      ],
+                      "id": 1046,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        1511,
+                        1512
+                      ],
+                      "referencedDeclaration": 1512,
+                      "src": "843:7:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 1052,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "843:69:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1053,
+                  "nodeType": "ExpressionStatement",
+                  "src": "843:69:5"
+                },
+                {
+                  "id": 1054,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "922:1:5"
+                }
+              ]
+            },
+            "documentation": "Define a modifier that checks if DHackathon is in the `Open` state",
+            "id": 1056,
+            "name": "isOpen",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 1045,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "830:2:5"
+            },
+            "src": "815:115:5",
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 1067,
+              "nodeType": "Block",
+              "src": "1037:103:5",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_enum$_DHState_$998",
+                          "typeString": "enum StateTracker.DHState"
+                        },
+                        "id": 1062,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 1059,
+                          "name": "state",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 1000,
+                          "src": "1055:5:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DHState_$998",
+                            "typeString": "enum StateTracker.DHState"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "==",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 1060,
+                            "name": "DHState",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 998,
+                            "src": "1064:7:5",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_type$_t_enum$_DHState_$998_$",
+                              "typeString": "type(enum StateTracker.DHState)"
+                            }
+                          },
+                          "id": 1061,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "memberName": "InVoting",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "1064:16:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DHState_$998",
+                            "typeString": "enum StateTracker.DHState"
+                          }
+                        },
+                        "src": "1055:25:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "444861636b6174686f6e206973206e6f7420696e2074686520566f74696e67207374617465",
+                        "id": 1063,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "1082:39:5",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_48c8b50e1fed5775845c87690be4c69d85d7b63991380e357cc84d2b9cb7e0c3",
+                          "typeString": "literal_string \"DHackathon is not in the Voting state\""
+                        },
+                        "value": "DHackathon is not in the Voting state"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_48c8b50e1fed5775845c87690be4c69d85d7b63991380e357cc84d2b9cb7e0c3",
+                          "typeString": "literal_string \"DHackathon is not in the Voting state\""
+                        }
+                      ],
+                      "id": 1058,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        1511,
+                        1512
+                      ],
+                      "referencedDeclaration": 1512,
+                      "src": "1047:7:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 1064,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1047:75:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1065,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1047:75:5"
+                },
+                {
+                  "id": 1066,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "1132:1:5"
+                }
+              ]
+            },
+            "documentation": "Define a modifier that checks if DHackathon is in the `InVoting` state",
+            "id": 1068,
+            "name": "isInVoting",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 1057,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1034:2:5"
+            },
+            "src": "1015:125:5",
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 1079,
+              "nodeType": "Block",
+              "src": "1243:101:5",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_enum$_DHState_$998",
+                          "typeString": "enum StateTracker.DHState"
+                        },
+                        "id": 1074,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 1071,
+                          "name": "state",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 1000,
+                          "src": "1261:5:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DHState_$998",
+                            "typeString": "enum StateTracker.DHState"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "==",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 1072,
+                            "name": "DHState",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 998,
+                            "src": "1270:7:5",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_type$_t_enum$_DHState_$998_$",
+                              "typeString": "type(enum StateTracker.DHState)"
+                            }
+                          },
+                          "id": 1073,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "memberName": "Closed",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "1270:14:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DHState_$998",
+                            "typeString": "enum StateTracker.DHState"
+                          }
+                        },
+                        "src": "1261:23:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "444861636b6174686f6e206973206e6f7420696e2074686520436c6f736564207374617465",
+                        "id": 1075,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "1286:39:5",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_e5f67f7f56e78df4edeee4fd36eea539a2bab1421bd0ccd67e11ed1ef5f6274f",
+                          "typeString": "literal_string \"DHackathon is not in the Closed state\""
+                        },
+                        "value": "DHackathon is not in the Closed state"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_e5f67f7f56e78df4edeee4fd36eea539a2bab1421bd0ccd67e11ed1ef5f6274f",
+                          "typeString": "literal_string \"DHackathon is not in the Closed state\""
+                        }
+                      ],
+                      "id": 1070,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        1511,
+                        1512
+                      ],
+                      "referencedDeclaration": 1512,
+                      "src": "1253:7:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 1076,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1253:73:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1077,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1253:73:5"
+                },
+                {
+                  "id": 1078,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "1336:1:5"
+                }
+              ]
+            },
+            "documentation": "Define a modifier that checks if DHackathon is in the `Closed` state",
+            "id": 1080,
+            "name": "isClosed",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 1069,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1240:2:5"
+            },
+            "src": "1223:121:5",
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 1091,
+              "nodeType": "Block",
+              "src": "1454:101:5",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_enum$_DHState_$998",
+                          "typeString": "enum StateTracker.DHState"
+                        },
+                        "id": 1086,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 1083,
+                          "name": "state",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 1000,
+                          "src": "1472:5:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DHState_$998",
+                            "typeString": "enum StateTracker.DHState"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "!=",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 1084,
+                            "name": "DHState",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 998,
+                            "src": "1481:7:5",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_type$_t_enum$_DHState_$998_$",
+                              "typeString": "type(enum StateTracker.DHState)"
+                            }
+                          },
+                          "id": 1085,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "memberName": "Closed",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "1481:14:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DHState_$998",
+                            "typeString": "enum StateTracker.DHState"
+                          }
+                        },
+                        "src": "1472:23:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "444861636b6174686f6e206973206e6f7420696e2074686520436c6f736564207374617465",
+                        "id": 1087,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "1497:39:5",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_e5f67f7f56e78df4edeee4fd36eea539a2bab1421bd0ccd67e11ed1ef5f6274f",
+                          "typeString": "literal_string \"DHackathon is not in the Closed state\""
+                        },
+                        "value": "DHackathon is not in the Closed state"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_e5f67f7f56e78df4edeee4fd36eea539a2bab1421bd0ccd67e11ed1ef5f6274f",
+                          "typeString": "literal_string \"DHackathon is not in the Closed state\""
+                        }
+                      ],
+                      "id": 1082,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        1511,
+                        1512
+                      ],
+                      "referencedDeclaration": 1512,
+                      "src": "1464:7:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 1088,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1464:73:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1089,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1464:73:5"
+                },
+                {
+                  "id": 1090,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "1547:1:5"
+                }
+              ]
+            },
+            "documentation": "Define a modifier that checks if DHackathon is not in the `Closed` state",
+            "id": 1092,
+            "name": "isNotClosed",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 1081,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1451:2:5"
+            },
+            "src": "1431:124:5",
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 1114,
+              "nodeType": "Block",
+              "src": "1733:80:5",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 1106,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 1103,
+                      "name": "state",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1000,
+                      "src": "1743:5:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_enum$_DHState_$998",
+                        "typeString": "enum StateTracker.DHState"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 1104,
+                        "name": "DHState",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 998,
+                        "src": "1751:7:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_enum$_DHState_$998_$",
+                          "typeString": "type(enum StateTracker.DHState)"
+                        }
+                      },
+                      "id": 1105,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "memberName": "Open",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": null,
+                      "src": "1751:12:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_enum$_DHState_$998",
+                        "typeString": "enum StateTracker.DHState"
+                      }
+                    },
+                    "src": "1743:20:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_enum$_DHState_$998",
+                      "typeString": "enum StateTracker.DHState"
+                    }
+                  },
+                  "id": 1107,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1743:20:5"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1109,
+                        "name": "_DHID",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1094,
+                        "src": "1785:5:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1110,
+                        "name": "_name",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1096,
+                        "src": "1792:5:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1111,
+                        "name": "_prize",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1098,
+                        "src": "1799:6:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "id": 1108,
+                      "name": "DHOpen",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1016,
+                      "src": "1778:6:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$_t_string_memory_ptr_$_t_uint256_$returns$__$",
+                        "typeString": "function (uint256,string memory,uint256)"
+                      }
+                    },
+                    "id": 1112,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1778:28:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1113,
+                  "nodeType": "EmitStatement",
+                  "src": "1773:33:5"
+                }
+              ]
+            },
+            "documentation": "Define function to open the competition",
+            "id": 1115,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "arguments": [],
+                "id": 1101,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 1100,
+                  "name": "isInPreparation",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 1044,
+                  "src": "1711:15:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1711:17:5"
+              }
+            ],
+            "name": "_openDHackathon",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1099,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1094,
+                  "name": "_DHID",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1115,
+                  "src": "1634:13:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1093,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1634:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1096,
+                  "name": "_name",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1115,
+                  "src": "1649:19:5",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 1095,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1649:6:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1098,
+                  "name": "_prize",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1115,
+                  "src": "1670:14:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1097,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1670:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1633:52:5"
+            },
+            "returnParameters": {
+              "id": 1102,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1733:0:5"
+            },
+            "scope": 1162,
+            "src": "1609:204:5",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 1137,
+              "nodeType": "Block",
+              "src": "2005:88:5",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 1129,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 1126,
+                      "name": "state",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1000,
+                      "src": "2015:5:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_enum$_DHState_$998",
+                        "typeString": "enum StateTracker.DHState"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 1127,
+                        "name": "DHState",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 998,
+                        "src": "2023:7:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_enum$_DHState_$998_$",
+                          "typeString": "type(enum StateTracker.DHState)"
+                        }
+                      },
+                      "id": 1128,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "memberName": "InVoting",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": null,
+                      "src": "2023:16:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_enum$_DHState_$998",
+                        "typeString": "enum StateTracker.DHState"
+                      }
+                    },
+                    "src": "2015:24:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_enum$_DHState_$998",
+                      "typeString": "enum StateTracker.DHState"
+                    }
+                  },
+                  "id": 1130,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2015:24:5"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1132,
+                        "name": "_DHID",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1117,
+                        "src": "2065:5:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1133,
+                        "name": "_name",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1119,
+                        "src": "2072:5:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1134,
+                        "name": "_prize",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1121,
+                        "src": "2079:6:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "id": 1131,
+                      "name": "DHInVoting",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1024,
+                      "src": "2054:10:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$_t_string_memory_ptr_$_t_uint256_$returns$__$",
+                        "typeString": "function (uint256,string memory,uint256)"
+                      }
+                    },
+                    "id": 1135,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2054:32:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1136,
+                  "nodeType": "EmitStatement",
+                  "src": "2049:37:5"
+                }
+              ]
+            },
+            "documentation": "Define function to set the competition to the voting state",
+            "id": 1138,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "arguments": [],
+                "id": 1124,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 1123,
+                  "name": "isOpen",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 1056,
+                  "src": "1992:6:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1992:8:5"
+              }
+            ],
+            "name": "_toVotingDHackathon",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1122,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1117,
+                  "name": "_DHID",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1138,
+                  "src": "1915:13:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1116,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1915:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1119,
+                  "name": "_name",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1138,
+                  "src": "1930:19:5",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 1118,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1930:6:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1121,
+                  "name": "_prize",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1138,
+                  "src": "1951:14:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1120,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1951:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1914:52:5"
+            },
+            "returnParameters": {
+              "id": 1125,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2005:0:5"
+            },
+            "scope": 1162,
+            "src": "1886:207:5",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 1160,
+              "nodeType": "Block",
+              "src": "2268:84:5",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 1152,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 1149,
+                      "name": "state",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1000,
+                      "src": "2278:5:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_enum$_DHState_$998",
+                        "typeString": "enum StateTracker.DHState"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 1150,
+                        "name": "DHState",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 998,
+                        "src": "2286:7:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_enum$_DHState_$998_$",
+                          "typeString": "type(enum StateTracker.DHState)"
+                        }
+                      },
+                      "id": 1151,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "memberName": "Closed",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": null,
+                      "src": "2286:14:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_enum$_DHState_$998",
+                        "typeString": "enum StateTracker.DHState"
+                      }
+                    },
+                    "src": "2278:22:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_enum$_DHState_$998",
+                      "typeString": "enum StateTracker.DHState"
+                    }
+                  },
+                  "id": 1153,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2278:22:5"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1155,
+                        "name": "_DHID",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1140,
+                        "src": "2324:5:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1156,
+                        "name": "_name",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1142,
+                        "src": "2331:5:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1157,
+                        "name": "_prize",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1144,
+                        "src": "2338:6:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "id": 1154,
+                      "name": "DHClosed",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1032,
+                      "src": "2315:8:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$_t_string_memory_ptr_$_t_uint256_$returns$__$",
+                        "typeString": "function (uint256,string memory,uint256)"
+                      }
+                    },
+                    "id": 1158,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2315:30:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1159,
+                  "nodeType": "EmitStatement",
+                  "src": "2310:35:5"
+                }
+              ]
+            },
+            "documentation": "Define function to close the competition",
+            "id": 1161,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "arguments": [],
+                "id": 1147,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 1146,
+                  "name": "isInVoting",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 1068,
+                  "src": "2251:10:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "2251:12:5"
+              }
+            ],
+            "name": "_closeDHackathon",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1145,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1140,
+                  "name": "_DHID",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1161,
+                  "src": "2174:13:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1139,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2174:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1142,
+                  "name": "_name",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1161,
+                  "src": "2189:19:5",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 1141,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2189:6:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1144,
+                  "name": "_prize",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1161,
+                  "src": "2210:14:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1143,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2210:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2173:52:5"
+            },
+            "returnParameters": {
+              "id": 1148,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2268:0:5"
+            },
+            "scope": 1162,
+            "src": "2148:204:5",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "internal"
+          }
+        ],
+        "scope": 1163,
+        "src": "105:2250:5"
+      }
+    ],
+    "src": "0:2355:5"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.11+commit.c082d0b4.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.0.12",
+  "updatedAt": "2020-01-31T13:57:26.899Z",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {},
+    "notice": "Define a contract `StateTracker` to manage the stages of the competition"
+  }
+}

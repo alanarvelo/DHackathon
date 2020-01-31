@@ -1,7 +1,7 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
 import DHackathon from "./DHackathon"
-import DHackathonJSON from "../../contracts/DHackathon.json"
+import DHackathonJSON from "../../abis/DHackathon.json"
 import { DrizzleContext } from "@drizzle/react-plugin";
 
 

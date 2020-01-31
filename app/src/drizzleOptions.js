@@ -1,4 +1,4 @@
-import DHackathonFactory from "./contracts/DHackathonFactory.json";
+import DHackathonFactory from "./abis/DHackathonFactory.json";
 
 const options = {
   web3: {
