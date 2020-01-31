@@ -44,18 +44,14 @@ class App extends Component {
           <div>
             <NavBar drizzleState={drizzleState}/>
             <ToastMessage.Provider ref={node => (window.toastProvider = node)} />
-            {/* { drizzleState.drizzlesStatus && drizzleState.drizzlesStatus.initialized */}
-              {/* ? */}
-              (<div className="App">
-                  <Switch>
-                    <Route path='/DH/:contractAddress' render={(props) => <DHWrapper {...props} drizzle={drizzle} drizzleState={drizzleState} /> }/>
-                    <Route path='/docs' component={DocsPage} />
-                    <Route path='/' exact render={() => <Container drizzle={drizzle} drizzleState={drizzleState} />} />
-                    <Route component={NotFound} />
-                  </Switch>
-                </div>)
-              {/* :null */}
-            {/* } */}
+            <div className="App">
+              <Switch>
+                <Route path='/DH/:contractAddress' render={(props) => <DHWrapper {...props} drizzle={drizzle} drizzleState={drizzleState} /> }/>
+                <Route path='/docs' component={DocsPage} />
+                <Route path='/' exact render={() => <Container drizzle={drizzle} drizzleState={drizzleState} />} />
+                <Route component={NotFound} />
+              </Switch>
+            </div>
           </div>
         )
       }}

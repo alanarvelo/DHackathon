@@ -4260,9 +4260,180 @@
     "name": "solc",
     "version": "0.5.11+commit.c082d0b4.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "3": {
+      "events": {},
+      "links": {},
+      "address": "0x5A7c698205d31d7CF6cf413140e6Dd22F192beDe",
+      "transactionHash": "0xeecbfd9c325a739113af56413ed596e2b0f49d64f00f231f51e2c9c5ab3ff699"
+    },
+    "4": {
+      "events": {},
+      "links": {},
+      "address": "0xb2736bD48a06B5ED45559BE5AD0072551dA93335",
+      "transactionHash": "0x5a26f6b68d77e5bb6dcc7860ca7c7b83cee8e148394628472aa3f6af29ca67bc"
+    },
+    "4447": {
+      "events": {
+        "0x16cb91b61f40010ae01c6e49788f78f2ea946cd282486a8b872da41d93d0f812": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "DHID",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "admin",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "prize",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "contractAddress",
+              "type": "address"
+            }
+          ],
+          "name": "DHackathonCreated",
+          "type": "event",
+          "signature": "0x16cb91b61f40010ae01c6e49788f78f2ea946cd282486a8b872da41d93d0f812"
+        },
+        "0x4a37b25aab49761ecf63117fe82b98d750917451133cf797507bc9fb5b96044a": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "funds",
+              "type": "uint256"
+            }
+          ],
+          "name": "FundsWithdrawn",
+          "type": "event",
+          "signature": "0x4a37b25aab49761ecf63117fe82b98d750917451133cf797507bc9fb5b96044a"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event",
+          "signature": "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0"
+        }
+      },
+      "links": {},
+      "address": "0xA83156Bd77aa6760e31EaD557E39E5AD41752e1f",
+      "transactionHash": "0x72e6db015010f02c27aa85cbf8ee9cee59c71819ef58c7611131767647bc8099"
+    },
+    "5777": {
+      "events": {
+        "0x16cb91b61f40010ae01c6e49788f78f2ea946cd282486a8b872da41d93d0f812": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "DHID",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "admin",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "prize",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "contractAddress",
+              "type": "address"
+            }
+          ],
+          "name": "DHackathonCreated",
+          "type": "event",
+          "signature": "0x16cb91b61f40010ae01c6e49788f78f2ea946cd282486a8b872da41d93d0f812"
+        },
+        "0x4a37b25aab49761ecf63117fe82b98d750917451133cf797507bc9fb5b96044a": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "funds",
+              "type": "uint256"
+            }
+          ],
+          "name": "FundsWithdrawn",
+          "type": "event",
+          "signature": "0x4a37b25aab49761ecf63117fe82b98d750917451133cf797507bc9fb5b96044a"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event",
+          "signature": "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0"
+        }
+      },
+      "links": {},
+      "address": "0x3A4f902176d20AfF955aeA15B73ce082BD49E56f",
+      "transactionHash": "0x9c2979f1fb450084b358c3ee69898a09f629f0f63713f4cde9996540fc1aed63"
+    }
+  },
   "schemaVersion": "3.0.12",
-  "updatedAt": "2020-01-31T13:57:26.892Z",
+  "updatedAt": "2020-01-31T22:38:01.523Z",
   "devdoc": {
     "author": "Alan Arvelo",
     "methods": {

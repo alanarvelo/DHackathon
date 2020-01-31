@@ -1,28 +1,41 @@
 const path = require("path");
+require('dotenv').config()
 
-try {
-  const env = require("./ENV_VARS.env.json")
- }
- catch (e) {
-  console.log('the file "./ENV_VARS.env.json" has not been created, but it is not required for ganache deployments, only for testnet or mainnet deployments')
- }
+const HDWalletProvider = require("@truffle/hdwallet-provider");
 
 module.exports = {
-  // See <http://truffleframework.com/docs/advanced/configuration>
-  // to customize your Truffle configuration!
   contracts_build_directory: path.join(__dirname, "app/src/abis"),
   networks: {
     development: {
       host: "127.0.0.1",
-      port: 8545, // Using ganache-cli as development network
-      network_id: "*",
+      port: 8545,               // Using ganache-cli as development network
+      network_id: "*",          // Match any network id
   },
     ganacheGUI: {
       host: "127.0.0.1",
-      port: 9545, // Using ganache-gui as development network
-      network_id: "*", // match any network
+      port: 9545,               // Using ganache-gui as development network
+      network_id: "5777",       // Match a specific ID
       websockets: true
-    }
+    },
+    ropsten: {
+      provider: () => new HDWalletProvider(process.env.MNEMONIC, "https://ropsten.infura.io/v3/" + process.env.INFURA_API_KEY),
+      network_id: 3,
+      gas: 6000000,
+      gasPrice: 10000000000
+    },
+    rinkeby: {
+      provider: () => new HDWalletProvider(process.env.MNEMONIC, "https://rinkeby.infura.io/v3/" + process.env.INFURA_API_KEY),
+      network_id: 4,
+      gas: 6000000,
+      gasPrice: 10000000000
+    },
+    // main ethereum network(mainnet)
+    // main: {
+    //   provider: () => new HDWalletProvider(process.env.MNENOMIC, "https://mainnet.infura.io/v3/" + process.env.INFURA_API_KEY),
+    //   network_id: 1,
+    //   gas: 3000000,
+    //   gasPrice: 10000000000
+    // }
   },
   compilers: {
     solc: {
