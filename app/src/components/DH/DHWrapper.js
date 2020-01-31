@@ -25,6 +25,7 @@ export default class DHWrapper extends React.Component {
 
   async identifyDH() {
     const children = await this.props.drizzle.contracts.DHackathonFactory.methods.getChildren().call();
+    console.log(children)
     if (!children.map((a) => a.toLowerCase()).includes(this.contractAddress)) return "NotFound"
     let contractName = `DH${this.contractAddress.slice(-4)}`
     if (!Object.keys(this.props.drizzleState.contracts).includes(contractName)) {
@@ -35,6 +36,7 @@ export default class DHWrapper extends React.Component {
   }
 
   render() {
+    console.log("DHName & contractAddress ", this.state.DHName, this.contractAddress)
     return (
       <DrizzleContext.Consumer>
         {drizzleContext => {
@@ -43,8 +45,8 @@ export default class DHWrapper extends React.Component {
           if (!initialized) {
             return "Loading...";
           }
-            if (!this.state.DHName === "NotFound") return <Redirect to='/404' />
-            else if (!this.state.DHName === "") return "LOADING DHACKATHON"
+            if (this.state.DHName === "NotFound") return <Redirect to='/404' />
+            else if (this.state.DHName === "") return "LOADING DHACKATHON"
             else  { if (this.props.drizzleState.contracts && this.props.drizzleState.contracts[this.state.DHName]) {
                       return <DHackathon drizzle={drizzle} drizzleState={drizzleState} DHName={this.state.DHName} />
                     }
