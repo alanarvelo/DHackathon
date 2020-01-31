@@ -3,6 +3,9 @@
   "author":"Alan Arvelo",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=8.12.0"
+  },
   "dependencies": {
     "@drizzle/react-plugin": "^1.5.1",
     "@drizzle/store": "^1.5.1",
