@@ -1,5 +1,5 @@
 import { EventActions } from '@drizzle/store'
-import DHackathon from "../contracts/DHackathon.json";
+import DHackathon from "./DHackathon.json";
 import Web3 from "web3";
 
 const getCorrectWeb3 = () => {
