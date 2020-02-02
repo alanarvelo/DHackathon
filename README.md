@@ -3,13 +3,13 @@
 # Welcome to Decentralized Hackathons!
 ---
 
-This is the official [DeHack]() repository holding:
+This is the official [DeHack](https://www.dehack.app/) repository holding:
 + smart contracts — back end
 + web application — front end
 
 ### What is DeHack?
 
-[DeHack]() is a platform to create and manage decentralized hackathons based on smart contracts on Ethereum. Anyone can add a prize to a new competition and encourage participants to create and compete.
+[DeHack](https://www.dehack.app/) is a platform to create and manage decentralized hackathons based on smart contracts on Ethereum. Anyone can add a prize to a new competition and encourage participants to create and compete.
 
 ### What can you do with DeHack?
 
@@ -181,7 +181,7 @@ Any sort of tournament: poker, esports, ping pong, or art competitions can lever
 
 ## Getting Started
 
-Below is a technical explanation of how to copy the project and run a local version of it in your machine. If you just want to play with the live, finished platform find it here [DeHack](). If you want to study & improve the platform by getting a local copy, please read on.
+Below is a technical explanation of how to copy the project and run a local version of it in your machine. If you just want to play with the live, finished platform find it here [DeHack](https://www.dehack.app/). If you want to study & improve the platform by getting a local copy, please read on.
 
 ### Prerequisities
 The platform runs on the following version of these frameworks. 
