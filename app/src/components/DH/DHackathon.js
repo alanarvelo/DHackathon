@@ -53,9 +53,14 @@ export default class DHackathon extends React.Component {
 
   // listens for updates on the MetaMask active account. Beware: this is a MetaMask beta feature
   listenToActiveAccountUpdates() {
-    this.props.drizzle.web3.currentProvider.publicConfigStore.on('update', ({ selectedAddress }) => {
-      this.getActiveEOARole(selectedAddress)
-    });
+    try {
+      this.props.drizzle.web3.currentProvider.publicConfigStore.on('update', ({ selectedAddress }) => {
+        if (selectedAddress) this.getActiveEOARole(selectedAddress)
+        else this.setState({EOARole: null})
+      });
+    } catch (error) {
+      console.error("Couldn track role change web3: ", error)
+    }
   }
 
   async getActiveEOARole(activeEOA) {

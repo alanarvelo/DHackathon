@@ -1,9 +1,8 @@
 import React from 'react';
 import DocsPage from "./DocsPage"
 import { Route, Switch } from 'react-router-dom'
-// import ErrorPage from './components/misc/ErrorPage'
 import NavBar from "./NavBar";
-
+import ErrorWeb3 from "./ErrorWeb3"
 
 
 export default function ErrorContainer () {
@@ -11,7 +10,11 @@ export default function ErrorContainer () {
     <div>
       <NavBar />
       <div className="section">
-        <Route path='/docs' component={DocsPage} />
+        <Switch>
+          <Route path='/docs' component={DocsPage} />
+          <Route path='/' exact component={ErrorWeb3} />
+          <Route component={DocsPage} />
+        </Switch>
       </div>
     </div>
   )

@@ -25,9 +25,8 @@ class App extends Component {
   // listens for updates on the MetaMask active account. Beware: this is a MetaMask beta feature
   listenToActiveAccountUpdates() {
     try {
-      this.props.drizzle.web3.currentProvider.publicConfigStore.on('update', (vals) => { //{ selectedAddress }
-        console.log(vals)
-        this.props.drizzle.store.dispatch(setActiveEOA(vals.selectedAddress))
+      this.props.drizzle.web3.currentProvider.publicConfigStore.on('update', ({ selectedAddress }) => {
+        this.props.drizzle.store.dispatch(setActiveEOA(selectedAddress))
       });
     } catch (error) {
       console.error("No web3 account tracking: ", error)
@@ -43,8 +42,8 @@ class App extends Component {
         if (!initialized) {
           return "Loading...";
         }
-        // console.log("drizzle: ", drizzle)
-        // console.log("drizzleState: ", drizzleState) 
+        console.log("drizzle: ", drizzle)
+        console.log("drizzleState: ", drizzleState) 
         return (
           <div>
             <NavBar drizzleState={drizzleState}/>

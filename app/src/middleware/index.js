@@ -17,7 +17,6 @@ const getCorrectWeb3 = () => {
 const contractEventNotifier = store => next => action => {
   //  to UI all succesfully emitted events
   // To-Do: handle each event separately and add returned values in the notification toast.
-  console.log("ACTION: ", action)
   if (action.type === EventActions.EVENT_FIRED) {
     const contract = action.name
     const currentContracts = store.getState()['contracts']
