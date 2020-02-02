@@ -23,6 +23,6 @@ yarn-debug.log*
 yarn-error.log*
 
 # contracts
-/src/abis/
-!src/abis/.gitkeep
+/src/abis/*
+!.gitkeep
 
