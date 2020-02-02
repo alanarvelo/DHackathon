@@ -9,7 +9,7 @@ import { DrizzleContext } from "@drizzle/react-plugin";
 import { ToastMessage } from 'rimble-ui'
 
 import Container from "./Container";
-import DHWrapper from "./DH/DHWrapper"
+import DHContainer from "./DH/DHContainer"
 import NavBar from "./misc/NavBar";
 import DocsPage from "./misc/DocsPage"
 import NotFound from "./misc/NotFound"
@@ -24,9 +24,14 @@ class App extends Component {
 
   // listens for updates on the MetaMask active account. Beware: this is a MetaMask beta feature
   listenToActiveAccountUpdates() {
-    this.props.drizzle.web3.currentProvider.publicConfigStore.on('update', ({ selectedAddress }) => {
-      this.props.drizzle.store.dispatch(setActiveEOA(selectedAddress))
-    });
+    try {
+      this.props.drizzle.web3.currentProvider.publicConfigStore.on('update', (vals) => { //{ selectedAddress }
+        console.log(vals)
+        this.props.drizzle.store.dispatch(setActiveEOA(vals.selectedAddress))
+      });
+    } catch (error) {
+      console.error("No web3 account tracking: ", error)
+    }
   }
 
   render() {
@@ -46,7 +51,7 @@ class App extends Component {
             <ToastMessage.Provider ref={node => (window.toastProvider = node)} />
             <div className="App">
               <Switch>
-                <Route path='/DH/:contractAddress' render={(props) => <DHWrapper {...props} drizzle={drizzle} drizzleState={drizzleState} /> }/>
+                <Route path='/DH/:contractAddress' render={(props) => <DHContainer {...props} drizzle={drizzle} drizzleState={drizzleState} /> }/>
                 <Route path='/docs' component={DocsPage} />
                 <Route path='/' exact render={() => <Container drizzle={drizzle} drizzleState={drizzleState} />} />
                 <Route component={NotFound} />

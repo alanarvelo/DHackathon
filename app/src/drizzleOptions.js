@@ -5,7 +5,7 @@ const options = {
     block: false,
     fallback: {
       case: 'ws',
-      url: "HTTP://127.0.0.1:8545"
+      url: "ws:127.0.0.1:8545"
     }
   },
   contracts: [DHackathonFactory],

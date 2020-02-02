@@ -2,14 +2,13 @@ import { EventActions } from '@drizzle/store'
 import DHackathon from "../abis/DHackathon.json";
 import Web3 from "web3";
 
+// from drizzle's initializeWeb3 function
 const getCorrectWeb3 = () => {
   if (window.ethereum) {
     let web3 = new Web3(window.ethereum)
     return web3
   }
   else if (typeof window.web3 !== 'undefined') {
-    // Checking if Web3 has been injected by the browser (Mist/MetaMask)
-    // Use Mist/MetaMask's provider.
     let web3 = new Web3(window.web3.currentProvider)
     return web3
   }
@@ -18,6 +17,7 @@ const getCorrectWeb3 = () => {
 const contractEventNotifier = store => next => action => {
   //  to UI all succesfully emitted events
   // To-Do: handle each event separately and add returned values in the notification toast.
+  console.log("ACTION: ", action)
   if (action.type === EventActions.EVENT_FIRED) {
     const contract = action.name
     const currentContracts = store.getState()['contracts']

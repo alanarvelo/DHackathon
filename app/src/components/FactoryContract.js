@@ -70,7 +70,7 @@ export default class FactoryContract extends React.Component {
     const operational = DHFState.operational[this.state.operationalKey]
     const counter = DHFState.counter[this.state.counterKey]
     const owner = DHFState.owner[this.state.ownerKey]
-    let isOwner = owner && owner.value ? this.props.drizzleState.activeEOA.account.toLowerCase() === owner.value.toLowerCase() : false
+    let isOwner = owner && owner.value && this.props.drizzleState.activeEOA.account ? this.props.drizzleState.activeEOA.account.toLowerCase() === owner.value.toLowerCase() : false
 
     return (
       <Flex style={styles.container}>

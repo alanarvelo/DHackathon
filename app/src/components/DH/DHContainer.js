@@ -6,7 +6,7 @@ import { DrizzleContext } from "@drizzle/react-plugin";
 
 
 
-export default class DHWrapper extends React.Component {
+export default class DHContainer extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
