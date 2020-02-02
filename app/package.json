@@ -1,11 +1,12 @@
 {
   "name": "dehack-web-app",
-  "author":"Alan Arvelo",
+  "author": "Alan Arvelo",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@drizzle/react-plugin": "^1.5.1",
     "@drizzle/store": "^1.5.1",
+    "@material-ui/styles": "^4.9.0",
     "bootstrap": "^4.4.1",
     "react": "^16.11.0",
     "react-bootstrap": "^1.0.0-beta.16",
