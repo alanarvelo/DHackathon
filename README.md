@@ -95,7 +95,7 @@ Notice the _Admin_ has no power on the selection of the winner or the delivery o
 
 ## Demo
 
-A walkthrough of platform usage can be found in the [demo videos](https://www.youtube.com/watch?v=pTHeNLgnt3o&list=PLka73JsQwWGvu_jQ94KNlWbVVGDWcU1s5&index=1) on Youtube.
+A walkthrough of platform usage can be found in the [demo videos](https://www.youtube.com/watch?v=pTHeNLgnt3o&list=PLka73JsQwWGvu_jQ94KNlWbVVGDWcU1s5) on Youtube.
 
 ---
 

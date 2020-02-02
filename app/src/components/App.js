@@ -28,6 +28,9 @@ class App extends Component {
       this.props.drizzle.web3.currentProvider.publicConfigStore.on('update', ({ selectedAddress }) => {
         this.props.drizzle.store.dispatch(setActiveEOA(selectedAddress))
       });
+      window.ethereum.on('chainChanged', () => {
+        document.location.reload()
+      })
     } catch (error) {
       console.error("No web3 account tracking: ", error)
     }

@@ -4,8 +4,20 @@ import { Button, Flex, Heading, Box, MetaMaskButton, UPortButton, } from "rimble
 
 import { initializeWeb3 } from "../../../node_modules/@drizzle/store/src/web3/web3Saga"
 
+  // To-do: get Metamask login buttons working properly with drizzle
+
 class ErrorWeb3 extends React.Component {
+  constructor(props) {
+    super(props)
+    this.web3Gen = initializeWeb3()
+  }
     render() {
+      // console.log("Gen: ", this.web3Gen)
+      // console.log("1 next: ", this.web3Gen.next())
+      // console.log("2 next: ", this.web3Gen.next())
+      // console.log("3 next: ", this.web3Gen.next())
+      // console.log("4 next: ", this.web3Gen.next())
+      // console.log("5 next: ", this.web3Gen.next())
         const { classes } = this.props;
         return (
           <div className={classes.wrapper}>
@@ -17,7 +29,7 @@ class ErrorWeb3 extends React.Component {
               </header>
               <Flex width={1} style={{flexDirection: "column", justifyContent: "center", alignItems: "center"}} >
                 <Box width={1/3} className={classes.boxV}>
-                  <MetaMaskButton.Solid onClick={async () => {initializeWeb3(); alert("Install the MetaMask extension and refresh the page to login, feature in development. Thanks :)."); console.log("Refresh the page and log In With MetaMask.")}}>
+                  <MetaMaskButton.Solid onClick={async () => {initializeWeb3(); alert("Install the MetaMask extension and refresh the page to login, feature in development. Thanks :)."); console.log("Refresh the page and log In With MetaMask.") }}>
                     Connect with MetaMask
                   </MetaMaskButton.Solid>
                 </Box>
@@ -35,7 +47,7 @@ class ErrorWeb3 extends React.Component {
                 </Box>
               </Flex>
               <header className={classes.header}>
-                  <p>Connect to a supported network</p>
+                  <p>Connect to one of the supported networks</p>
                 </header>
               <Flex width={1} style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}} >
                 <Box width={1/3} className={classes.box}>
