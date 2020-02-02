@@ -24,4 +24,5 @@ yarn-error.log*
 
 # contracts
 /src/abis/
+!src/abis/.gitkeep
 
