@@ -30,7 +30,7 @@ export default class FactoryContract extends React.Component {
 
     // add previously created DHackathon contract by getting their address from the Factory
     const children = await this.props.drizzle.contracts.DHackathonFactory.methods.getChildren().call();
-    children.map((childAddress) => this.addChildren(childAddress))
+    children && children.map((childAddress) => this.addChildren(childAddress))
     
   }
 

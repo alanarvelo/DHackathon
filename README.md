@@ -282,6 +282,8 @@ This should start a development server, and open a web browser to [http://localh
 
 Here is where MetaMask comes in. Make sure you have MetaMask installed as an extension on that web browser. Open Metamask click on the top center where it says Networks, then click on Custom RPC, and paste `HTTP://127.0.0.1:8545` on the New RPC URL field. MetaMask is now connected to your ganache-cli private blockchain. You should now be able to locally with the platform.
 
+Likely, you will need to import some of the accounts recently created by ganache-cli to your Metamask extension to start calling web3 functions in the DApp.
+
 
 ### Tests
 
@@ -294,19 +296,15 @@ That's it! Here an example of what should display in your terminal.
 
 ### Deployment to external networks
 
-The platform can be deployed to Rinkeby, Ropsten, other testnets, as well as to ethereum's Mainnet. In fact, it already has, see the deployed addresses [here](./deployed_addresses.txt").
+The platform can be deployed to Rinkeby, Ropsten, other testnets, as well as to ethereum's Mainnet. In fact, it already has, see the deployed addresses [here](./deployed_addresses.txt).
 
-To deploy it yourself create a file called `ENV_VARS.env.json` and add your [Infura](https://infura.io/) provider for the network you want to deploy and
-mnemonic information as follows.
+To deploy it yourself create a file called `.env` and add your [Infura](https://infura.io/) api key (or project id) and mnemonic as follows.
+
 ```
-{
-  "MNEMONIC":"",
-  "RINKEBY_INFURA_PROVIDER":"",
-  "ROPSTEN_INFURA_PROVIDER":"",
-  "MAINNET_PROVIDER":""
-}
+MNEMONIC=
+INFURA_API_KEY=
 ```
-**Important:**  the file must have the extension `.env.json` so it is ignored by `.gitignore`, thus preventing you from accidentally disclosing your mnemonic and thus your private keys. If you are not interested on deploying to a particular network, you can leave its provider value as an empty string (`""`).
+**Important:**  the file must have the extension be simply called `.env` so it is ignored by `.gitignore` preventing you from accidentally disclosing your mnemonic and thus your private keys. No need to use quotes to denote strings in for the values.
 
 To deploy to testnets or mainnet, run:
 
