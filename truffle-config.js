@@ -30,12 +30,12 @@ module.exports = {
       gasPrice: 10000000000
     },
     // main ethereum network(mainnet)
-    // main: {
-    //   provider: () => new HDWalletProvider(process.env.MNENOMIC, "https://mainnet.infura.io/v3/" + process.env.INFURA_API_KEY),
-    //   network_id: 1,
-    //   gas: 3000000,
-    //   gasPrice: 10000000000
-    // }
+    main: {
+      provider: () => new HDWalletProvider(process.env.MNEMONIC, "https://mainnet.infura.io/v3/" + process.env.INFURA_API_KEY),
+      network_id: 1,
+      gas: 6000000,
+      gasPrice: 1000000000
+    }
   },
   compilers: {
     solc: {
